@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.omg.org/bpmn20"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_workflowTaskItem" structureRef="nz.co.kiwirail.tom.common.domain.WorkflowTask" />
+  <itemDefinition id="_transportOrdersItem" structureRef="java.util.List" />
+
+  <process processType="Private" isExecutable="true" id="tom.bpm.NRSRApproval" name="NRSRApproval" tns:packageName="tom.bpm" tns:version="1.0" >
+
+    <!-- process variables -->
+    <property id="workflowTask" itemSubjectRef="_workflowTaskItem"/>
+    <property id="transportOrders" itemSubjectRef="_transportOrdersItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_7FD5896B-9FA1-4F14-8973-FB5DC76ED1D0" name="" />
+    <userTask id="_8900D4B0-E71B-4D63-9576-60F6A0B6793F" name="Review NRSR" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>System.out.println("Entering Review NRSR: workflowTask=" + workflowTask);</tns:script>
+        </tns:onEntry-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>System.out.println("Exiting Review NRSR: workflowTask=" + workflowTask);</tns:script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_8900D4B0-E71B-4D63-9576-60F6A0B6793F_inWorkflowTaskInput" name="inWorkflowTask" />
+        <dataInput id="_8900D4B0-E71B-4D63-9576-60F6A0B6793F_CommentInput" name="Comment" />
+        <dataInput id="_8900D4B0-E71B-4D63-9576-60F6A0B6793F_TaskNameInput" name="TaskName" />
+        <dataInput id="_8900D4B0-E71B-4D63-9576-60F6A0B6793F_ContentInput" name="Content" />
+        <inputSet>
+          <dataInputRefs>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_inWorkflowTaskInput</dataInputRefs>
+          <dataInputRefs>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_CommentInput</dataInputRefs>
+          <dataInputRefs>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_ContentInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>workflowTask</sourceRef>
+        <targetRef>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_inWorkflowTaskInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_8900D4B0-E71B-4D63-9576-60F6A0B6793F_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Review NRSR</from>
+          <to xsi:type="tFormalExpression">_8900D4B0-E71B-4D63-9576-60F6A0B6793F_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8900D4B0-E71B-4D63-9576-60F6A0B6793F_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_8900D4B0-E71B-4D63-9576-60F6A0B6793F_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>Administrator</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_EE2A3029-E2C2-4094-B2B2-B8701A671872" name="" gatewayDirection="Diverging" />
+    <businessRuleTask id="_99D656A7-65D8-4637-A7E3-B9E7DF667509" name="makeTransportOrders" g:ruleFlowGroup="makeTransportOrders" >
+    </businessRuleTask>
+    <task id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7" name="saveTransportOrders" tns:taskName="RestCall" >
+      <ioSpecification>
+        <dataInput id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput" name="JSONRequest" />
+        <dataInput id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_MethodInput" name="Method" />
+        <dataInput id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_METHODInput" name="METHOD" />
+        <dataInput id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput" name="JSONRequest" />
+        <dataInput id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_TaskNameInput" name="TaskName" />
+        <dataInput id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_URLInput" name="URL" />
+        <inputSet>
+          <dataInputRefs>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput</dataInputRefs>
+          <dataInputRefs>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_MethodInput</dataInputRefs>
+          <dataInputRefs>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_METHODInput</dataInputRefs>
+          <dataInputRefs>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput</dataInputRefs>
+          <dataInputRefs>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_URLInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>transportOrders</sourceRef>
+        <targetRef>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_MethodInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">POST</from>
+          <to xsi:type="tFormalExpression">_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_MethodInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_METHODInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">POST</from>
+          <to xsi:type="tFormalExpression">_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_METHODInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_JSONRequestInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">RestCall</from>
+          <to xsi:type="tFormalExpression">_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_URLInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">/putTransportOrderAndProductLines</from>
+          <to xsi:type="tFormalExpression">_BA4BC348-C44F-4A57-AC3E-70C3A87506F7_URLInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <endEvent id="_F719FFFC-BC8D-45F9-96A3-72149401E5E3" name="" />
+    <endEvent id="_45F42DDA-5FAD-4E38-921B-DF57F2493A3C" name="" />
+    <task id="_8" name="getNRSR" tns:taskName="RestCall" >
+      <ioSpecification>
+        <dataInput id="_8_JSONResponseClassInput" name="JSONResponseClass" />
+        <dataInput id="_8_MethodInput" name="Method" />
+        <dataInput id="_8_JSONRequestIdInput" name="JSONRequestId" />
+        <dataInput id="_8_AssertResponseInput" name="AssertResponse" />
+        <dataInput id="_8_URLInput" name="URL" />
+        <inputSet>
+          <dataInputRefs>_8_JSONResponseClassInput</dataInputRefs>
+          <dataInputRefs>_8_MethodInput</dataInputRefs>
+          <dataInputRefs>_8_JSONRequestIdInput</dataInputRefs>
+          <dataInputRefs>_8_AssertResponseInput</dataInputRefs>
+          <dataInputRefs>_8_URLInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_8_JSONResponseClassInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">nz.co.kiwirail.tom.common.domain.NRSRAndProductLines</from>
+          <to xsi:type="tFormalExpression">_8_JSONResponseClassInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_MethodInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">GET</from>
+          <to xsi:type="tFormalExpression">_8_MethodInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_JSONRequestIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_8_JSONRequestIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_AssertResponseInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">true</from>
+          <to xsi:type="tFormalExpression">_8_AssertResponseInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_URLInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">/getNRSRAndProductLines?nrsrId=#{workflowTask.systemTaskId}</from>
+          <to xsi:type="tFormalExpression">_8_URLInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+
+    <!-- connections -->
+    <sequenceFlow id="_7FD5896B-9FA1-4F14-8973-FB5DC76ED1D0-_8900D4B0-E71B-4D63-9576-60F6A0B6793F" sourceRef="_7FD5896B-9FA1-4F14-8973-FB5DC76ED1D0" targetRef="_8900D4B0-E71B-4D63-9576-60F6A0B6793F" />
+    <sequenceFlow id="_8900D4B0-E71B-4D63-9576-60F6A0B6793F-_EE2A3029-E2C2-4094-B2B2-B8701A671872" sourceRef="_8900D4B0-E71B-4D63-9576-60F6A0B6793F" targetRef="_EE2A3029-E2C2-4094-B2B2-B8701A671872" />
+    <sequenceFlow id="_8-_99D656A7-65D8-4637-A7E3-B9E7DF667509" sourceRef="_8" targetRef="_99D656A7-65D8-4637-A7E3-B9E7DF667509" />
+    <sequenceFlow id="_99D656A7-65D8-4637-A7E3-B9E7DF667509-_BA4BC348-C44F-4A57-AC3E-70C3A87506F7" sourceRef="_99D656A7-65D8-4637-A7E3-B9E7DF667509" targetRef="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7" />
+    <sequenceFlow id="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7-_F719FFFC-BC8D-45F9-96A3-72149401E5E3" sourceRef="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7" targetRef="_F719FFFC-BC8D-45F9-96A3-72149401E5E3" />
+    <sequenceFlow id="_EE2A3029-E2C2-4094-B2B2-B8701A671872-_45F42DDA-5FAD-4E38-921B-DF57F2493A3C" sourceRef="_EE2A3029-E2C2-4094-B2B2-B8701A671872" targetRef="_45F42DDA-5FAD-4E38-921B-DF57F2493A3C" name="Rejected" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "REJECTED".equals(workflowTask.getTaskStatus());</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_EE2A3029-E2C2-4094-B2B2-B8701A671872-_8" sourceRef="_EE2A3029-E2C2-4094-B2B2-B8701A671872" targetRef="_8" name="Approved" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >return "APPROVED".equals(workflowTask.getTaskStatus());</conditionExpression>
+    </sequenceFlow>
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="tom.bpm.NRSRApproval" >
+      <bpmndi:BPMNShape bpmnElement="_7FD5896B-9FA1-4F14-8973-FB5DC76ED1D0" >
+        <dc:Bounds x="33" y="108" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8900D4B0-E71B-4D63-9576-60F6A0B6793F" >
+        <dc:Bounds x="117" y="92" width="122" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_EE2A3029-E2C2-4094-B2B2-B8701A671872" >
+        <dc:Bounds x="285" y="108" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_99D656A7-65D8-4637-A7E3-B9E7DF667509" >
+        <dc:Bounds x="570" y="93" width="155" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7" >
+        <dc:Bounds x="765" y="91" width="159" height="77" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_F719FFFC-BC8D-45F9-96A3-72149401E5E3" >
+        <dc:Bounds x="983" y="108" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_45F42DDA-5FAD-4E38-921B-DF57F2493A3C" >
+        <dc:Bounds x="287" y="216" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="401" y="97" width="126" height="77" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_7FD5896B-9FA1-4F14-8973-FB5DC76ED1D0-_8900D4B0-E71B-4D63-9576-60F6A0B6793F" >
+        <di:waypoint x="57" y="132" />
+        <di:waypoint x="178" y="132" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8900D4B0-E71B-4D63-9576-60F6A0B6793F-_EE2A3029-E2C2-4094-B2B2-B8701A671872" >
+        <di:waypoint x="178" y="132" />
+        <di:waypoint x="309" y="132" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_99D656A7-65D8-4637-A7E3-B9E7DF667509" >
+        <di:waypoint x="464" y="135" />
+        <di:waypoint x="647" y="133" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_99D656A7-65D8-4637-A7E3-B9E7DF667509-_BA4BC348-C44F-4A57-AC3E-70C3A87506F7" >
+        <di:waypoint x="647" y="133" />
+        <di:waypoint x="844" y="129" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_BA4BC348-C44F-4A57-AC3E-70C3A87506F7-_F719FFFC-BC8D-45F9-96A3-72149401E5E3" >
+        <di:waypoint x="844" y="129" />
+        <di:waypoint x="1007" y="132" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_EE2A3029-E2C2-4094-B2B2-B8701A671872-_45F42DDA-5FAD-4E38-921B-DF57F2493A3C" >
+        <di:waypoint x="309" y="132" />
+        <di:waypoint x="311" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_EE2A3029-E2C2-4094-B2B2-B8701A671872-_8" >
+        <di:waypoint x="309" y="132" />
+        <di:waypoint x="464" y="135" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

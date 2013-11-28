@@ -1,0 +1,13 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Account;
+ 
+rule "nameRequired"
+when
+$account : Account( name == null )
+then
+  System.out.println( "Account name cannot be null!");
+  modify($account) {
+   setName("Unknown") )
+  };
+end

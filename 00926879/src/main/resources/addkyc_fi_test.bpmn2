@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_userIdItem" structureRef="String" />
+  <itemDefinition id="_groupIdItem" structureRef="String" />
+  <itemDefinition id="_decisionItem" structureRef="Object" />
+
+  <process processType="Private" isExecutable="true" id="com.citi.kyc.fi.test.addkyc" name="ADD KYC" tns:packageName="com.citi.kyc.addkyc" tns:version="2" >
+
+    <!-- process variables -->
+    <property id="userId" itemSubjectRef="_userIdItem"/>
+    <property id="groupId" itemSubjectRef="_groupIdItem"/>
+    <property id="decision" itemSubjectRef="_decisionItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <userTask id="_8" name="KYC Checker 1" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>System.out.println("started kyc checker 1" + userId );</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_8_CommentInput" name="Comment" />
+        <dataInput id="_8_SkippableInput" name="Skippable" />
+        <dataInput id="_8_TaskNameInput" name="TaskName" />
+        <dataInput id="_8_ContentInput" name="Content" />
+        <dataInput id="_8_GroupIdInput" name="GroupId" />
+        <dataInput id="_8_PriorityInput" name="Priority" />
+        <dataOutput id="_8_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_8_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_8_CommentInput</dataInputRefs>
+          <dataInputRefs>_8_SkippableInput</dataInputRefs>
+          <dataInputRefs>_8_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_8_ContentInput</dataInputRefs>
+          <dataInputRefs>_8_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_8_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_8_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_8_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_8_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">QC Review is reqiored if any material data changed by KYC Maker/Owner</from>
+          <to xsi:type="tFormalExpression">_8_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_8_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">QC Review</from>
+          <to xsi:type="tFormalExpression">_8_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_8_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_8_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_8_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_8_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_8_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="_10" name="Business Approver" >
+      <ioSpecification>
+        <dataInput id="_10_CommentInput" name="Comment" />
+        <dataInput id="_10_TaskNameInput" name="TaskName" />
+        <dataInput id="_10_GroupIdInput" name="GroupId" />
+        <dataOutput id="_10_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_10_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_10_CommentInput</dataInputRefs>
+          <dataInputRefs>_10_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_10_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_10_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_10_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_10_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">AML Advisiory is required during KYC Record Creation process</from>
+          <to xsi:type="tFormalExpression">_10_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">AML Advisiory Review</from>
+          <to xsi:type="tFormalExpression">_10_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_10_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_10_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_10_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_10_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_12" name="QC Required?" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_13" name="Compliance Approver ?" gatewayDirection="Diverging" />
+    <userTask id="_15" name="Compliance Approver" >
+      <ioSpecification>
+        <dataInput id="_15_CommentInput" name="Comment" />
+        <dataInput id="_15_SkippableInput" name="Skippable" />
+        <dataInput id="_15_TaskNameInput" name="TaskName" />
+        <dataInput id="_15_ContentInput" name="Content" />
+        <dataInput id="_15_GroupIdInput" name="GroupId" />
+        <dataInput id="_15_PriorityInput" name="Priority" />
+        <dataOutput id="_15_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_15_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_15_CommentInput</dataInputRefs>
+          <dataInputRefs>_15_SkippableInput</dataInputRefs>
+          <dataInputRefs>_15_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_15_ContentInput</dataInputRefs>
+          <dataInputRefs>_15_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_15_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_15_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_15_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_15_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Business review is required during KYC Record Creation process</from>
+          <to xsi:type="tFormalExpression">_15_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_15_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Business Review</from>
+          <to xsi:type="tFormalExpression">_15_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_15_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_15_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_15_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_15_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_15_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_15_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="_16" name="OverSight Commitee Approver" >
+      <ioSpecification>
+        <dataInput id="_16_CommentInput" name="Comment" />
+        <dataInput id="_16_TaskNameInput" name="TaskName" />
+        <dataInput id="_16_GroupIdInput" name="GroupId" />
+        <dataOutput id="_16_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_16_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_16_CommentInput</dataInputRefs>
+          <dataInputRefs>_16_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_16_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_16_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_16_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_16_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">AML Compliance is required during KYC Record Creation process</from>
+          <to xsi:type="tFormalExpression">_16_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_16_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">AML Compliance</from>
+          <to xsi:type="tFormalExpression">_16_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_16_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_16_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_16_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_19" name="QC Check" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_23" name="To Business Approver" gatewayDirection="Converging" />
+    <exclusiveGateway id="_22" name="Business Review ?" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_25" name="Business Approver ?" gatewayDirection="Diverging" />
+    <endEvent id="_24" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <endEvent id="_27" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_26" name="CCO Approval ?" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_29" name="OverSight Committee Approver ?" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_28" name="To Oversight Committee Approver" gatewayDirection="Converging" />
+    <exclusiveGateway id="_31" name="To CCO Approver" gatewayDirection="Converging" />
+    <exclusiveGateway id="_30" name="AML Compliance ?" gatewayDirection="Diverging" />
+    <endEvent id="_32" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <userTask id="_37" name="KYC Owner Approval" >
+      <ioSpecification>
+        <dataInput id="_37_CommentInput" name="Comment" />
+        <dataInput id="_37_SkippableInput" name="Skippable" />
+        <dataInput id="_37_TaskNameInput" name="TaskName" />
+        <dataInput id="_37_ContentInput" name="Content" />
+        <dataInput id="_37_GroupIdInput" name="GroupId" />
+        <dataInput id="_37_PriorityInput" name="Priority" />
+        <dataOutput id="_37_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_37_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_37_CommentInput</dataInputRefs>
+          <dataInputRefs>_37_SkippableInput</dataInputRefs>
+          <dataInputRefs>_37_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_37_ContentInput</dataInputRefs>
+          <dataInputRefs>_37_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_37_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_37_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_37_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_37_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">KYC Owner Approval is required incase if the KYC Record Creation is done by KYC Maker.</from>
+          <to xsi:type="tFormalExpression">_37_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_37_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_37_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_37_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_37_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_37_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_37_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_37_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_37_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_37_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_37_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_37_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_37_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_50" name="KYC Checker Gate" gatewayDirection="Converging" />
+    <exclusiveGateway id="_49" name="KYC Maker Gate" gatewayDirection="Converging" />
+    <exclusiveGateway id="_55" name="To Compliance" gatewayDirection="Converging" />
+    <userTask id="_54" name="CCO Approver" >
+      <ioSpecification>
+        <dataInput id="_54_CommentInput" name="Comment" />
+        <dataInput id="_54_GroupIdInput" name="GroupId" />
+        <dataOutput id="_54_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_54_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_54_CommentInput</dataInputRefs>
+          <dataInputRefs>_54_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_54_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_54_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_54_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CCO Approval is required during KYC Record Creation process</from>
+          <to xsi:type="tFormalExpression">_54_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_54_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_54_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_54_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_54_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_53" name="CCO Approval Req ?" gatewayDirection="Diverging" />
+    <endEvent id="_57" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_56" name="CCO Approval ?" gatewayDirection="Diverging" />
+    <endEvent id="_68" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_64" name="To QC or Maker" gatewayDirection="Diverging" />
+    <scriptTask id="_67" name="KYC Record Approved" >
+      <script></script>
+    </scriptTask>
+    <intermediateCatchEvent id="_76" name="Event for Compliance Pre-Approval" >
+      <signalEventDefinition signalRef="Pre_Compliance"/>
+    </intermediateCatchEvent>
+    <intermediateCatchEvent id="_77" name="Event for Name Screening" >
+      <signalEventDefinition signalRef="NameScreening"/>
+    </intermediateCatchEvent>
+    <userTask id="_79" name="Compliance Pre-Approval" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>System.out.println("compliance pre-approval started...");</script>
+        </tns:onEntry-script>
+        <tns:onExit-script>
+          <script>System.out.println("compliance pre-approval End...");</script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_79_CommentInput" name="Comment" />
+        <dataInput id="_79_SkippableInput" name="Skippable" />
+        <dataInput id="_79_TaskNameInput" name="TaskName" />
+        <dataInput id="_79_ContentInput" name="Content" />
+        <dataInput id="_79_PriorityInput" name="Priority" />
+        <dataOutput id="_79_user_decisionOutput" name="user_decision" />
+        <inputSet>
+          <dataInputRefs>_79_CommentInput</dataInputRefs>
+          <dataInputRefs>_79_SkippableInput</dataInputRefs>
+          <dataInputRefs>_79_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_79_ContentInput</dataInputRefs>
+          <dataInputRefs>_79_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_79_user_decisionOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_79_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Compliance Pre-Approval can be triggered by KYC Maker/Owner during KYC Record Creation Process</from>
+          <to xsi:type="tFormalExpression">_79_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_79_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_79_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_79_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_79_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_79_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_79_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_79_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_79_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_79_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>compliancePreApprover</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="_74" name="KYC Record Creation" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>System.out.println("kyc record creation by user :"+ userId);</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_74_CommentInput" name="Comment" />
+        <dataInput id="_74_SkippableInput" name="Skippable" />
+        <dataInput id="_74_TaskNameInput" name="TaskName" />
+        <dataInput id="_74_ContentInput" name="Content" />
+        <dataInput id="_74_GroupIdInput" name="GroupId" />
+        <dataInput id="_74_PriorityInput" name="Priority" />
+        <dataOutput id="_74_user_decisionOutput" name="user_decision" />
+        <dataOutput id="_74_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_74_CommentInput</dataInputRefs>
+          <dataInputRefs>_74_SkippableInput</dataInputRefs>
+          <dataInputRefs>_74_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_74_ContentInput</dataInputRefs>
+          <dataInputRefs>_74_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_74_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_74_user_decisionOutput</dataOutputRefs>
+          <dataOutputRefs>_74_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_74_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_74_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_74_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_74_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_74_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_74_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_74_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_74_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_74_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_74_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_74_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_74_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_74_user_decisionOutput</sourceRef>
+        <targetRef>decision</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_74_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <parallelGateway id="_75" name="Submit" gatewayDirection="Converging" />
+    <exclusiveGateway id="_87" name="Name Screening gate" gatewayDirection="Converging" />
+    <exclusiveGateway id="_86" name="Name Screening Req?" gatewayDirection="Diverging" />
+    <userTask id="_80" name="Name Screening" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <script>System.out.println("name screeing Started...");</script>
+        </tns:onEntry-script>
+        <tns:onExit-script>
+          <script>System.out.println("name screening End");</script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_80_CommentInput" name="Comment" />
+        <dataInput id="_80_SkippableInput" name="Skippable" />
+        <dataInput id="_80_TaskNameInput" name="TaskName" />
+        <dataInput id="_80_ContentInput" name="Content" />
+        <dataInput id="_80_PriorityInput" name="Priority" />
+        <inputSet>
+          <dataInputRefs>_80_CommentInput</dataInputRefs>
+          <dataInputRefs>_80_SkippableInput</dataInputRefs>
+          <dataInputRefs>_80_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_80_ContentInput</dataInputRefs>
+          <dataInputRefs>_80_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_80_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Name Screening Task can be triggered by KYC Maker/Owner during KYC Record Creation Process</from>
+          <to xsi:type="tFormalExpression">_80_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_80_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_80_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_80_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_80_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_80_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_80_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_80_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_80_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>NameScreener</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_82" name="Compliance Pre-Approval ?" gatewayDirection="Diverging" />
+    <userTask id="_93" name="Compliance Advise" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>System.out.println("compliance advise by user :"+ userId);</script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_93_GroupIdInput" name="GroupId" />
+        <dataOutput id="_93_userOutput" name="user" />
+        <inputSet>
+          <dataInputRefs>_93_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_93_userOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_93_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{groupId}</from>
+          <to xsi:type="tFormalExpression">_93_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_93_userOutput</sourceRef>
+        <targetRef>userId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{userId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_92" name="KYC Owner Gateway" gatewayDirection="Converging" />
+    <exclusiveGateway id="_95" name="Gateway" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_94" name="Gateway" gatewayDirection="Converging" />
+    <endEvent id="_89" name="End" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <exclusiveGateway id="_88" name="Compliance_Pre-approval Chk" gatewayDirection="Diverging" />
+    <userTask id="_91" name="KYC Checker 2" >
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+    </userTask>
+    <exclusiveGateway id="_100" name="Gateway" gatewayDirection="Converging" />
+    <exclusiveGateway id="_101" name="Gateway" gatewayDirection="Converging" />
+    <exclusiveGateway id="_98" name="AML Call report ?" gatewayDirection="Diverging" />
+    <userTask id="_99" name="AML Call report" >
+      <extensionElements>
+        <tns:onEntry-script>
+          <script>System.out.println("aml call report started...");</script>
+        </tns:onEntry-script>
+        <tns:onExit-script>
+          <script>System.out.println("aml call report End...");</script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <inputSet>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>AMLReporter</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_96" name="Gateway" gatewayDirection="Diverging" />
+    <intermediateCatchEvent id="_97" name="Signal" >
+      <signalEventDefinition signalRef="AML_CallReport"/>
+    </intermediateCatchEvent>
+
+    <!-- connections -->
+    <sequenceFlow id="_12-_8" sourceRef="_12" targetRef="_8" name="KYC Checker Review Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("checker");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_25-_10" sourceRef="_25" targetRef="_10" name="Business Approval Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_50-_12" sourceRef="_50" targetRef="_12" />
+    <sequenceFlow id="_12-_13" sourceRef="_12" targetRef="_13" name="KYC Checker Review Not Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("compliance");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_13-_15" sourceRef="_13" targetRef="_15" name="Compliance Approval Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_29-_16" sourceRef="_29" targetRef="_16" name="Oversight Committee Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_8-_19" sourceRef="_8" targetRef="_19" />
+    <sequenceFlow id="_13-_23" sourceRef="_13" targetRef="_23" name="Compliance Approval Not Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23" name="Compliance Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("approve"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12-_23" sourceRef="_12" targetRef="_23" name="Return to Business Approver" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("business");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_15-_22" sourceRef="_15" targetRef="_22" />
+    <sequenceFlow id="_23-_25" sourceRef="_23" targetRef="_25" />
+    <sequenceFlow id="_22-_24" sourceRef="_22" targetRef="_24" name="Compliance Rejected" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("reject"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_26-_27" sourceRef="_26" targetRef="_27" name="Business Rejected" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("reject");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_10-_26" sourceRef="_10" targetRef="_26" />
+    <sequenceFlow id="_28-_29" sourceRef="_28" targetRef="_29" />
+    <sequenceFlow id="_25-_28" sourceRef="_25" targetRef="_28" name="Business Approval Not Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_26-_28" sourceRef="_26" targetRef="_28" name="Business Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("approve");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12-_28" sourceRef="_12" targetRef="_28" name="Return to Oversight Committee Approver" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("oversightcommittee");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_29-_31" sourceRef="_29" targetRef="_31" name="OverSight Commitee Not Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_30-_31" sourceRef="_30" targetRef="_31" name="Oversight Committee Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("approve"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_12-_31" sourceRef="_12" targetRef="_31" name="Return to CCO Approver" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("cco");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_16-_30" sourceRef="_16" targetRef="_30" />
+    <sequenceFlow id="_30-_32" sourceRef="_30" targetRef="_32" name="Oversight Committee Rejected" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("reject"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_92-_37" sourceRef="_92" targetRef="_37" />
+    <sequenceFlow id="_64-_50" sourceRef="_64" targetRef="_50" name="KYC Owner Approval" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (!decision.equals("return"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_75-_50" sourceRef="_75" targetRef="_50" />
+    <sequenceFlow id="_96-_50" sourceRef="_96" targetRef="_50" name="Edit done" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" ></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_22-_49" sourceRef="_22" targetRef="_49" name="Return                     " tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("return"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_26-_49" sourceRef="_26" targetRef="_49" name="Return" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("return");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_30-_49" sourceRef="_30" targetRef="_49" name="Return" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("return");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_56-_49" sourceRef="_56" targetRef="_49" name="Return                                        " tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("return");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_64-_49" sourceRef="_64" targetRef="_49" name="Return from KYC Owner " tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("return");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_49" sourceRef="_1" targetRef="_49" />
+    <sequenceFlow id="_19-_49" sourceRef="_19" targetRef="_49" name="Return" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("return");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_53-_55" sourceRef="_53" targetRef="_55" name="CCO Review Not Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_56-_55" sourceRef="_56" targetRef="_55" name="CCO Approved" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("approve");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_53-_54" sourceRef="_53" targetRef="_54" name="CCO Review Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_31-_53" sourceRef="_31" targetRef="_53" />
+    <sequenceFlow id="_56-_57" sourceRef="_56" targetRef="_57" name="CCO Rejected" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("reject")</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_54-_56" sourceRef="_54" targetRef="_56" />
+    <sequenceFlow id="_67-_68" sourceRef="_67" targetRef="_68" />
+    <sequenceFlow id="_37-_64" sourceRef="_37" targetRef="_64" />
+    <sequenceFlow id="_55-_67" sourceRef="_55" targetRef="_67" />
+    <sequenceFlow id="_82-_79" sourceRef="_82" targetRef="_79" name="Compliance Pre Approval Req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >eval(true)</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_94-_74" sourceRef="_94" targetRef="_74" />
+    <sequenceFlow id="_87-_75" sourceRef="_87" targetRef="_75" />
+    <sequenceFlow id="_95-_75" sourceRef="_95" targetRef="_75" name="No" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("checker"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_101-_75" sourceRef="_101" targetRef="_75" />
+    <sequenceFlow id="_100-_75" sourceRef="_100" targetRef="_75" />
+    <sequenceFlow id="_86-_87" sourceRef="_86" targetRef="_87" name="Name Screening Not Triggered" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >eval(false);</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_80-_87" sourceRef="_80" targetRef="_87" />
+    <sequenceFlow id="_77-_86" sourceRef="_77" targetRef="_86" />
+    <sequenceFlow id="_86-_80" sourceRef="_86" targetRef="_80" name="Name Screening Triggered" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" >eval(true)</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_76-_82" sourceRef="_76" targetRef="_82" />
+    <sequenceFlow id="_95-_93" sourceRef="_95" targetRef="_93" name="Yes" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("complianceAdvice"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_19-_92" sourceRef="_19" targetRef="_92" name="Edit Not done" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("noedit");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_96-_92" sourceRef="_96" targetRef="_92" name="Edit not done" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.jboss.org/drools/rule" ></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_74-_95" sourceRef="_74" targetRef="_95" />
+    <sequenceFlow id="_49-_94" sourceRef="_49" targetRef="_94" />
+    <sequenceFlow id="_93-_94" sourceRef="_93" targetRef="_94" />
+    <sequenceFlow id="_88-_89" sourceRef="_88" targetRef="_89" name="Rejected" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("reject"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_79-_88" sourceRef="_79" targetRef="_88" />
+    <sequenceFlow id="_19-_91" sourceRef="_19" targetRef="_91" name="Edit done" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return decision.equals("edit");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_82-_100" sourceRef="_82" targetRef="_100" name="Compliance Pre-Approval Not req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_88-_100" sourceRef="_88" targetRef="_100" name="Approve" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return (decision.equals("approve"));</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_98-_101" sourceRef="_98" targetRef="_101" name="AML not req" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >return false</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_99-_101" sourceRef="_99" targetRef="_101" />
+    <sequenceFlow id="_97-_98" sourceRef="_97" targetRef="_98" />
+    <sequenceFlow id="_98-_99" sourceRef="_98" targetRef="_99" name="AML req" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_91-_96" sourceRef="_91" targetRef="_96" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="com.citi.kyc.fi.test.addkyc" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="437" y="0" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="672" y="888" width="109" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="336" y="1416" width="146" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="436" y="888" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" >
+        <dc:Bounds x="707" y="1145" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_15" >
+        <dc:Bounds x="338" y="1152" width="142" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_16" >
+        <dc:Bounds x="320" y="1680" width="177" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="888" y="888" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" >
+        <dc:Bounds x="707" y="1245" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" >
+        <dc:Bounds x="384" y="1248" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_25" >
+        <dc:Bounds x="707" y="1409" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_24" >
+        <dc:Bounds x="385" y="1356" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_27" >
+        <dc:Bounds x="385" y="1628" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_26" >
+        <dc:Bounds x="384" y="1536" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_29" >
+        <dc:Bounds x="707" y="1681" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28" >
+        <dc:Bounds x="707" y="1536" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_31" >
+        <dc:Bounds x="707" y="1799" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_30" >
+        <dc:Bounds x="384" y="1800" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_32" >
+        <dc:Bounds x="385" y="1904" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_37" >
+        <dc:Bounds x="672" y="744" width="142" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_50" >
+        <dc:Bounds x="436" y="748" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_49" >
+        <dc:Bounds x="436" y="132" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_55" >
+        <dc:Bounds x="707" y="2092" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_54" >
+        <dc:Bounds x="340" y="1956" width="137" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_53" >
+        <dc:Bounds x="707" y="1958" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_57" >
+        <dc:Bounds x="385" y="2202" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_56" >
+        <dc:Bounds x="384" y="2093" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_68" >
+        <dc:Bounds x="708" y="2268" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_64" >
+        <dc:Bounds x="600" y="744" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_67" >
+        <dc:Bounds x="662" y="2172" width="140" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_76" >
+        <dc:Bounds x="576" y="215" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_77" >
+        <dc:Bounds x="216" y="206" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_79" >
+        <dc:Bounds x="714" y="288" width="157" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_74" >
+        <dc:Bounds x="399" y="336" width="123" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_75" >
+        <dc:Bounds x="436" y="552" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_87" >
+        <dc:Bounds x="216" y="552" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_86" >
+        <dc:Bounds x="215" y="287" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_80" >
+        <dc:Bounds x="84" y="432" width="102" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_82" >
+        <dc:Bounds x="576" y="287" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_93" >
+        <dc:Bounds x="276" y="336" width="112" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_92" >
+        <dc:Bounds x="888" y="744" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_95" >
+        <dc:Bounds x="436" y="444" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_94" >
+        <dc:Bounds x="436" y="252" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_89" >
+        <dc:Bounds x="876" y="468" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_88" >
+        <dc:Bounds x="768" y="468" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_91" >
+        <dc:Bounds x="1080" y="744" width="96" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_100" >
+        <dc:Bounds x="578" y="468" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_101" >
+        <dc:Bounds x="924" y="552" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_98" >
+        <dc:Bounds x="924" y="288" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_99" >
+        <dc:Bounds x="1044" y="288" width="108" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_96" >
+        <dc:Bounds x="996" y="744" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_97" >
+        <dc:Bounds x="924" y="216" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_12-_8" >
+        <di:waypoint x="460" y="912" />
+        <di:waypoint x="726" y="912" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_25-_10" >
+        <di:waypoint x="731" y="1433" />
+        <di:waypoint x="409" y="1440" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_50-_12" >
+        <di:waypoint x="460" y="772" />
+        <di:waypoint x="460" y="912" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_13" >
+        <di:waypoint x="460" y="912" />
+        <di:waypoint x="731" y="1169" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_15" >
+        <di:waypoint x="731" y="1169" />
+        <di:waypoint x="409" y="1176" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29-_16" >
+        <di:waypoint x="731" y="1705" />
+        <di:waypoint x="408" y="1704" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8-_19" >
+        <di:waypoint x="726" y="912" />
+        <di:waypoint x="912" y="912" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_13-_23" >
+        <di:waypoint x="731" y="1169" />
+        <di:waypoint x="731" y="1269" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22-_23" >
+        <di:waypoint x="408" y="1272" />
+        <di:waypoint x="731" y="1269" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_23" >
+        <di:waypoint x="460" y="912" />
+        <di:waypoint x="1256" y="1069" />
+        <di:waypoint x="1258" y="1272" />
+        <di:waypoint x="731" y="1269" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_15-_22" >
+        <di:waypoint x="409" y="1176" />
+        <di:waypoint x="408" y="1272" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-_25" >
+        <di:waypoint x="731" y="1269" />
+        <di:waypoint x="731" y="1433" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22-_24" >
+        <di:waypoint x="408" y="1272" />
+        <di:waypoint x="409" y="1380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26-_27" >
+        <di:waypoint x="408" y="1560" />
+        <di:waypoint x="409" y="1652" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10-_26" >
+        <di:waypoint x="409" y="1440" />
+        <di:waypoint x="408" y="1560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_29" >
+        <di:waypoint x="731" y="1560" />
+        <di:waypoint x="731" y="1705" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_25-_28" >
+        <di:waypoint x="731" y="1433" />
+        <di:waypoint x="731" y="1560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26-_28" >
+        <di:waypoint x="408" y="1560" />
+        <di:waypoint x="731" y="1560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_28" >
+        <di:waypoint x="460" y="912" />
+        <di:waypoint x="1256" y="1069" />
+        <di:waypoint x="1258" y="1562" />
+        <di:waypoint x="731" y="1560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_29-_31" >
+        <di:waypoint x="731" y="1705" />
+        <di:waypoint x="731" y="1823" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_30-_31" >
+        <di:waypoint x="408" y="1824" />
+        <di:waypoint x="731" y="1823" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_31" >
+        <di:waypoint x="460" y="912" />
+        <di:waypoint x="1258" y="1069" />
+        <di:waypoint x="1260" y="1825" />
+        <di:waypoint x="731" y="1823" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_16-_30" >
+        <di:waypoint x="408" y="1704" />
+        <di:waypoint x="408" y="1824" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_30-_32" >
+        <di:waypoint x="408" y="1824" />
+        <di:waypoint x="409" y="1928" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_92-_37" >
+        <di:waypoint x="912" y="768" />
+        <di:waypoint x="743" y="768" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_64-_50" >
+        <di:waypoint x="624" y="768" />
+        <di:waypoint x="460" y="772" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_75-_50" >
+        <di:waypoint x="460" y="576" />
+        <di:waypoint x="460" y="772" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_96-_50" >
+        <di:waypoint x="1020" y="768" />
+        <di:waypoint x="1021" y="673" />
+        <di:waypoint x="460" y="672" />
+        <di:waypoint x="460" y="772" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22-_49" >
+        <di:waypoint x="408" y="1272" />
+        <di:waypoint x="72" y="1272" />
+        <di:waypoint x="74" y="156" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26-_49" >
+        <di:waypoint x="408" y="1560" />
+        <di:waypoint x="73" y="1564" />
+        <di:waypoint x="73" y="156" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_30-_49" >
+        <di:waypoint x="408" y="1824" />
+        <di:waypoint x="72" y="1825" />
+        <di:waypoint x="72" y="156" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_56-_49" >
+        <di:waypoint x="408" y="2117" />
+        <di:waypoint x="73" y="2117" />
+        <di:waypoint x="74" y="156" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_64-_49" >
+        <di:waypoint x="624" y="768" />
+        <di:waypoint x="624" y="704" />
+        <di:waypoint x="1190" y="709" />
+        <di:waypoint x="1188" y="156" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_49" >
+        <di:waypoint x="461" y="24" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_49" >
+        <di:waypoint x="912" y="912" />
+        <di:waypoint x="1188" y="914" />
+        <di:waypoint x="1186" y="156" />
+        <di:waypoint x="460" y="156" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_53-_55" >
+        <di:waypoint x="731" y="1982" />
+        <di:waypoint x="731" y="2116" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_56-_55" >
+        <di:waypoint x="408" y="2117" />
+        <di:waypoint x="731" y="2116" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_53-_54" >
+        <di:waypoint x="731" y="1982" />
+        <di:waypoint x="408" y="1980" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_31-_53" >
+        <di:waypoint x="731" y="1823" />
+        <di:waypoint x="731" y="1982" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_56-_57" >
+        <di:waypoint x="408" y="2117" />
+        <di:waypoint x="409" y="2226" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_54-_56" >
+        <di:waypoint x="408" y="1980" />
+        <di:waypoint x="408" y="2117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_67-_68" >
+        <di:waypoint x="732" y="2196" />
+        <di:waypoint x="732" y="2292" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_37-_64" >
+        <di:waypoint x="743" y="768" />
+        <di:waypoint x="624" y="768" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_55-_67" >
+        <di:waypoint x="731" y="2116" />
+        <di:waypoint x="732" y="2196" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_82-_79" >
+        <di:waypoint x="600" y="311" />
+        <di:waypoint x="792" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_94-_74" >
+        <di:waypoint x="460" y="276" />
+        <di:waypoint x="460" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_87-_75" >
+        <di:waypoint x="240" y="576" />
+        <di:waypoint x="460" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_95-_75" >
+        <di:waypoint x="460" y="468" />
+        <di:waypoint x="460" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_101-_75" >
+        <di:waypoint x="948" y="576" />
+        <di:waypoint x="460" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_100-_75" >
+        <di:waypoint x="602" y="492" />
+        <di:waypoint x="601" y="578" />
+        <di:waypoint x="460" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_86-_87" >
+        <di:waypoint x="239" y="311" />
+        <di:waypoint x="240" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_80-_87" >
+        <di:waypoint x="135" y="456" />
+        <di:waypoint x="132" y="576" />
+        <di:waypoint x="240" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_77-_86" >
+        <di:waypoint x="240" y="230" />
+        <di:waypoint x="239" y="311" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_86-_80" >
+        <di:waypoint x="239" y="311" />
+        <di:waypoint x="132" y="308" />
+        <di:waypoint x="135" y="456" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_76-_82" >
+        <di:waypoint x="600" y="239" />
+        <di:waypoint x="600" y="311" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_95-_93" >
+        <di:waypoint x="460" y="468" />
+        <di:waypoint x="332" y="360" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_92" >
+        <di:waypoint x="912" y="912" />
+        <di:waypoint x="912" y="768" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_96-_92" >
+        <di:waypoint x="1020" y="768" />
+        <di:waypoint x="912" y="768" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_74-_95" >
+        <di:waypoint x="460" y="360" />
+        <di:waypoint x="460" y="468" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_49-_94" >
+        <di:waypoint x="460" y="156" />
+        <di:waypoint x="460" y="276" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_93-_94" >
+        <di:waypoint x="332" y="360" />
+        <di:waypoint x="460" y="276" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_88-_89" >
+        <di:waypoint x="792" y="492" />
+        <di:waypoint x="900" y="492" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_79-_88" >
+        <di:waypoint x="792" y="312" />
+        <di:waypoint x="792" y="492" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_91" >
+        <di:waypoint x="912" y="912" />
+        <di:waypoint x="1124" y="913" />
+        <di:waypoint x="1128" y="768" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_82-_100" >
+        <di:waypoint x="600" y="311" />
+        <di:waypoint x="602" y="492" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_88-_100" >
+        <di:waypoint x="792" y="492" />
+        <di:waypoint x="602" y="492" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_98-_101" >
+        <di:waypoint x="948" y="312" />
+        <di:waypoint x="948" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_99-_101" >
+        <di:waypoint x="1098" y="312" />
+        <di:waypoint x="1098" y="578" />
+        <di:waypoint x="948" y="576" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_97-_98" >
+        <di:waypoint x="948" y="240" />
+        <di:waypoint x="948" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_98-_99" >
+        <di:waypoint x="948" y="312" />
+        <di:waypoint x="1098" y="312" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_91-_96" >
+        <di:waypoint x="1128" y="768" />
+        <di:waypoint x="1020" y="768" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

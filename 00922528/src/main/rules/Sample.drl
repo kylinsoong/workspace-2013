@@ -1,0 +1,8 @@
+package com.sample
+
+rule "Hello Wrold Sample.drl"
+when
+	eval( true )
+then
+	System.out.println("Hello Wrold Sample.drl");
+end

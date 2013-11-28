@@ -1,0 +1,14 @@
+package MyTestPackage1
+ 
+declare MyFactType1
+	name : String
+end
+
+rule "Using a declared Type 1"
+when
+	eval( true )
+then
+	MyFactType1 myfact = new MyFactType1();
+	myfact.setName("MyFactType1");
+	System.out.println("Using a declared Type: " + myfact);
+end

@@ -1,0 +1,2068 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.omg.org/bpmn20"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_courseIdItem" structureRef="String" />
+  <itemDefinition id="_launchDateItem" structureRef="String" />
+  <itemDefinition id="_launchDateDisplayItem" structureRef="String" />
+  <itemDefinition id="_usePLRItem" structureRef="Boolean" />
+  <itemDefinition id="_qaChangesRequiredItem" structureRef="Boolean" />
+  <itemDefinition id="_usePPRItem" structureRef="Boolean" />
+  <itemDefinition id="_invokePPRItem" structureRef="String" />
+  <itemDefinition id="_workflowSupportItem" structureRef="edu.capella.kepler.workflow.jbpm.runtime.process.WorkflowProcessSupport" />
+  <itemDefinition id="_versionCreationAndUserAssignmentPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_curriculumDefinitionActorIdItem" structureRef="String" />
+  <itemDefinition id="_curriculumDefinitionBusinessAdministratorIdItem" />
+  <itemDefinition id="_curriculumDefinitionTaskStakeholderIdItem" />
+  <itemDefinition id="_handOffToCourseDevActorIdItem" structureRef="String" />
+  <itemDefinition id="_contentDevelopmentActorIdItem" structureRef="String" />
+  <itemDefinition id="_contentDevelopmentBusinessAdministratorIdItem" />
+  <itemDefinition id="_contentDevelopmentTaskStakeholderIdItem" />
+  <itemDefinition id="_tmAssignEditorActorIdItem" structureRef="String" />
+  <itemDefinition id="_editingActorIdItem" structureRef="String" />
+  <itemDefinition id="_productionQAActorIdItem" structureRef="String" />
+  <itemDefinition id="_tmAssignProducerActorIdItem" structureRef="String" />
+  <itemDefinition id="_completeActorIdItem" structureRef="String" />
+  <itemDefinition id="_productionActorIdItem" structureRef="String" />
+  <itemDefinition id="_curriculumKickoffDateDelayItem" structureRef="String" />
+  <itemDefinition id="_courseDevKickoffDateDelayItem" structureRef="String" />
+  <itemDefinition id="_handOffToCourseDevLoopBackItem" structureRef="Boolean" />
+  <itemDefinition id="_editingLoopBackItem" structureRef="Boolean" />
+  <itemDefinition id="_liveActorIdItem" structureRef="String" />
+  <itemDefinition id="_launchDateDelayItem" structureRef="String" />
+  <itemDefinition id="_currentProcessIdItem" structureRef="String" />
+  <itemDefinition id="_curriculumDefinitionPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_contentDevelopmentPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_tmAssignEditorPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_editingPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_tmAssignProducerPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_productionQAPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_productionPerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_livePerformedByActorIdItem" structureRef="String" />
+  <itemDefinition id="_handOffToCourseDevPerformedByActorIdItem" structureRef="String" />
+
+  <process processType="Private" isExecutable="true" id="edu.capella.kepler.celeste.newProductsRestage" name="New Products Restage" tns:packageName="edu.capella.kepler.celeste" tns:version="1.0" >
+
+    <!-- process variables -->
+    <property id="courseId" itemSubjectRef="_courseIdItem"/>
+    <property id="launchDate" itemSubjectRef="_launchDateItem"/>
+    <property id="launchDateDisplay" itemSubjectRef="_launchDateDisplayItem"/>
+    <property id="usePLR" itemSubjectRef="_usePLRItem"/>
+    <property id="qaChangesRequired" itemSubjectRef="_qaChangesRequiredItem"/>
+    <property id="usePPR" itemSubjectRef="_usePPRItem"/>
+    <property id="invokePPR" itemSubjectRef="_invokePPRItem"/>
+    <property id="workflowSupport" itemSubjectRef="_workflowSupportItem"/>
+    <property id="versionCreationAndUserAssignmentPerformedByActorId" itemSubjectRef="_versionCreationAndUserAssignmentPerformedByActorIdItem"/>
+    <property id="curriculumDefinitionActorId" itemSubjectRef="_curriculumDefinitionActorIdItem"/>
+    <property id="curriculumDefinitionBusinessAdministratorId" itemSubjectRef="_curriculumDefinitionBusinessAdministratorIdItem"/>
+    <property id="curriculumDefinitionTaskStakeholderId" itemSubjectRef="_curriculumDefinitionTaskStakeholderIdItem"/>
+    <property id="handOffToCourseDevActorId" itemSubjectRef="_handOffToCourseDevActorIdItem"/>
+    <property id="contentDevelopmentActorId" itemSubjectRef="_contentDevelopmentActorIdItem"/>
+    <property id="contentDevelopmentBusinessAdministratorId" itemSubjectRef="_contentDevelopmentBusinessAdministratorIdItem"/>
+    <property id="contentDevelopmentTaskStakeholderId" itemSubjectRef="_contentDevelopmentTaskStakeholderIdItem"/>
+    <property id="tmAssignEditorActorId" itemSubjectRef="_tmAssignEditorActorIdItem"/>
+    <property id="editingActorId" itemSubjectRef="_editingActorIdItem"/>
+    <property id="productionQAActorId" itemSubjectRef="_productionQAActorIdItem"/>
+    <property id="tmAssignProducerActorId" itemSubjectRef="_tmAssignProducerActorIdItem"/>
+    <property id="completeActorId" itemSubjectRef="_completeActorIdItem"/>
+    <property id="productionActorId" itemSubjectRef="_productionActorIdItem"/>
+    <property id="curriculumKickoffDateDelay" itemSubjectRef="_curriculumKickoffDateDelayItem"/>
+    <property id="courseDevKickoffDateDelay" itemSubjectRef="_courseDevKickoffDateDelayItem"/>
+    <property id="handOffToCourseDevLoopBack" itemSubjectRef="_handOffToCourseDevLoopBackItem"/>
+    <property id="editingLoopBack" itemSubjectRef="_editingLoopBackItem"/>
+    <property id="liveActorId" itemSubjectRef="_liveActorIdItem"/>
+    <property id="launchDateDelay" itemSubjectRef="_launchDateDelayItem"/>
+    <property id="currentProcessId" itemSubjectRef="_currentProcessIdItem"/>
+    <property id="curriculumDefinitionPerformedByActorId" itemSubjectRef="_curriculumDefinitionPerformedByActorIdItem"/>
+    <property id="contentDevelopmentPerformedByActorId" itemSubjectRef="_contentDevelopmentPerformedByActorIdItem"/>
+    <property id="tmAssignEditorPerformedByActorId" itemSubjectRef="_tmAssignEditorPerformedByActorIdItem"/>
+    <property id="editingPerformedByActorId" itemSubjectRef="_editingPerformedByActorIdItem"/>
+    <property id="tmAssignProducerPerformedByActorId" itemSubjectRef="_tmAssignProducerPerformedByActorIdItem"/>
+    <property id="productionQAPerformedByActorId" itemSubjectRef="_productionQAPerformedByActorIdItem"/>
+    <property id="productionPerformedByActorId" itemSubjectRef="_productionPerformedByActorIdItem"/>
+    <property id="livePerformedByActorId" itemSubjectRef="_livePerformedByActorIdItem"/>
+    <property id="handOffToCourseDevPerformedByActorId" itemSubjectRef="_handOffToCourseDevPerformedByActorIdItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="Start" />
+    <intermediateCatchEvent id="_128" name="Waiting For Launch" >
+      <timerEventDefinition>
+        <timeDuration xsi:type="tFormalExpression">#{launchDateDelay}</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <endEvent id="_10" name="Process End" >
+        <terminateEventDefinition />
+    </endEvent>
+    <userTask id="_11" name="Version Creation and User Assignment" >
+      <ioSpecification>
+        <dataInput id="_11_curriculumDefinitionBusinessAdministratorIdInput" name="curriculumDefinitionBusinessAdministratorId" />
+        <dataInput id="_11_launchDateDelayInput" name="launchDateDelay" />
+        <dataInput id="_11_curriculumKickoffDateDelayInput" name="curriculumKickoffDateDelay" />
+        <dataInput id="_11_curriculumDefinitionActorIdInput" name="curriculumDefinitionActorId" />
+        <dataInput id="_11_curriculumDefinitionTaskStakeholderIdInput" name="curriculumDefinitionTaskStakeholderId" />
+        <dataInput id="_11_launchDateDisplayInput" name="launchDateDisplay" />
+        <dataInput id="_11_courseIdInput" name="courseId" />
+        <dataInput id="_11_launchDateInput" name="launchDate" />
+        <dataInput id="_11_CommentInput" name="Comment" />
+        <dataInput id="_11_SkippableInput" name="Skippable" />
+        <dataInput id="_11_TaskNameInput" name="TaskName" />
+        <dataInput id="_11_ContentInput" name="Content" />
+        <dataInput id="_11_GroupIdInput" name="GroupId" />
+        <dataInput id="_11_PriorityInput" name="Priority" />
+        <dataOutput id="_11_ActorIdOutput" name="ActorId" />
+        <dataOutput id="_11_curriculumDefinitionBusinessAdministratorIdOutput" name="curriculumDefinitionBusinessAdministratorId" />
+        <dataOutput id="_11_launchDateDelayOutput" name="launchDateDelay" />
+        <dataOutput id="_11_curriculumKickoffDateDelayOutput" name="curriculumKickoffDateDelay" />
+        <dataOutput id="_11_curriculumDefinitionActorIdOutput" name="curriculumDefinitionActorId" />
+        <dataOutput id="_11_curriculumDefinitionTaskStakeholderIdOutput" name="curriculumDefinitionTaskStakeholderId" />
+        <dataOutput id="_11_launchDateDisplayOutput" name="launchDateDisplay" />
+        <dataOutput id="_11_contentDevelopmentTaskStakeholderIdOutput" name="contentDevelopmentTaskStakeholderId" />
+        <dataOutput id="_11_courseIdOutput" name="courseId" />
+        <dataOutput id="_11_launchDateOutput" name="launchDate" />
+        <dataOutput id="_11_contentDevelopmentBusinessAdministratorIdOutput" name="contentDevelopmentBusinessAdministratorId" />
+        <inputSet>
+          <dataInputRefs>_11_curriculumDefinitionBusinessAdministratorIdInput</dataInputRefs>
+          <dataInputRefs>_11_launchDateDelayInput</dataInputRefs>
+          <dataInputRefs>_11_curriculumKickoffDateDelayInput</dataInputRefs>
+          <dataInputRefs>_11_curriculumDefinitionActorIdInput</dataInputRefs>
+          <dataInputRefs>_11_curriculumDefinitionTaskStakeholderIdInput</dataInputRefs>
+          <dataInputRefs>_11_launchDateDisplayInput</dataInputRefs>
+          <dataInputRefs>_11_courseIdInput</dataInputRefs>
+          <dataInputRefs>_11_launchDateInput</dataInputRefs>
+          <dataInputRefs>_11_CommentInput</dataInputRefs>
+          <dataInputRefs>_11_SkippableInput</dataInputRefs>
+          <dataInputRefs>_11_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_11_ContentInput</dataInputRefs>
+          <dataInputRefs>_11_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_11_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_11_ActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_11_curriculumDefinitionBusinessAdministratorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_11_launchDateDelayOutput</dataOutputRefs>
+          <dataOutputRefs>_11_curriculumKickoffDateDelayOutput</dataOutputRefs>
+          <dataOutputRefs>_11_curriculumDefinitionActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_11_curriculumDefinitionTaskStakeholderIdOutput</dataOutputRefs>
+          <dataOutputRefs>_11_launchDateDisplayOutput</dataOutputRefs>
+          <dataOutputRefs>_11_contentDevelopmentTaskStakeholderIdOutput</dataOutputRefs>
+          <dataOutputRefs>_11_courseIdOutput</dataOutputRefs>
+          <dataOutputRefs>_11_launchDateOutput</dataOutputRefs>
+          <dataOutputRefs>_11_contentDevelopmentBusinessAdministratorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>curriculumDefinitionBusinessAdministratorId</sourceRef>
+        <targetRef>_11_curriculumDefinitionBusinessAdministratorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDateDelay</sourceRef>
+        <targetRef>_11_launchDateDelayInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>curriculumKickoffDateDelay</sourceRef>
+        <targetRef>_11_curriculumKickoffDateDelayInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>curriculumDefinitionActorId</sourceRef>
+        <targetRef>_11_curriculumDefinitionActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>curriculumDefinitionTaskStakeholderId</sourceRef>
+        <targetRef>_11_curriculumDefinitionTaskStakeholderIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDateDisplay</sourceRef>
+        <targetRef>_11_launchDateDisplayInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>courseId</sourceRef>
+        <targetRef>_11_courseIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDate</sourceRef>
+        <targetRef>_11_launchDateInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_11_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_11_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Version Creation and User Assignment</from>
+          <to xsi:type="tFormalExpression">_11_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_11_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_CURRICULUM_PM</from>
+          <to xsi:type="tFormalExpression">_11_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_11_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_11_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_ActorIdOutput</sourceRef>
+        <targetRef>versionCreationAndUserAssignmentPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_curriculumDefinitionBusinessAdministratorIdOutput</sourceRef>
+        <targetRef>curriculumDefinitionBusinessAdministratorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_launchDateDelayOutput</sourceRef>
+        <targetRef>launchDateDelay</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_curriculumKickoffDateDelayOutput</sourceRef>
+        <targetRef>curriculumKickoffDateDelay</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_curriculumDefinitionActorIdOutput</sourceRef>
+        <targetRef>curriculumDefinitionActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_curriculumDefinitionTaskStakeholderIdOutput</sourceRef>
+        <targetRef>curriculumDefinitionTaskStakeholderId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_launchDateDisplayOutput</sourceRef>
+        <targetRef>launchDateDisplay</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_contentDevelopmentTaskStakeholderIdOutput</sourceRef>
+        <targetRef>contentDevelopmentTaskStakeholderId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_courseIdOutput</sourceRef>
+        <targetRef>courseId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_launchDateOutput</sourceRef>
+        <targetRef>launchDate</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_11_contentDevelopmentBusinessAdministratorIdOutput</sourceRef>
+        <targetRef>contentDevelopmentBusinessAdministratorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{versionCreationAndUserAssignmentPerformedByActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_12" name="Post Curriculum Assignment Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_12_BodyInput" name="Body" />
+        <dataInput id="_12_SubjectInput" name="Subject" />
+        <dataInput id="_12_ToInput" name="To" />
+        <dataInput id="_12_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_12_BodyInput</dataInputRefs>
+          <dataInputRefs>_12_SubjectInput</dataInputRefs>
+          <dataInputRefs>_12_ToInput</dataInputRefs>
+          <dataInputRefs>_12_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_12_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">The Version Creation and User Assignment for #{courseId} #{launchDateDisplay} has completed and is ready for you to work on Curriculum Definition.
+
+Please contact your Curriculum PM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_12_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_12_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products Restage for #{launchDateDisplay} cycle completed Version Creation and User Assignment</from>
+          <to xsi:type="tFormalExpression">_12_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_12_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{versionCreationAndUserAssignmentPerformedByActorId}, #{curriculumDefinitionActorId}</from>
+          <to xsi:type="tFormalExpression">_12_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_12_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_12_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_17" name="Curriculum Definition" >
+      <ioSpecification>
+        <dataInput id="_17_TaskStakeHolderInput" name="TaskStakeHolder" />
+        <dataInput id="_17_CommentInput" name="Comment" />
+        <dataInput id="_17_BusinessAdministratorInput" name="BusinessAdministrator" />
+        <dataInput id="_17_SkippableInput" name="Skippable" />
+        <dataInput id="_17_TaskNameInput" name="TaskName" />
+        <dataInput id="_17_ContentInput" name="Content" />
+        <dataInput id="_17_GroupIdInput" name="GroupId" />
+        <dataInput id="_17_PriorityInput" name="Priority" />
+        <dataOutput id="_17_ActorIdOutput" name="ActorId" />
+        <inputSet>
+          <dataInputRefs>_17_TaskStakeHolderInput</dataInputRefs>
+          <dataInputRefs>_17_CommentInput</dataInputRefs>
+          <dataInputRefs>_17_BusinessAdministratorInput</dataInputRefs>
+          <dataInputRefs>_17_SkippableInput</dataInputRefs>
+          <dataInputRefs>_17_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_17_ContentInput</dataInputRefs>
+          <dataInputRefs>_17_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_17_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_17_ActorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_17_TaskStakeHolderInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{curriculumDefinitionTaskStakeholderId}</from>
+          <to xsi:type="tFormalExpression">_17_TaskStakeHolderInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_17_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_BusinessAdministratorInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{curriculumDefinitionBusinessAdministratorId}</from>
+          <to xsi:type="tFormalExpression">_17_BusinessAdministratorInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_17_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Curriculum Definition</from>
+          <to xsi:type="tFormalExpression">_17_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_17_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_CURRICULUM_SPECIALIST</from>
+          <to xsi:type="tFormalExpression">_17_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_17_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_17_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_17_ActorIdOutput</sourceRef>
+        <targetRef>curriculumDefinitionPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{curriculumDefinitionActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <userTask id="_19" name="Hand-off to CourseDev" >
+      <ioSpecification>
+        <dataInput id="_19_handOffToCourseDevLoopBackInput" name="handOffToCourseDevLoopBack" />
+        <dataInput id="_19_courseDevKickoffDateDelayInput" name="courseDevKickoffDateDelay" />
+        <dataInput id="_19_usePPRInput" name="usePPR" />
+        <dataInput id="_19_handOffToCourseDevActorIdInput" name="handOffToCourseDevActorId" />
+        <dataInput id="_19_contentDevelopmentActorIdInput" name="contentDevelopmentActorId" />
+        <dataInput id="_19_qaChangesRequiredInput" name="qaChangesRequired" />
+        <dataInput id="_19_contentDevelopmentTaskStakeholderIdInput" name="contentDevelopmentTaskStakeholderId" />
+        <dataInput id="_19_usePLRInput" name="usePLR" />
+        <dataInput id="_19_contentDevelopmentBusinessAdministratorIdInput" name="contentDevelopmentBusinessAdministratorId" />
+        <dataInput id="_19_CommentInput" name="Comment" />
+        <dataInput id="_19_SkippableInput" name="Skippable" />
+        <dataInput id="_19_TaskNameInput" name="TaskName" />
+        <dataInput id="_19_ContentInput" name="Content" />
+        <dataInput id="_19_GroupIdInput" name="GroupId" />
+        <dataInput id="_19_PriorityInput" name="Priority" />
+        <dataOutput id="_19_handOffToCourseDevLoopBackOutput" name="handOffToCourseDevLoopBack" />
+        <dataOutput id="_19_ActorIdOutput" name="ActorId" />
+        <dataOutput id="_19_courseDevKickoffDateDelayOutput" name="courseDevKickoffDateDelay" />
+        <dataOutput id="_19_usePPROutput" name="usePPR" />
+        <dataOutput id="_19_contentDevelopmentActorIdOutput" name="contentDevelopmentActorId" />
+        <dataOutput id="_19_qaChangesRequiredOutput" name="qaChangesRequired" />
+        <dataOutput id="_19_contentDevelopmentTaskStakeholderIdOutput" name="contentDevelopmentTaskStakeholderId" />
+        <dataOutput id="_19_usePLROutput" name="usePLR" />
+        <dataOutput id="_19_contentDevelopmentBusinessAdministratorIdOutput" name="contentDevelopmentBusinessAdministratorId" />
+        <inputSet>
+          <dataInputRefs>_19_handOffToCourseDevLoopBackInput</dataInputRefs>
+          <dataInputRefs>_19_courseDevKickoffDateDelayInput</dataInputRefs>
+          <dataInputRefs>_19_usePPRInput</dataInputRefs>
+          <dataInputRefs>_19_handOffToCourseDevActorIdInput</dataInputRefs>
+          <dataInputRefs>_19_contentDevelopmentActorIdInput</dataInputRefs>
+          <dataInputRefs>_19_qaChangesRequiredInput</dataInputRefs>
+          <dataInputRefs>_19_contentDevelopmentTaskStakeholderIdInput</dataInputRefs>
+          <dataInputRefs>_19_usePLRInput</dataInputRefs>
+          <dataInputRefs>_19_contentDevelopmentBusinessAdministratorIdInput</dataInputRefs>
+          <dataInputRefs>_19_CommentInput</dataInputRefs>
+          <dataInputRefs>_19_SkippableInput</dataInputRefs>
+          <dataInputRefs>_19_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_19_ContentInput</dataInputRefs>
+          <dataInputRefs>_19_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_19_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_19_handOffToCourseDevLoopBackOutput</dataOutputRefs>
+          <dataOutputRefs>_19_ActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_19_courseDevKickoffDateDelayOutput</dataOutputRefs>
+          <dataOutputRefs>_19_usePPROutput</dataOutputRefs>
+          <dataOutputRefs>_19_contentDevelopmentActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_19_qaChangesRequiredOutput</dataOutputRefs>
+          <dataOutputRefs>_19_contentDevelopmentTaskStakeholderIdOutput</dataOutputRefs>
+          <dataOutputRefs>_19_usePLROutput</dataOutputRefs>
+          <dataOutputRefs>_19_contentDevelopmentBusinessAdministratorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>handOffToCourseDevLoopBack</sourceRef>
+        <targetRef>_19_handOffToCourseDevLoopBackInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>courseDevKickoffDateDelay</sourceRef>
+        <targetRef>_19_courseDevKickoffDateDelayInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>usePPR</sourceRef>
+        <targetRef>_19_usePPRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>handOffToCourseDevActorId</sourceRef>
+        <targetRef>_19_handOffToCourseDevActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>contentDevelopmentActorId</sourceRef>
+        <targetRef>_19_contentDevelopmentActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>qaChangesRequired</sourceRef>
+        <targetRef>_19_qaChangesRequiredInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>contentDevelopmentTaskStakeholderId</sourceRef>
+        <targetRef>_19_contentDevelopmentTaskStakeholderIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>usePLR</sourceRef>
+        <targetRef>_19_usePLRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>contentDevelopmentBusinessAdministratorId</sourceRef>
+        <targetRef>_19_contentDevelopmentBusinessAdministratorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_19_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_19_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_19_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_19_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_19_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Hand-off to CourseDev</from>
+          <to xsi:type="tFormalExpression">_19_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_19_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_19_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_19_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_PM</from>
+          <to xsi:type="tFormalExpression">_19_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_19_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_19_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_handOffToCourseDevLoopBackOutput</sourceRef>
+        <targetRef>handOffToCourseDevLoopBack</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_ActorIdOutput</sourceRef>
+        <targetRef>handOffToCourseDevPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_courseDevKickoffDateDelayOutput</sourceRef>
+        <targetRef>courseDevKickoffDateDelay</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_usePPROutput</sourceRef>
+        <targetRef>usePPR</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_contentDevelopmentActorIdOutput</sourceRef>
+        <targetRef>contentDevelopmentActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_qaChangesRequiredOutput</sourceRef>
+        <targetRef>qaChangesRequired</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_contentDevelopmentTaskStakeholderIdOutput</sourceRef>
+        <targetRef>contentDevelopmentTaskStakeholderId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_usePLROutput</sourceRef>
+        <targetRef>usePLR</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_19_contentDevelopmentBusinessAdministratorIdOutput</sourceRef>
+        <targetRef>contentDevelopmentBusinessAdministratorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{handOffToCourseDevActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_18" name="Post Definition Complete Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_18_BodyInput" name="Body" />
+        <dataInput id="_18_SubjectInput" name="Subject" />
+        <dataInput id="_18_ToInput" name="To" />
+        <dataInput id="_18_attachmentPath1Input" name="attachmentPath1" />
+        <dataInput id="_18_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_18_BodyInput</dataInputRefs>
+          <dataInputRefs>_18_SubjectInput</dataInputRefs>
+          <dataInputRefs>_18_ToInput</dataInputRefs>
+          <dataInputRefs>_18_attachmentPath1Input</dataInputRefs>
+          <dataInputRefs>_18_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_18_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">The Curriculum Definition for #{courseId} #{launchDateDisplay} has completed.
+          
+Please check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_18_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_18_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle completed Curriculum Definition</from>
+          <to xsi:type="tFormalExpression">_18_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_18_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{versionCreationAndUserAssignmentPerformedByActorId}</from>
+          <to xsi:type="tFormalExpression">_18_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_18_attachmentPath1Input</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">classpath:edu/capella/kepler/workflow/celeste/attachments/newProductsRestage.png</from>
+          <to xsi:type="tFormalExpression">_18_attachmentPath1Input</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_18_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_18_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <intermediateCatchEvent id="_21" name="Course Dev Kickoff Date" >
+      <timerEventDefinition>
+        <timeDuration xsi:type="tFormalExpression">#{courseDevKickoffDateDelay}</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <task id="_20" name="Course Dev Kickoff Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_20_BodyInput" name="Body" />
+        <dataInput id="_20_SubjectInput" name="Subject" />
+        <dataInput id="_20_ToInput" name="To" />
+        <dataInput id="_20_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_20_BodyInput</dataInputRefs>
+          <dataInputRefs>_20_SubjectInput</dataInputRefs>
+          <dataInputRefs>_20_ToInput</dataInputRefs>
+          <dataInputRefs>_20_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_20_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been assigned to you for Content Development.
+          
+Please ask your PM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_20_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_20_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle is ready for Content Development</from>
+          <to xsi:type="tFormalExpression">_20_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_20_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{contentDevelopmentActorId}, #{contentDevelopmentTaskStakeholderId}, #{contentDevelopmentBusinessAdministratorId}</from>
+          <to xsi:type="tFormalExpression">_20_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_20_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_20_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <task id="_23" name="Post Content TM Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_23_BodyInput" name="Body" />
+        <dataInput id="_23_SubjectInput" name="Subject" />
+        <dataInput id="_23_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_23_BodyInput</dataInputRefs>
+          <dataInputRefs>_23_SubjectInput</dataInputRefs>
+          <dataInputRefs>_23_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_23_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">The Content Development for #{courseId} #{launchDateDisplay} has been completed and is ready for you to assign an editor.
+          
+Please ask the PM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_23_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_23_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle completed Content Development</from>
+          <to xsi:type="tFormalExpression">_23_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_23_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">testing-custom-course-dev-tm-mailbox@capella.edu</from>
+          <to xsi:type="tFormalExpression">_23_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_22" name="Content Development" >
+      <ioSpecification>
+        <dataInput id="_22_TaskStakeHolderInput" name="TaskStakeHolder" />
+        <dataInput id="_22_CommentInput" name="Comment" />
+        <dataInput id="_22_BusinessAdministratorInput" name="BusinessAdministrator" />
+        <dataInput id="_22_SkippableInput" name="Skippable" />
+        <dataInput id="_22_ContentInput" name="Content" />
+        <dataInput id="_22_TaskNameInput" name="TaskName" />
+        <dataInput id="_22_GroupIdInput" name="GroupId" />
+        <dataInput id="_22_PriorityInput" name="Priority" />
+        <dataOutput id="_22_ActorIdOutput" name="ActorId" />
+        <inputSet>
+          <dataInputRefs>_22_TaskStakeHolderInput</dataInputRefs>
+          <dataInputRefs>_22_CommentInput</dataInputRefs>
+          <dataInputRefs>_22_BusinessAdministratorInput</dataInputRefs>
+          <dataInputRefs>_22_SkippableInput</dataInputRefs>
+          <dataInputRefs>_22_ContentInput</dataInputRefs>
+          <dataInputRefs>_22_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_22_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_22_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_22_ActorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_22_TaskStakeHolderInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{contentDevelopmentTaskStakeholderId}</from>
+          <to xsi:type="tFormalExpression">_22_TaskStakeHolderInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_22_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_BusinessAdministratorInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{contentDevelopmentBusinessAdministratorId}</from>
+          <to xsi:type="tFormalExpression">_22_BusinessAdministratorInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_22_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_22_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Content Development</from>
+          <to xsi:type="tFormalExpression">_22_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_ID</from>
+          <to xsi:type="tFormalExpression">_22_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_22_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_22_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_22_ActorIdOutput</sourceRef>
+        <targetRef>contentDevelopmentPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{contentDevelopmentActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_25" name="TM Editing Assignment Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_25_BodyInput" name="Body" />
+        <dataInput id="_25_SubjectInput" name="Subject" />
+        <dataInput id="_25_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_25_BodyInput</dataInputRefs>
+          <dataInputRefs>_25_SubjectInput</dataInputRefs>
+          <dataInputRefs>_25_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_25_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been assigned to you for Editing.
+          
+Please ask the TM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_25_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_25_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle is ready for Editing</from>
+          <to xsi:type="tFormalExpression">_25_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_25_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{editingActorId}, #{contentDevelopmentActorId}, #{handOffToCourseDevActorId}</from>
+          <to xsi:type="tFormalExpression">_25_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_24" name="TM Assign Editor" >
+      <ioSpecification>
+        <dataInput id="_24_CommentInput" name="Comment" />
+        <dataInput id="_24_SkippableInput" name="Skippable" />
+        <dataInput id="_24_ContentInput" name="Content" />
+        <dataInput id="_24_TaskNameInput" name="TaskName" />
+        <dataInput id="_24_GroupIdInput" name="GroupId" />
+        <dataInput id="_24_PriorityInput" name="Priority" />
+        <dataOutput id="_24_ActorIdOutput" name="ActorId" />
+        <inputSet>
+          <dataInputRefs>_24_CommentInput</dataInputRefs>
+          <dataInputRefs>_24_SkippableInput</dataInputRefs>
+          <dataInputRefs>_24_ContentInput</dataInputRefs>
+          <dataInputRefs>_24_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_24_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_24_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_24_ActorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_24_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_24_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_24_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_24_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_24_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_24_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_24_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Assign Editor</from>
+          <to xsi:type="tFormalExpression">_24_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_24_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_TM</from>
+          <to xsi:type="tFormalExpression">_24_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_24_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_24_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_24_ActorIdOutput</sourceRef>
+        <targetRef>tmAssignEditorPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{tmAssignEditorActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_27" name="Post Edit Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_27_BodyInput" name="Body" />
+        <dataInput id="_27_SubjectInput" name="Subject" />
+        <dataInput id="_27_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_27_BodyInput</dataInputRefs>
+          <dataInputRefs>_27_SubjectInput</dataInputRefs>
+          <dataInputRefs>_27_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_27_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">The Editing for #{courseId} #{launchDateDisplay} has completed and is ready for you to review.
+          
+Please check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_27_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_27_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} is ready for review</from>
+          <to xsi:type="tFormalExpression">_27_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_27_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{editingActorId}, #{contentDevelopmentActorId}, #{handOffToCourseDevActorId}, #{contentDevelopmentBusinessAdministratorId}</from>
+          <to xsi:type="tFormalExpression">_27_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_26" name="Editing" >
+      <ioSpecification>
+        <dataInput id="_26_editingLoopBackInput" name="editingLoopBack" />
+        <dataInput id="_26_GroupIdInput" name="GroupId" />
+        <dataOutput id="_26_ActorIdOutput" name="ActorId" />
+        <dataOutput id="_26_editingLoopBackOutput" name="editingLoopBack" />
+        <inputSet>
+          <dataInputRefs>_26_editingLoopBackInput</dataInputRefs>
+          <dataInputRefs>_26_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_26_ActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_26_editingLoopBackOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>editingLoopBack</sourceRef>
+        <targetRef>_26_editingLoopBackInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_26_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_EDITOR</from>
+          <to xsi:type="tFormalExpression">_26_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_26_ActorIdOutput</sourceRef>
+        <targetRef>editingPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_26_editingLoopBackOutput</sourceRef>
+        <targetRef>editingLoopBack</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{editingActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <exclusiveGateway id="_28" name="PLR Diverge" gatewayDirection="Diverging" />
+    <userTask id="_102" name="Production" >
+      <ioSpecification>
+        <dataInput id="_102_TaskNameInput" name="TaskName" />
+        <dataInput id="_102_GroupIdInput" name="GroupId" />
+        <dataOutput id="_102_ActorIdOutput" name="ActorId" />
+        <inputSet>
+          <dataInputRefs>_102_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_102_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_102_ActorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_102_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Production</from>
+          <to xsi:type="tFormalExpression">_102_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_102_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_CP</from>
+          <to xsi:type="tFormalExpression">_102_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_102_ActorIdOutput</sourceRef>
+        <targetRef>productionPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{productionActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_103" name="Post Production Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_103_BodyInput" name="Body" />
+        <dataInput id="_103_SubjectInput" name="Subject" />
+        <dataInput id="_103_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_103_BodyInput</dataInputRefs>
+          <dataInputRefs>_103_SubjectInput</dataInputRefs>
+          <dataInputRefs>_103_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_103_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been assigned to you for Production QA.
+          
+Please ask the TM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_103_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_103_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle completed Production</from>
+          <to xsi:type="tFormalExpression">_103_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_103_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{tmAssignProducerActorId}, #{handOffToCourseDevActorId}, testing-custom-qacp-mailbox@capella.edu</from>
+          <to xsi:type="tFormalExpression">_103_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_100" name="TM Assign Producer" >
+      <ioSpecification>
+        <dataInput id="_100_productionActorIdInput" name="productionActorId" />
+        <dataInput id="_100_GroupIdInput" name="GroupId" />
+        <dataOutput id="_100_ActorIdOutput" name="ActorId" />
+        <dataOutput id="_100_productionActorIdOutput" name="productionActorId" />
+        <inputSet>
+          <dataInputRefs>_100_productionActorIdInput</dataInputRefs>
+          <dataInputRefs>_100_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_100_ActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_100_productionActorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>productionActorId</sourceRef>
+        <targetRef>_100_productionActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_100_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_TM</from>
+          <to xsi:type="tFormalExpression">_100_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_100_ActorIdOutput</sourceRef>
+        <targetRef>tmAssignProducerPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_100_productionActorIdOutput</sourceRef>
+        <targetRef>productionActorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{tmAssignProducerActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_101" name="TM Producer Assignment Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_101_BodyInput" name="Body" />
+        <dataInput id="_101_SubjectInput" name="Subject" />
+        <dataInput id="_101_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_101_BodyInput</dataInputRefs>
+          <dataInputRefs>_101_SubjectInput</dataInputRefs>
+          <dataInputRefs>_101_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_101_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been assigned to you for Production.
+          
+Please ask the TM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_101_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_101_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle is ready for Production</from>
+          <to xsi:type="tFormalExpression">_101_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_101_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{productionActorId}</from>
+          <to xsi:type="tFormalExpression">_101_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <exclusiveGateway id="_110" name="QA Changes Diverge" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_108" name="PPR Diverge" gatewayDirection="Diverging" />
+    <userTask id="_106" name="Live" >
+      <ioSpecification>
+        <dataInput id="_106_TaskNameInput" name="TaskName" />
+        <dataInput id="_106_GroupIdInput" name="GroupId" />
+        <dataOutput id="_106_ActorIdOutput" name="ActorId" />
+        <inputSet>
+          <dataInputRefs>_106_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_106_GroupIdInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_106_ActorIdOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_106_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Live</from>
+          <to xsi:type="tFormalExpression">_106_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_106_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_PM</from>
+          <to xsi:type="tFormalExpression">_106_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_106_ActorIdOutput</sourceRef>
+        <targetRef>livePerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{liveActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <task id="_107" name="QA Complete and No Changes Required Course Complete Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_107_BodyInput" name="Body" />
+        <dataInput id="_107_SubjectInput" name="Subject" />
+        <dataInput id="_107_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_107_BodyInput</dataInputRefs>
+          <dataInputRefs>_107_SubjectInput</dataInputRefs>
+          <dataInputRefs>_107_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_107_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{courseId} has passed the QA check and is deemed complete.
+          
+Please ask the TM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_107_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_107_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle completed Production QA</from>
+          <to xsi:type="tFormalExpression">_107_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_107_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{productionActorId}, #{tmAssignProducerActorId}, #{handOffToCourseDevActorId}, #{contentDevelopmentActorId}, #{contentDevelopmentTaskStakeholderId}, #{contentDevelopmentBusinessAdministratorId}</from>
+          <to xsi:type="tFormalExpression">_107_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_104" name="Production QA" >
+      <ioSpecification>
+        <dataInput id="_104_qaChangesRequiredInput" name="qaChangesRequired" />
+        <dataInput id="_104_CommentInput" name="Comment" />
+        <dataInput id="_104_SkippableInput" name="Skippable" />
+        <dataInput id="_104_TaskNameInput" name="TaskName" />
+        <dataInput id="_104_ContentInput" name="Content" />
+        <dataInput id="_104_GroupIdInput" name="GroupId" />
+        <dataInput id="_104_PriorityInput" name="Priority" />
+        <dataOutput id="_104_ActorIdOutput" name="ActorId" />
+        <dataOutput id="_104_qaChangesRequiredOutput" name="qaChangesRequired" />
+        <inputSet>
+          <dataInputRefs>_104_qaChangesRequiredInput</dataInputRefs>
+          <dataInputRefs>_104_CommentInput</dataInputRefs>
+          <dataInputRefs>_104_SkippableInput</dataInputRefs>
+          <dataInputRefs>_104_TaskNameInput</dataInputRefs>
+          <dataInputRefs>_104_ContentInput</dataInputRefs>
+          <dataInputRefs>_104_GroupIdInput</dataInputRefs>
+          <dataInputRefs>_104_PriorityInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_104_ActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_104_qaChangesRequiredOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>qaChangesRequired</sourceRef>
+        <targetRef>_104_qaChangesRequiredInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_104_CommentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_104_CommentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_104_SkippableInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">false</from>
+          <to xsi:type="tFormalExpression">_104_SkippableInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_104_TaskNameInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Production QA</from>
+          <to xsi:type="tFormalExpression">_104_TaskNameInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_104_ContentInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_104_ContentInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_104_GroupIdInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">CELESTE_COURSEDEV_QA_CP</from>
+          <to xsi:type="tFormalExpression">_104_GroupIdInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_104_PriorityInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_104_PriorityInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_104_ActorIdOutput</sourceRef>
+        <targetRef>productionQAPerformedByActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_104_qaChangesRequiredOutput</sourceRef>
+        <targetRef>qaChangesRequired</targetRef>
+      </dataOutputAssociation>
+      <potentialOwner>
+        <resourceAssignmentExpression>
+          <formalExpression>#{productionQAActorId}</formalExpression>
+        </resourceAssignmentExpression>
+      </potentialOwner>
+    </userTask>
+    <intermediateCatchEvent id="_118" name="Curriculum Kickoff Date" >
+      <timerEventDefinition>
+        <timeDuration xsi:type="tFormalExpression">#{curriculumKickoffDateDelay}</timeDuration>
+      </timerEventDefinition>
+    </intermediateCatchEvent>
+    <task id="_117" name="QA Complete and Changes Required Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_117_BodyInput" name="Body" />
+        <dataInput id="_117_SubjectInput" name="Subject" />
+        <dataInput id="_117_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_117_BodyInput</dataInputRefs>
+          <dataInputRefs>_117_SubjectInput</dataInputRefs>
+          <dataInputRefs>_117_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_117_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been assigned to you for Production: changes are required.
+
+Please ask the TM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_117_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_117_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle completed Production QA: changes required</from>
+          <to xsi:type="tFormalExpression">_117_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_117_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{productionActorId}</from>
+          <to xsi:type="tFormalExpression">_117_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <exclusiveGateway id="_116" name="Pre-Production Converge" gatewayDirection="Converging" />
+    <exclusiveGateway id="_115" name="PPR Converge" gatewayDirection="Converging" />
+    <callActivity id="_114" name="PPR Subprocess" calledElement="edu.capella.kepler.celeste.plr" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("invokePPR", true);</tns:script>
+        </tns:onEntry-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("usePLR", false);</tns:script>
+        </tns:onExit-script>
+        <tns:onExit-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("usePPR", false);</tns:script>
+        </tns:onExit-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_114_currentProcessIdInput" name="currentProcessId" />
+        <dataInput id="_114_usePPRInput" name="usePPR" />
+        <dataInput id="_114_editingActorIdInput" name="editingActorId" />
+        <dataInput id="_114_launchDateDisplayInput" name="launchDateDisplay" />
+        <dataInput id="_114_courseIdInput" name="courseId" />
+        <dataInput id="_114_invokePPRInput" name="invokePPR" />
+        <dataInput id="_114_usePLRInput" name="usePLR" />
+        <dataInput id="_114_launchDateInput" name="launchDate" />
+        <dataOutput id="_114_usePPROutput" name="usePPR" />
+        <dataOutput id="_114_editingActorIdOutput" name="editingActorId" />
+        <dataOutput id="_114_launchDateDisplayOutput" name="launchDateDisplay" />
+        <dataOutput id="_114_courseIdOutput" name="courseId" />
+        <dataOutput id="_114_usePLROutput" name="usePLR" />
+        <dataOutput id="_114_launchDateOutput" name="launchDate" />
+        <inputSet>
+          <dataInputRefs>_114_currentProcessIdInput</dataInputRefs>
+          <dataInputRefs>_114_usePPRInput</dataInputRefs>
+          <dataInputRefs>_114_editingActorIdInput</dataInputRefs>
+          <dataInputRefs>_114_launchDateDisplayInput</dataInputRefs>
+          <dataInputRefs>_114_courseIdInput</dataInputRefs>
+          <dataInputRefs>_114_invokePPRInput</dataInputRefs>
+          <dataInputRefs>_114_usePLRInput</dataInputRefs>
+          <dataInputRefs>_114_launchDateInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_114_usePPROutput</dataOutputRefs>
+          <dataOutputRefs>_114_editingActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_114_launchDateDisplayOutput</dataOutputRefs>
+          <dataOutputRefs>_114_courseIdOutput</dataOutputRefs>
+          <dataOutputRefs>_114_usePLROutput</dataOutputRefs>
+          <dataOutputRefs>_114_launchDateOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>currentProcessId</sourceRef>
+        <targetRef>_114_currentProcessIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>usePPR</sourceRef>
+        <targetRef>_114_usePPRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>editingActorId</sourceRef>
+        <targetRef>_114_editingActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDateDisplay</sourceRef>
+        <targetRef>_114_launchDateDisplayInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>courseId</sourceRef>
+        <targetRef>_114_courseIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>invokePPR</sourceRef>
+        <targetRef>_114_invokePPRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>usePLR</sourceRef>
+        <targetRef>_114_usePLRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDate</sourceRef>
+        <targetRef>_114_launchDateInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_114_usePPROutput</sourceRef>
+        <targetRef>usePPR</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_114_editingActorIdOutput</sourceRef>
+        <targetRef>editingActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_114_launchDateDisplayOutput</sourceRef>
+        <targetRef>launchDateDisplay</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_114_courseIdOutput</sourceRef>
+        <targetRef>courseId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_114_usePLROutput</sourceRef>
+        <targetRef>usePLR</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_114_launchDateOutput</sourceRef>
+        <targetRef>launchDate</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <exclusiveGateway id="_113" name="PLR Converge" gatewayDirection="Converging" />
+    <callActivity id="_112" name="PLR Subprocess" calledElement="edu.capella.kepler.celeste.plr" >
+      <extensionElements>
+        <tns:onEntry-script scriptFormat="http://www.java.com/java">
+          <tns:script>kcontext.setVariable("invokePPR", false);</tns:script>
+        </tns:onEntry-script>
+      </extensionElements>
+      <ioSpecification>
+        <dataInput id="_112_currentProcessIdInput" name="currentProcessId" />
+        <dataInput id="_112_usePPRInput" name="usePPR" />
+        <dataInput id="_112_editingActorIdInput" name="editingActorId" />
+        <dataInput id="_112_launchDateDisplayInput" name="launchDateDisplay" />
+        <dataInput id="_112_invokePPRInput" name="invokePPR" />
+        <dataInput id="_112_courseIdInput" name="courseId" />
+        <dataInput id="_112_usePLRInput" name="usePLR" />
+        <dataInput id="_112_launchDateInput" name="launchDate" />
+        <dataOutput id="_112_usePPROutput" name="usePPR" />
+        <dataOutput id="_112_editingActorIdOutput" name="editingActorId" />
+        <dataOutput id="_112_launchDateDisplayOutput" name="launchDateDisplay" />
+        <dataOutput id="_112_courseIdOutput" name="courseId" />
+        <dataOutput id="_112_usePLROutput" name="usePLR" />
+        <dataOutput id="_112_launchDateOutput" name="launchDate" />
+        <inputSet>
+          <dataInputRefs>_112_currentProcessIdInput</dataInputRefs>
+          <dataInputRefs>_112_usePPRInput</dataInputRefs>
+          <dataInputRefs>_112_editingActorIdInput</dataInputRefs>
+          <dataInputRefs>_112_launchDateDisplayInput</dataInputRefs>
+          <dataInputRefs>_112_invokePPRInput</dataInputRefs>
+          <dataInputRefs>_112_courseIdInput</dataInputRefs>
+          <dataInputRefs>_112_usePLRInput</dataInputRefs>
+          <dataInputRefs>_112_launchDateInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_112_usePPROutput</dataOutputRefs>
+          <dataOutputRefs>_112_editingActorIdOutput</dataOutputRefs>
+          <dataOutputRefs>_112_launchDateDisplayOutput</dataOutputRefs>
+          <dataOutputRefs>_112_courseIdOutput</dataOutputRefs>
+          <dataOutputRefs>_112_usePLROutput</dataOutputRefs>
+          <dataOutputRefs>_112_launchDateOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>currentProcessId</sourceRef>
+        <targetRef>_112_currentProcessIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>usePPR</sourceRef>
+        <targetRef>_112_usePPRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>editingActorId</sourceRef>
+        <targetRef>_112_editingActorIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDateDisplay</sourceRef>
+        <targetRef>_112_launchDateDisplayInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>invokePPR</sourceRef>
+        <targetRef>_112_invokePPRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>courseId</sourceRef>
+        <targetRef>_112_courseIdInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>usePLR</sourceRef>
+        <targetRef>_112_usePLRInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>launchDate</sourceRef>
+        <targetRef>_112_launchDateInput</targetRef>
+      </dataInputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_112_usePPROutput</sourceRef>
+        <targetRef>usePPR</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_112_editingActorIdOutput</sourceRef>
+        <targetRef>editingActorId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_112_launchDateDisplayOutput</sourceRef>
+        <targetRef>launchDateDisplay</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_112_courseIdOutput</sourceRef>
+        <targetRef>courseId</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_112_usePLROutput</sourceRef>
+        <targetRef>usePLR</targetRef>
+      </dataOutputAssociation>
+      <dataOutputAssociation>
+        <sourceRef>_112_launchDateOutput</sourceRef>
+        <targetRef>launchDate</targetRef>
+      </dataOutputAssociation>
+    </callActivity>
+    <scriptTask id="_127" name="Complete" scriptFormat="http://www.java.com/java" >
+      <script></script>
+    </scriptTask>
+    <scriptTask id="_126" name="Retired" scriptFormat="http://www.java.com/java" >
+      <script></script>
+    </scriptTask>
+    <task id="_125" name="Editing Loopback Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_125_BodyInput" name="Body" />
+        <dataInput id="_125_SubjectInput" name="Subject" />
+        <dataInput id="_125_ToInput" name="To" />
+        <inputSet>
+          <dataInputRefs>_125_BodyInput</dataInputRefs>
+          <dataInputRefs>_125_SubjectInput</dataInputRefs>
+          <dataInputRefs>_125_ToInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_125_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been returned to you for Content Development.
+
+Please ask your PM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_125_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_125_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle returned to Content Development</from>
+          <to xsi:type="tFormalExpression">_125_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_125_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{contentDevelopmentActorId}, #{contentDevelopmentTaskStakeholderId}, #{contentDevelopmentBusinessAdministratorId}</from>
+          <to xsi:type="tFormalExpression">_125_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <task id="_124" name="Hand-off to CourseDev Loopback Email" tns:taskName="Email" >
+      <ioSpecification>
+        <dataInput id="_124_BodyInput" name="Body" />
+        <dataInput id="_124_SubjectInput" name="Subject" />
+        <dataInput id="_124_ToInput" name="To" />
+        <dataInput id="_124_FromInput" name="From" />
+        <inputSet>
+          <dataInputRefs>_124_BodyInput</dataInputRefs>
+          <dataInputRefs>_124_SubjectInput</dataInputRefs>
+          <dataInputRefs>_124_ToInput</dataInputRefs>
+          <dataInputRefs>_124_FromInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <targetRef>_124_BodyInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{courseId} #{launchDateDisplay} has been returned to you for Curriculum Definition.
+
+Please contact your Curriculum PM or check Celeste for further information.</from>
+          <to xsi:type="tFormalExpression">_124_BodyInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_124_SubjectInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">Celeste Notification: #{courseId} New Products / Restage for #{launchDateDisplay} cycle returned to Curriculum Definition</from>
+          <to xsi:type="tFormalExpression">_124_SubjectInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_124_ToInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression">#{curriculumDefinitionActorId}</from>
+          <to xsi:type="tFormalExpression">_124_ToInput</to>
+        </assignment>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <targetRef>_124_FromInput</targetRef>
+        <assignment>
+          <from xsi:type="tFormalExpression"></from>
+          <to xsi:type="tFormalExpression">_124_FromInput</to>
+        </assignment>
+      </dataInputAssociation>
+    </task>
+    <exclusiveGateway id="_123" name="Pre-Content Development Converge" gatewayDirection="Converging" />
+    <exclusiveGateway id="_122" name="Post-Editing Diverge" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_121" name="Post-Hand-off to CourseDev Diverge" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_120" name="Pre-Curriculum Definition Converge" gatewayDirection="Converging" />
+
+    <!-- connections -->
+    <sequenceFlow id="_127-_128" sourceRef="_127" targetRef="_128" />
+    <sequenceFlow id="_126-_10" sourceRef="_126" targetRef="_10" />
+    <sequenceFlow id="_1-_11" sourceRef="_1" targetRef="_11" />
+    <sequenceFlow id="_118-_12" sourceRef="_118" targetRef="_12" />
+    <sequenceFlow id="_120-_17" sourceRef="_120" targetRef="_17" />
+    <sequenceFlow id="_18-_19" sourceRef="_18" targetRef="_19" />
+    <sequenceFlow id="_17-_18" sourceRef="_17" targetRef="_18" />
+    <sequenceFlow id="_121-_21" sourceRef="_121" targetRef="_21" name="Hand-off to CourseDev loopback: false" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+      	return workflowSupport.evaluateContextVariableToFalse(kcontext, "handOffToCourseDevLoopBack");
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_21-_20" sourceRef="_21" targetRef="_20" />
+    <sequenceFlow id="_22-_23" sourceRef="_22" targetRef="_23" />
+    <sequenceFlow id="_123-_22" sourceRef="_123" targetRef="_22" />
+    <sequenceFlow id="_24-_25" sourceRef="_24" targetRef="_25" />
+    <sequenceFlow id="_23-_24" sourceRef="_23" targetRef="_24" />
+    <sequenceFlow id="_122-_27" sourceRef="_122" targetRef="_27" name="EditingLoopBack: false" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+ 			return workflowSupport.evaluateContextVariableToFalse(kcontext, "editingLoopBack");
+ 		</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_25-_26" sourceRef="_25" targetRef="_26" />
+    <sequenceFlow id="_27-_28" sourceRef="_27" targetRef="_28" />
+    <sequenceFlow id="_116-_102" sourceRef="_116" targetRef="_102" />
+    <sequenceFlow id="_102-_103" sourceRef="_102" targetRef="_103" />
+    <sequenceFlow id="_113-_100" sourceRef="_113" targetRef="_100" />
+    <sequenceFlow id="_100-_101" sourceRef="_100" targetRef="_101" />
+    <sequenceFlow id="_104-_110" sourceRef="_104" targetRef="_110" />
+    <sequenceFlow id="_103-_108" sourceRef="_103" targetRef="_108" />
+    <sequenceFlow id="_128-_106" sourceRef="_128" targetRef="_106" />
+    <sequenceFlow id="_110-_107" sourceRef="_110" targetRef="_107" name="QA changes required: false" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" >
+      		return workflowSupport.evaluateContextVariableToFalse(kcontext, "qaChangesRequired");</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_115-_104" sourceRef="_115" targetRef="_104" />
+    <sequenceFlow id="_11-_118" sourceRef="_11" targetRef="_118" />
+    <sequenceFlow id="_110-_117" sourceRef="_110" targetRef="_117" name="QA changes required: true" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+         	return workflowSupport.evaluateContextVariableToTrue(kcontext, "qaChangesRequired");	
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_101-_116" sourceRef="_101" targetRef="_116" />
+    <sequenceFlow id="_117-_116" sourceRef="_117" targetRef="_116" />
+    <sequenceFlow id="_114-_115" sourceRef="_114" targetRef="_115" />
+    <sequenceFlow id="_108-_115" sourceRef="_108" targetRef="_115" name="Do Not Invoke PPR" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+      		return workflowSupport.evaluateContextVariableToFalse(kcontext, "usePPR");
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_108-_114" sourceRef="_108" targetRef="_114" name="Invoke PPR" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+      		return workflowSupport.evaluateContextVariableToTrue(kcontext, "usePPR");
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_28-_113" sourceRef="_28" targetRef="_113" name="Do Not Use PLR" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+      		return workflowSupport.evaluateContextVariableToFalse(kcontext, "usePLR");
+       </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_112-_113" sourceRef="_112" targetRef="_113" />
+    <sequenceFlow id="_28-_112" sourceRef="_28" targetRef="_112" name="Use PLR" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+      		return workflowSupport.evaluateContextVariableToTrue(kcontext, "usePLR");
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_107-_127" sourceRef="_107" targetRef="_127" />
+    <sequenceFlow id="_106-_126" sourceRef="_106" targetRef="_126" />
+    <sequenceFlow id="_122-_125" sourceRef="_122" targetRef="_125" name="EditingLoopBack: true" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >
+	return workflowSupport.evaluateContextVariableToTrue(kcontext, "editingLoopBack");
+</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_121-_124" sourceRef="_121" targetRef="_124" name="Hand-off to CourseDev loopback: true" tns:priority="1" >
+      <conditionExpression xsi:type="tFormalExpression" language="http://www.java.com/java" >      	
+      	return workflowSupport.evaluateContextVariableToTrue(kcontext, "handOffToCourseDevLoopBack");
+      </conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_20-_123" sourceRef="_20" targetRef="_123" />
+    <sequenceFlow id="_125-_123" sourceRef="_125" targetRef="_123" />
+    <sequenceFlow id="_26-_122" sourceRef="_26" targetRef="_122" />
+    <sequenceFlow id="_19-_121" sourceRef="_19" targetRef="_121" />
+    <sequenceFlow id="_124-_120" sourceRef="_124" targetRef="_120" />
+    <sequenceFlow id="_12-_120" sourceRef="_12" targetRef="_120" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="edu.capella.kepler.celeste.newProductsRestage" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="16" y="66" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_128" >
+        <dc:Bounds x="4244" y="64" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_10" >
+        <dc:Bounds x="4718" y="63" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_11" >
+        <dc:Bounds x="96" y="66" width="246" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_12" >
+        <dc:Bounds x="473" y="68" width="231" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_17" >
+        <dc:Bounds x="747" y="66" width="144" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_19" >
+        <dc:Bounds x="1137" y="66" width="179" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_18" >
+        <dc:Bounds x="923" y="66" width="182" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_21" >
+        <dc:Bounds x="1348" y="66" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_20" >
+        <dc:Bounds x="1428" y="66" width="195" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_23" >
+        <dc:Bounds x="1837" y="66" width="183" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_22" >
+        <dc:Bounds x="1655" y="66" width="150" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_25" >
+        <dc:Bounds x="2194" y="66" width="135" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_24" >
+        <dc:Bounds x="2044" y="66" width="128" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_27" >
+        <dc:Bounds x="2493" y="66" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_26" >
+        <dc:Bounds x="2361" y="66" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_28" >
+        <dc:Bounds x="2656" y="66" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_102" >
+        <dc:Bounds x="3576" y="228" width="126" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_103" >
+        <dc:Bounds x="3560" y="360" width="158" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_100" >
+        <dc:Bounds x="3048" y="66" width="161" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_101" >
+        <dc:Bounds x="3241" y="66" width="204" height="49" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_110" >
+        <dc:Bounds x="3104" y="227" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_108" >
+        <dc:Bounds x="2658" y="358" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_106" >
+        <dc:Bounds x="4366" y="63" width="100" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_107" >
+        <dc:Bounds x="3706" y="64" width="299" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_104" >
+        <dc:Bounds x="2909" y="227" width="107" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_118" >
+        <dc:Bounds x="386" y="70" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_117" >
+        <dc:Bounds x="3241" y="228" width="171" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_116" >
+        <dc:Bounds x="3470" y="227" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_115" >
+        <dc:Bounds x="2798" y="227" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_114" >
+        <dc:Bounds x="2625" y="207" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_113" >
+        <dc:Bounds x="2938" y="66" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_112" >
+        <dc:Bounds x="2767" y="16" width="110" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_127" >
+        <dc:Bounds x="4072" y="63" width="95" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_126" >
+        <dc:Bounds x="4563" y="62" width="80" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_125" >
+        <dc:Bounds x="1898" y="249" width="169" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_124" >
+        <dc:Bounds x="893" y="297" width="250" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_123" >
+        <dc:Bounds x="1615" y="248" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_122" >
+        <dc:Bounds x="2429" y="248" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_121" >
+        <dc:Bounds x="1322" y="197" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_120" >
+        <dc:Bounds x="697" y="194" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_127-_128" >
+        <di:waypoint x="4119" y="87" />
+        <di:waypoint x="4268" y="88" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_126-_10" >
+        <di:waypoint x="4603" y="86" />
+        <di:waypoint x="4742" y="87" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_11" >
+        <di:waypoint x="40" y="90" />
+        <di:waypoint x="219" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_118-_12" >
+        <di:waypoint x="410" y="94" />
+        <di:waypoint x="588" y="92" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_120-_17" >
+        <di:waypoint x="721" y="218" />
+        <di:waypoint x="819" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_18-_19" >
+        <di:waypoint x="1014" y="90" />
+        <di:waypoint x="1226" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_17-_18" >
+        <di:waypoint x="819" y="90" />
+        <di:waypoint x="1014" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_121-_21" >
+        <di:waypoint x="1346" y="221" />
+        <di:waypoint x="1372" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_21-_20" >
+        <di:waypoint x="1372" y="90" />
+        <di:waypoint x="1525" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_22-_23" >
+        <di:waypoint x="1730" y="90" />
+        <di:waypoint x="1928" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_123-_22" >
+        <di:waypoint x="1639" y="272" />
+        <di:waypoint x="1730" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_24-_25" >
+        <di:waypoint x="2108" y="90" />
+        <di:waypoint x="2261" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_23-_24" >
+        <di:waypoint x="1928" y="90" />
+        <di:waypoint x="2108" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_122-_27" >
+        <di:waypoint x="2453" y="272" />
+        <di:waypoint x="2543" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_25-_26" >
+        <di:waypoint x="2261" y="90" />
+        <di:waypoint x="2411" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_27-_28" >
+        <di:waypoint x="2543" y="90" />
+        <di:waypoint x="2680" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_116-_102" >
+        <di:waypoint x="3494" y="251" />
+        <di:waypoint x="3639" y="252" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_102-_103" >
+        <di:waypoint x="3639" y="252" />
+        <di:waypoint x="3639" y="384" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_113-_100" >
+        <di:waypoint x="2962" y="90" />
+        <di:waypoint x="3128" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_100-_101" >
+        <di:waypoint x="3128" y="90" />
+        <di:waypoint x="3343" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_104-_110" >
+        <di:waypoint x="2962" y="251" />
+        <di:waypoint x="3128" y="251" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_103-_108" >
+        <di:waypoint x="3639" y="384" />
+        <di:waypoint x="2682" y="382" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_128-_106" >
+        <di:waypoint x="4268" y="88" />
+        <di:waypoint x="4416" y="87" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_110-_107" >
+        <di:waypoint x="3128" y="251" />
+        <di:waypoint x="3855" y="88" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_115-_104" >
+        <di:waypoint x="2822" y="251" />
+        <di:waypoint x="2962" y="251" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11-_118" >
+        <di:waypoint x="219" y="90" />
+        <di:waypoint x="410" y="94" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_110-_117" >
+        <di:waypoint x="3128" y="251" />
+        <di:waypoint x="3326" y="252" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_101-_116" >
+        <di:waypoint x="3343" y="90" />
+        <di:waypoint x="3494" y="251" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_117-_116" >
+        <di:waypoint x="3326" y="252" />
+        <di:waypoint x="3494" y="251" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_114-_115" >
+        <di:waypoint x="2680" y="231" />
+        <di:waypoint x="2822" y="251" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_108-_115" >
+        <di:waypoint x="2682" y="382" />
+        <di:waypoint x="2822" y="251" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_108-_114" >
+        <di:waypoint x="2682" y="382" />
+        <di:waypoint x="2680" y="231" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_113" >
+        <di:waypoint x="2680" y="90" />
+        <di:waypoint x="2962" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_112-_113" >
+        <di:waypoint x="2822" y="40" />
+        <di:waypoint x="2962" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_28-_112" >
+        <di:waypoint x="2680" y="90" />
+        <di:waypoint x="2822" y="40" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_107-_127" >
+        <di:waypoint x="3855" y="88" />
+        <di:waypoint x="4119" y="87" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_106-_126" >
+        <di:waypoint x="4416" y="87" />
+        <di:waypoint x="4603" y="86" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_122-_125" >
+        <di:waypoint x="2453" y="272" />
+        <di:waypoint x="1982" y="273" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_121-_124" >
+        <di:waypoint x="1346" y="221" />
+        <di:waypoint x="1018" y="321" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_20-_123" >
+        <di:waypoint x="1525" y="90" />
+        <di:waypoint x="1639" y="272" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_125-_123" >
+        <di:waypoint x="1982" y="273" />
+        <di:waypoint x="1639" y="272" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_26-_122" >
+        <di:waypoint x="2411" y="90" />
+        <di:waypoint x="2453" y="272" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_19-_121" >
+        <di:waypoint x="1226" y="90" />
+        <di:waypoint x="1346" y="221" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_124-_120" >
+        <di:waypoint x="1018" y="321" />
+        <di:waypoint x="721" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_12-_120" >
+        <di:waypoint x="588" y="92" />
+        <di:waypoint x="721" y="218" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>
