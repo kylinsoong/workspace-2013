@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>eBikes</title>
+	<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" />
+	<a:loadStyle src="resource:///stylesheet/theme.xcss" />
+	<a:loadStyle src="/stylesheet/theme.css" />
+	<ui:insert name="head" />
+	</head>
+
+	<body>
+	<style>
+.center {
+	text-align: center;
+}
+</style>
+	<rich:panel label="MenuPanel" switchType="ajax" style="width:250px;" height="100" cellpadding="0" valign="top">
+
+		<f:facet name="header">Go To</f:facet>
+		<div>
+		<table>
+			<tr><td>
+			<s:link view="/CustomerProductView.xhtml"
+           value="Products"
+includePageParams="false"
+     propagation="none"/>
+     </td></tr><tr><td>
+        <s:link view="/CartView.xhtml"
+           value="My Cart"
+includePageParams="false"
+     propagation="none"/>
+     </td></tr><tr><td>
+     <s:link view="/OrderProcess.xhtml"
+           value="Check Out"
+includePageParams="false"
+     propagation="none"/></td></tr></table>
+		</div>
+	</rich:panel>
+	</body>
+	</html>
+</f:view>

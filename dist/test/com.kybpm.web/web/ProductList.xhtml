@@ -1,0 +1,198 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="productSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="Product Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Product description</ui:define>
+                <h:inputText id="productDescription" value="#{productList.product.productDescription}"/>
+            </s:decorate>
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Product name</ui:define>
+                <h:inputText id="productName" value="#{productList.product.productName}"/>
+            </s:decorate>
+
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/ProductList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">Product Search Results</f:facet>
+    <div class="results" id="productList">
+
+    <h:outputText value="The product search returned no results."
+               rendered="#{empty productList.resultList}"/>
+
+    <rich:dataTable id="productList"
+                var="_product"
+              value="#{productList.resultList}"
+           rendered="#{not empty productList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Product id"/>
+                    <ui:param name="propertyPath" value="product.productId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.productId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Cost"/>
+                    <ui:param name="propertyPath" value="product.cost"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.cost}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Price"/>
+                    <ui:param name="propertyPath" value="product.price"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.price}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Product description"/>
+                    <ui:param name="propertyPath" value="product.productDescription"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.productDescription}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Product image"/>
+                    <ui:param name="propertyPath" value="product.productImage"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.productImage}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Product name"/>
+                    <ui:param name="propertyPath" value="product.productName"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.productName}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Product type product type id"/>
+                    <ui:param name="propertyPath" value="product.productType.productTypeId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.productType.productTypeId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{productList}"/>
+                    <ui:param name="propertyLabel" value="Quantity"/>
+                    <ui:param name="propertyPath" value="product.quantity"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_product.quantity}"/>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'Product' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="product">
+                <f:param name="productProductId"
+                        value="#{_product.productId}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/ProductEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="productEdit"
+                rendered="#{empty from}">
+                <f:param name="productProductId"
+                        value="#{_product.productId}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/ProductList.xhtml"
+            rendered="#{productList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/ProductList.xhtml"
+            rendered="#{productList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{productList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ProductList.xhtml"
+            rendered="#{productList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{productList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/ProductList.xhtml"
+            rendered="#{productList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{productList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/ProductEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create product">
+            <f:param name="productProductId"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

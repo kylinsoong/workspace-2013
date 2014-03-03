@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application>
+  <display-name> 
+	  HelloWorldMBean
+  </display-name>
+  <module>
+    <jar>helloWorldMBean.jar</jar>
+  </module>
+</application>

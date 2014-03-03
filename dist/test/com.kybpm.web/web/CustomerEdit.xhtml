@@ -1,0 +1,257 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="customer" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{customerHome.managed ? 'Edit' : 'Add'} Customer</f:facet>
+
+
+
+
+            <s:decorate id="firstNameField" template="layout/edit.xhtml">
+                <ui:define name="label">First name</ui:define>
+                <h:inputText id="firstName"
+                       required="true"
+                           size="45"
+                      maxlength="45"
+                          value="#{customerHome.instance.firstName}">
+                    <a:support event="onblur" reRender="firstNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="lastNameField" template="layout/edit.xhtml">
+                <ui:define name="label">Last name</ui:define>
+                <h:inputText id="lastName"
+                       required="true"
+                           size="45"
+                      maxlength="45"
+                          value="#{customerHome.instance.lastName}">
+                    <a:support event="onblur" reRender="lastNameField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="passwordField" template="layout/edit.xhtml">
+                <ui:define name="label">Password</ui:define>
+                <h:inputText id="password"
+                       required="true"
+                           size="45"
+                      maxlength="45"
+                          value="#{customerHome.instance.password}">
+                    <a:support event="onblur" reRender="passwordField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="userIdField" template="layout/edit.xhtml">
+                <ui:define name="label">User id</ui:define>
+                <h:inputText id="userId"
+                       required="true"
+                           size="45"
+                      maxlength="45"
+                          value="#{customerHome.instance.userId}">
+                    <a:support event="onblur" reRender="userIdField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{customerHome.persist}"
+                       disabled="#{!customerHome.wired}"
+                       rendered="#{!customerHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{customerHome.update}"
+                       rendered="#{customerHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{customerHome.remove}"
+                      immediate="true"
+                       rendered="#{customerHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Customer.xhtml"
+                rendered="#{customerHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty customerFrom ? 'CustomerList' : customerFrom}.xhtml"
+                rendered="#{!customerHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Address *" labelClass="required">
+    <div class="association" id="addressParent">
+
+        <h:outputText value="There is no address associated with this customer."
+                   rendered="#{customerHome.instance.address == null}"/>
+
+        <rich:dataTable var="_address"
+                   value="#{customerHome.instance.address}"
+                rendered="#{customerHome.instance.address != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="addressTable">
+            <h:column>
+                <f:facet name="header">Address id</f:facet>
+                <h:outputText value="#{_address.addressId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">City</f:facet>
+                <h:outputText value="#{_address.city}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">State</f:facet>
+                <h:outputText value="#{_address.state}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street1</f:facet>
+                <h:outputText value="#{_address.street1}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street2</f:facet>
+                <h:outputText value="#{_address.street2}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zip</f:facet>
+                <h:outputText value="#{_address.zip}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button value="#{customerHome.instance.address != null ? 'Change' : 'Select'} address"
+                       view="/AddressList.xhtml">
+                <f:param name="from" value="CustomerEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab label="Orders">
+        <h:form styleClass="association" id="ordersChildren">
+
+            <h:outputText value="There are no orders associated with this customer."
+                       rendered="#{empty customerHome.orders}"/>
+
+            <rich:dataTable value="#{customerHome.orders}"
+                           var="_order"
+                      rendered="#{not empty customerHome.orders}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="ordersTable">
+                <rich:column sortBy="#{_order.orderId}">
+                    <f:facet name="header">Order id</f:facet>
+                    <h:outputText value="#{_order.orderId}"/>
+                </rich:column>
+                <rich:column sortBy="#{_order.orderTimestamp}">
+                    <f:facet name="header">Order timestamp</f:facet>
+                    <h:outputText value="#{_order.orderTimestamp}">
+                        <s:convertDateTime type="both" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+                <rich:column sortBy="#{_order.status}">
+                    <f:facet name="header">Status</f:facet>
+                    <h:outputText value="#{_order.status}"/>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{customerHome.managed}" id="orders">
+        <div class="actionButtons">
+            <s:button id="addorder"
+                   value="Add order"
+                    view="/OrderEdit.xhtml"
+             propagation="none">
+                 <f:param name="customerCustomerId"
+                         value="#{customerHome.instance.customerId}"/>
+                 <f:param name="orderFrom" value="Customer"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+
+    <rich:tab label="Payment sources">
+        <h:form styleClass="association" id="paymentSourcesChildren">
+
+            <h:outputText value="There are no paymentSources associated with this customer."
+                       rendered="#{empty customerHome.paymentSources}"/>
+
+            <rich:dataTable value="#{customerHome.paymentSources}"
+                           var="_paymentSource"
+                      rendered="#{not empty customerHome.paymentSources}"
+                    rowClasses="rvgRowOne,rvgRowTwo"
+                            id="paymentSourcesTable">
+                <rich:column sortBy="#{_paymentSource.paymentSourceId}">
+                    <f:facet name="header">Payment source id</f:facet>
+                    <h:outputText value="#{_paymentSource.paymentSourceId}"/>
+                </rich:column>
+                <rich:column sortBy="#{_paymentSource.cardNumber}">
+                    <f:facet name="header">Card number</f:facet>
+                    <h:outputText value="#{_paymentSource.cardNumber}"/>
+                </rich:column>
+                <rich:column sortBy="#{_paymentSource.cardType}">
+                    <f:facet name="header">Card type</f:facet>
+                    <h:outputText value="#{_paymentSource.cardType}"/>
+                </rich:column>
+                <rich:column sortBy="#{_paymentSource.cid}">
+                    <f:facet name="header">Cid</f:facet>
+                    <h:outputText value="#{_paymentSource.cid}"/>
+                </rich:column>
+                <rich:column sortBy="#{_paymentSource.expirationDate}">
+                    <f:facet name="header">Expiration date</f:facet>
+                    <h:outputText value="#{_paymentSource.expirationDate}">
+                        <s:convertDateTime type="date" dateStyle="short"/>
+                    </h:outputText>
+                </rich:column>
+            </rich:dataTable>
+
+        </h:form>
+
+        <f:subview rendered="#{customerHome.managed}" id="paymentSources">
+        <div class="actionButtons">
+            <s:button id="addpaymentSource"
+                   value="Add paymentSource"
+                    view="/PaymentSourceEdit.xhtml"
+             propagation="none">
+                 <f:param name="customerCustomerId"
+                         value="#{customerHome.instance.customerId}"/>
+                 <f:param name="paymentSourceFrom" value="Customer"/>
+            </s:button>
+        </div>
+        </f:subview>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

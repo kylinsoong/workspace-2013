@@ -1,0 +1,32 @@
+<definitions name='EchoServiceSessionService' targetNamespace='http://echo.demo.ws.test.com/' xmlns='http://schemas.xmlsoap.org/wsdl/' xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/' xmlns:tns='http://echo.demo.ws.test.com/' xmlns:xsd='http://www.w3.org/2001/XMLSchema'>
+ <types></types>
+ <message name='EchoServiceSession_echo'>
+  <part name='arg0' type='xsd:string'></part>
+ </message>
+ <message name='EchoServiceSession_echoResponse'>
+  <part name='return' type='xsd:string'></part>
+ </message>
+ <portType name='EchoServiceSession'>
+  <operation name='echo' parameterOrder='arg0'>
+   <input message='tns:EchoServiceSession_echo'></input>
+   <output message='tns:EchoServiceSession_echoResponse'></output>
+  </operation>
+ </portType>
+ <binding name='EchoServiceSessionBinding' type='tns:EchoServiceSession'>
+  <soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http'/>
+  <operation name='echo'>
+   <soap:operation soapAction=''/>
+   <input>
+    <soap:body namespace='http://echo.demo.ws.test.com/' use='literal'/>
+   </input>
+   <output>
+    <soap:body namespace='http://echo.demo.ws.test.com/' use='literal'/>
+   </output>
+  </operation>
+ </binding>
+ <service name='EchoServiceSessionService'>
+  <port binding='tns:EchoServiceSessionBinding' name='EchoServiceSessionPort'>
+   <soap:address location='http://127.0.0.1:8080/echoService/EchoServiceSession'/>
+  </port>
+ </service>
+</definitions>

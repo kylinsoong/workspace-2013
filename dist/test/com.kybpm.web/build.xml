@@ -1,0 +1,212 @@
+<?xml version="1.0"?>  
+  
+<project name="com.kybpm.web" default="deploy" basedir="..">  
+  
+	<property name="app.dir" value="${basedir}/com.kybpm.web" />  
+	<property name="src.dir" value="${app.dir}/src" />
+	<property name="conf.dir" value="${app.dir}/conf" /> 
+	<property name="web.dir" value="${app.dir}/web" />
+	
+	<property file="${app.dir}/build.properties"/>
+	
+	<property name="build.dir" value="${build.home}/${build.profile}" />  
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	
+	<property name="jboss.client" value="${jboss.home}/client" />
+    <property name="jboss.server" value="${jboss.home}/server/${jboss.profile}/deploy" />  
+    
+	
+    <path id="build.classpath"> 
+    	<fileset dir="${jboss.client}">  
+    		<include name="*.jar" />            
+    	</fileset>
+    	<fileset dir="${repo.dir}">  
+    		<include name="*.jar" />            
+    	</fileset>  
+        <pathelement location="${build.classes.dir}" />  
+    </path>
+	
+	<target name="validateproperties" >  
+		
+		<echo>Check the following parameter is been setting correctly</echo>
+		
+		<echo>repo.dir: ${repo.dir}</echo>
+		<echo>build.home: ${build.home}</echo>
+		<echo>jboss.home: ${jboss.home}</echo>
+		<echo>jboss.profile: ${jboss.profile}</echo>
+
+		<echo>app.dir: ${app.dir}</echo>	 
+		<echo>src.dir: ${src.dir}</echo>
+		
+		<echo>build.dir: ${build.dir}</echo>
+		<echo>build.classes.dir: ${build.classes.dir}</echo>
+			
+		<echo>jboss.client: ${jboss.client}</echo>
+		<echo>jboss.server: ${jboss.server}</echo>	
+	</target> 
+	
+	<target name="clean" depends="validateproperties">  
+        <delete dir="${build.dir}" />  
+	</target>
+	
+	<target name="prepare" depends="clean">  
+		<mkdir dir="${build.dir}" />  
+	    <mkdir dir="${build.classes.dir}" />  
+	</target> 
+	
+	<target name="compile" depends="prepare" description="compile">  
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="on" deprecation="on" optimize="off" includes="com/**">  
+	    	<classpath refid="build.classpath" />  
+	    </javac>  
+	</target> 
+	
+	<target name="jar" depends="compile" description="generate all jars">  
+		
+		<copy file="${conf.dir}/security.drl" todir="${build.classes.dir}"/>
+		<copy file="${conf.dir}/seam.properties" todir="${build.classes.dir}"/>
+		<copy file="${conf.dir}/import.sql" todir="${build.classes.dir}"/>
+		
+		<jar jarfile="${build.dir}/kybpm.web-${version}.jar">  
+	    	<fileset dir="${build.classes.dir}">  
+	        	<include name="com/kybpm/web/**/*.class" /> 
+	    		<include name="security.drl" />
+	    		<include name="seam.properties" /> 
+	    		<include name="import.sql" /> 
+	    	</fileset> 
+			<metainf dir="${conf.dir}/kybpm.web.jar">
+				<include name="persistence.xml"/>
+			</metainf>
+		</jar>
+		
+		<jar jarfile="${build.dir}/kybpm.common-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/kybpm/common/**/*.class" /> 
+			</fileset> 
+		</jar>
+		
+		<jar jarfile="${build.dir}/kybpm.calculate-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/kybpm/calculate/**/*.class" /> 					
+			</fileset> 
+		</jar>
+		
+		<jar jarfile="${build.dir}/kybpm.customer-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/kybpm/customer/**/*.class" /> 					
+			</fileset> 
+		</jar>
+		
+		<jar jarfile="${build.dir}/kybpm.inventory-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/kybpm/inventory/**/*.class" /> 					
+			</fileset> 
+		</jar>
+		
+		<jar jarfile="${build.dir}/kybpm.order-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/kybpm/order/**/*.class" /> 					
+			</fileset> 
+		</jar>
+		
+	</target>
+	
+	<target name="war" depends="jar" description="generate all wars"> 
+		
+		<copy todir="${build.dir}/kybpm.web.war-${version}" >  
+			<fileset dir="${web.dir}" includes="**"/>  
+		</copy>
+		
+		<copy todir="${build.dir}/kybpm.web.war-${version}/WEB-INF/lib" >  
+			<fileset dir="${repo.dir}" includes="commons-beanutils.jar"/> 
+			<fileset dir="${repo.dir}" includes="commons-digester.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-seam-debug.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-seam-ioc.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-seam-mail.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-seam-pdf.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-seam-ui.jar"/>
+			<fileset dir="${repo.dir}" includes="jsf-facelets.jar"/>
+			<fileset dir="${repo.dir}" includes="richfaces-impl.jar"/>
+			<fileset dir="${repo.dir}" includes="richfaces-ui.jar"/>
+		</copy>
+		
+		<war destfile="${build.dir}/kybpm.web-${version}.war" webxml="${build.dir}/kybpm.web.war-${version}/WEB-INF/web.xml">
+			<fileset dir="${build.dir}/kybpm.web.war-${version}"/>
+		</war>
+	</target>
+	
+	<target name="ear" depends="war" description="generate all ears">
+		
+		<copy todir="${build.dir}/kybpm.web.ear-${version}" >  
+			<fileset dir="${repo.dir}" includes="jboss-seam.jar"/> 
+			<fileset dir="${build.dir}" includes="kybpm.web-${version}.war"/>
+			<fileset dir="${build.dir}" includes="kybpm.web-${version}.jar"/>
+			<!-- 
+			<fileset dir="${build.dir}" includes="kybpm.calculate-${version}.jar"/> 
+			<fileset dir="${build.dir}" includes="kybpm.customer-${version}.jar"/> 
+			<fileset dir="${build.dir}" includes="kybpm.inventory-${version}.jar"/> 
+			<fileset dir="${build.dir}" includes="kybpm.order-${version}.jar"/> 
+			<fileset dir="${build.dir}" includes="kybpm.common-${version}.jar"/> -->
+			<fileset dir="${conf.dir}/kybpm.web.ear" includes="**"/>
+		</copy>
+		
+		<copy todir="${build.dir}/kybpm.web.ear-${version}/lib" >
+			<fileset dir="${repo.dir}" includes="antlr-runtime.jar"/>
+			<fileset dir="${repo.dir}" includes="axiom-api.jar"/>
+			<fileset dir="${repo.dir}" includes="axiom-impl.jar"/>
+			<fileset dir="${repo.dir}" includes="axis2-adb.jar"/>
+			<fileset dir="${repo.dir}" includes="axis2.jar"/>
+			<fileset dir="${repo.dir}" includes="backport-util-concurrent.jar"/>
+			<fileset dir="${repo.dir}" includes="commons-codec.jar"/>
+			<fileset dir="${repo.dir}" includes="commons-discovery.jar"/>
+			<fileset dir="${repo.dir}" includes="commons-httpclient.jar"/>
+			<fileset dir="${repo.dir}" includes="core.jar"/>
+			<fileset dir="${repo.dir}" includes="drools-compiler.jar"/>
+			<fileset dir="${repo.dir}" includes="drools-core.jar"/>
+			<fileset dir="${repo.dir}" includes="groovy-all.jar"/>
+			<fileset dir="${repo.dir}" includes="gwt-servlet.jar"/>
+			<fileset dir="${repo.dir}" includes="janino.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-el.jar"/>
+			<fileset dir="${repo.dir}" includes="jboss-seam-remoting.jar"/>
+			<fileset dir="${repo.dir}" includes="jbpm-jpdl.jar"/>
+			<fileset dir="${repo.dir}" includes="mvel14.jar"/>
+			<fileset dir="${repo.dir}" includes="neethi.jar"/>
+			<fileset dir="${repo.dir}" includes="richfaces-api.jar"/>
+			<fileset dir="${repo.dir}" includes="woden-api.jar"/>
+			<fileset dir="${repo.dir}" includes="wsdl4j.jar"/>
+			<fileset dir="${repo.dir}" includes="XmlSchema.jar"/>
+		</copy>
+		
+		<delete file="${build.dir}/kybpm.web.ear-${version}/META-INF/application.xml" />	
+		
+		<ear destfile="${build.dir}/kybpm.web-${version}.ear" appxml="${conf.dir}/kybpm.web.ear/META-INF/application.xml">
+			<fileset dir="${build.dir}/kybpm.web.ear-${version}"/>
+		</ear>
+		
+	</target>	
+	
+	<target name="deploy" depends="ear">  
+		<copy file="${build.dir}/kybpm.web-${version}.ear" todir="${jboss.server}"/>
+		<copy file="${conf.dir}/kybpm-ds.xml" todir="${jboss.server}"/>
+		<copy file="${conf.dir}/login-config.xml" todir="${jboss.server}/../conf"/>
+		<copy file="${conf.dir}/jboss-log4j.xml" todir="${jboss.server}/../conf"/>
+		
+		<copy file="${build.dir}/kybpm.calculate-${version}.jar" todir="${jboss.server}"/>
+		<copy file="${build.dir}/kybpm.customer-${version}.jar" todir="${jboss.server}"/>
+		<copy file="${build.dir}/kybpm.inventory-${version}.jar" todir="${jboss.server}"/>
+		<copy file="${build.dir}/kybpm.order-${version}.jar" todir="${jboss.server}"/>
+		<copy file="${build.dir}/kybpm.common-${version}.jar" todir="${jboss.server}"/>
+		
+	</target> 
+	
+	<target name="unDeploy" >  
+		<delete file="${jboss.server}/kybpm.web-${version}.ear" />
+		<delete file="${jboss.server}/kybpm-ds.xml" />
+		
+		<delete file="${jboss.server}/kybpm.calculate-${version}.jar" />
+		<delete file="${jboss.server}/kybpm.customer-${version}.jar" />
+		<delete file="${jboss.server}/kybpm.inventory-${version}.jar" />
+		<delete file="${jboss.server}/kybpm.order-${version}.jar" />
+		<delete file="${jboss.server}/kybpm.common-${version}.jar" />
+	</target>
+  
+</project>    

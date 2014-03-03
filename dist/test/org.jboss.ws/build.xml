@@ -1,0 +1,136 @@
+<?xml version="1.0"?>  
+  
+<project name="org.jboss.ws"  basedir="..">  
+  
+	<property name="app.dir" value="${basedir}/org.jboss.ws" />  
+	<property name="src.dir" value="${app.dir}/src" />
+	<property name="conf.dir" value="${app.dir}/conf" /> 
+	<property name="web.dir" value="${app.dir}/web" />
+	
+	<property file="${app.dir}/build.properties"/>
+	
+	<property name="build.dir" value="${build.home}/${build.dist}" />  
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	
+	<property name="jboss.client" value="${jboss.home}/client" />
+    <property name="jboss.server" value="${jboss.home}/server/${jboss.profile}/deploy" />  
+    
+	
+    <path id="build.classpath"> 
+    	<fileset dir="${jboss.client}">  
+    		<include name="*.jar" />            
+    	</fileset>
+    	<fileset dir="${repo.dir}">  
+    		<include name="*.jar" />            
+    	</fileset>  
+        <pathelement location="${build.classes.dir}" />  
+    </path>
+	
+	<target name="validateproperties" >  
+		
+		<echo>Check the following parameter is been setting correctly</echo>
+		
+		<echo>repo.dir: ${repo.dir}</echo>
+		<echo>build.home: ${build.home}</echo>
+		<echo>jboss.home: ${jboss.home}</echo>
+		<echo>jboss.profile: ${jboss.profile}</echo>
+
+		<echo>app.dir: ${app.dir}</echo>	 
+		<echo>src.dir: ${src.dir}</echo>
+		
+		<echo>build.dir: ${build.dir}</echo>
+		<echo>build.classes.dir: ${build.classes.dir}</echo>
+			
+		<echo>jboss.client: ${jboss.client}</echo>
+		<echo>jboss.server: ${jboss.server}</echo>	
+	</target> 
+	
+	<target name="clean" depends="validateproperties">  
+        <delete dir="${build.dir}" />  
+	</target>
+	
+	<target name="prepare" depends="clean">  
+		<mkdir dir="${build.dir}" />  
+	    <mkdir dir="${build.classes.dir}" />  
+	</target> 
+	
+	<target name="compile" depends="prepare" description="compile">  
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="on" deprecation="on" optimize="off" includes="org/**">  
+	    	<classpath refid="build.classpath" />  
+	    </javac>  
+	</target> 
+	
+	<target name="jar" depends="compile" description="generate all jars">  
+		
+		<jar jarfile="${build.dir}/jsr181PojoBean-${version}.jar">  
+	    	<fileset dir="${build.classes.dir}">  
+	        	<include name="org/jboss/test/ws/webservice/*.class" /> 
+	    	</fileset>
+		</jar>
+		
+		<jar jarfile="${build.dir}/jsr181Context-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="org/jboss/test/ws/context/*.class" /> 
+			</fileset>
+		</jar>
+		
+	    <copy file="${conf.dir}/exception/jaxws-handlers-server.xml" todir="${build.classes.dir}/org/jboss/test/ws/exception"/>
+		<jar jarfile="${build.dir}/wsExceptionTest.jar">  	
+			<fileset dir="${build.classes.dir}">  
+				<include name="org/jboss/test/ws/exception/*.class" /> 
+				<include name="org/jboss/test/ws/exception/*.xml" />
+				<include name="org/jboss/test/ws/exception/jaxws*.class" /> 
+			</fileset>
+		</jar>
+		
+	</target>
+	
+	<target name="war" depends="jar" description="generate all wars">
+		
+		<mkdir dir="${build.dir}/jsr181PojoBean" />
+		<mkdir dir="${build.dir}/jsr181PojoBean/WEB-INF" /> 
+		<mkdir dir="${build.dir}/jsr181PojoBean/WEB-INF/lib" /> 
+		
+		<mkdir dir="${build.dir}/jsr181PojoBean/WEB-INF/wsdl" /> 
+		<copy todir="${build.dir}/jsr181PojoBean/WEB-INF/wsdl" >  
+			<fileset dir="${conf.dir}/webservice/wsdl" includes="TestService.wsdl"/> 
+		</copy>
+		
+		<copy todir="${build.dir}/jsr181PojoBean/WEB-INF/lib" >  
+			<fileset dir="${build.dir}" includes="jsr181PojoBean-${version}.jar"/> 
+		</copy>
+		
+		<copy todir="${build.dir}/jsr181PojoBean/WEB-INF" >  
+			<fileset dir="${conf.dir}/webservice" includes="jboss-web.xml"/> 
+		</copy>
+			
+		<war destfile="${build.dir}/jsr181PojoBean-${version}.war" webxml="${conf.dir}/webservice/web.xml">
+			<fileset dir="${build.dir}/jsr181PojoBean"/>
+		</war>
+	</target>
+	
+	<target name="deployWSExceptionTest" depends="jar">  
+		<copy file="${build.dir}/wsExceptionTest.jar" todir="${jboss.server}"/>
+	</target> 
+				
+	<target name="unDeployWSExceptionTest" >  
+		<delete file="${jboss.server}/wsExceptionTest.jar" />
+	</target>
+
+	<target name="deployJSR181Context" depends="jar">  
+		<copy file="${build.dir}/jsr181Context-${version}.jar" todir="${jboss.server}"/>
+	</target> 
+		
+	<target name="unDeployJSR181Context" >  
+		<delete file="${jboss.server}/jsr181Context-${version}.jar" />
+	</target>
+	
+	<target name="deployJSR181POJOBean" depends="war">  
+		<copy file="${build.dir}/jsr181PojoBean-${version}.war" todir="${jboss.server}"/>
+	</target> 
+	
+	<target name="unDeployJSR181POJOBean" >  
+		<delete file="${jboss.server}/jsr181PojoBean-${version}.war" />
+	</target>
+  
+</project>    

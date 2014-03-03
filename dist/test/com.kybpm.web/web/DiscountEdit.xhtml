@@ -1,0 +1,157 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:a="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="discount" styleClass="edit">
+
+        <rich:panel>
+            <f:facet name="header">#{discountHome.managed ? 'Edit' : 'Add'} Discount</f:facet>
+
+
+
+            <s:decorate id="amountOffField" template="layout/edit.xhtml">
+                <ui:define name="label">Amount off</ui:define>
+                <h:inputText id="amountOff"
+                       required="true"
+                          value="#{discountHome.instance.amountOff}">
+                    <a:support event="onblur" reRender="amountOffField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+            <s:decorate id="endTimestampField" template="layout/edit.xhtml">
+                <ui:define name="label">End timestamp</ui:define>
+                <rich:calendar id="endTimestamp"
+                       required="true"
+                          value="#{discountHome.instance.endTimestamp}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+
+            <s:decorate id="percentDiscountField" template="layout/edit.xhtml">
+                <ui:define name="label">Percent discount</ui:define>
+                <h:inputText id="percentDiscount"
+                       required="true"
+                          value="#{discountHome.instance.percentDiscount}">
+                    <a:support event="onblur" reRender="percentDiscountField" bypassUpdates="true" ajaxSingle="true"/>
+                </h:inputText>
+            </s:decorate>
+
+
+
+            <s:decorate id="startTimestampField" template="layout/edit.xhtml">
+                <ui:define name="label">Start timestamp</ui:define>
+                <rich:calendar id="startTimestamp"
+                       required="true"
+                          value="#{discountHome.instance.startTimestamp}" datePattern="MM/dd/yyyy hh:mm a"/>
+            </s:decorate>
+
+            <div style="clear:both">
+                <span class="required">*</span>
+                required fields
+            </div>
+
+        </rich:panel>
+
+        <div class="actionButtons">
+
+            <h:commandButton id="save"
+                          value="Save"
+                         action="#{discountHome.persist}"
+                       disabled="#{!discountHome.wired}"
+                       rendered="#{!discountHome.managed}"/>
+
+            <h:commandButton id="update"
+                          value="Save"
+                         action="#{discountHome.update}"
+                       rendered="#{discountHome.managed}"/>
+
+            <h:commandButton id="delete"
+                          value="Delete"
+                         action="#{discountHome.remove}"
+                      immediate="true"
+                       rendered="#{discountHome.managed}"/>
+
+            <s:button id="cancelEdit"
+                   value="Cancel"
+             propagation="end"
+                    view="/Discount.xhtml"
+                rendered="#{discountHome.managed}"/>
+
+            <s:button id="cancelAdd"
+                   value="Cancel"
+             propagation="end"
+                    view="/#{empty discountFrom ? 'DiscountList' : discountFrom}.xhtml"
+                rendered="#{!discountHome.managed}"/>
+
+        </div>
+    </h:form>
+
+<rich:tabPanel switchType="ajax">
+
+    <rich:tab label="Product *" labelClass="required">
+    <div class="association" id="productParent">
+
+        <h:outputText value="There is no product associated with this discount."
+                   rendered="#{discountHome.instance.product == null}"/>
+
+        <rich:dataTable var="_product"
+                   value="#{discountHome.instance.product}"
+                rendered="#{discountHome.instance.product != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="productTable">
+            <h:column>
+                <f:facet name="header">Product id</f:facet>
+                <h:outputText value="#{_product.productId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cost</f:facet>
+                <h:outputText value="#{_product.cost}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                <h:outputText value="#{_product.price}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product description</f:facet>
+                <h:outputText value="#{_product.productDescription}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product image</f:facet>
+                <h:outputText value="#{_product.productImage}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product name</f:facet>
+                <h:outputText value="#{_product.productName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product type product type id</f:facet>
+                <h:outputText value="#{_product.productType.productTypeId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Quantity</f:facet>
+                <h:outputText value="#{_product.quantity}"/>
+            </h:column>
+        </rich:dataTable>
+
+        <div class="actionButtons">
+            <s:button value="#{discountHome.instance.product != null ? 'Change' : 'Select'} product"
+                       view="/ProductList.xhtml">
+                <f:param name="from" value="DiscountEdit"/>
+            </s:button>
+        </div>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

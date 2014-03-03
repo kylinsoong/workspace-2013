@@ -1,0 +1,128 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml">
+
+	<ui:define name="body">
+		<h:outputText styleClass="pageHeader" value="Shopping Cart"/>
+		<h:form id="cartViewForm" styleClass="edit">
+<table><tr><td>		
+<table width="600" align="top"><tr><td>
+
+							<rich:panel width="600">
+								<f:facet name="header">Cart Contents</f:facet>
+								<div class="results" id="cartList">
+								<h:outputText
+										value="Your cart is currently empty."
+										rendered="#{empty cart.order.productOrders}" /> 
+								<rich:dataTable
+										id="cartList" var="_productOrder" value="#{cart.order.productOrders}"
+										rendered="#{not empty cart.order.productOrders}">
+				<ui:remove>
+									<rich:column styleClass="action">
+										<f:facet name="header">Select</f:facet>
+										<h:selectManyCheckbox id="selectbox" value="selected">
+	
+										</h:selectManyCheckbox>
+									</rich:column>
+				</ui:remove>
+									<rich:column sortBy="#{_productOrder.product.productName}">
+										<f:facet name="header">
+											<h:outputText value="Item"/>
+										</f:facet>
+										<h:outputText value="#{_productOrder.product.productName}" />
+									</rich:column>
+									
+									<rich:column sortBy="#{_productOrder.quantity}">
+										<f:facet name="header">
+											<h:outputText value="Quantity"/>
+										</f:facet>
+										<h:outputText value="#{_productOrder.quantity}" />
+									</rich:column>
+	
+									<rich:column sortBy="#{_productOrder.product.price}">
+										<f:facet name="header">
+											<h:outputText value="Unit Cost"/>
+										</f:facet>
+										<h:outputText value="#{_productOrder.product.price}">
+											<f:convertNumber   pattern="$####.00"  />
+										</h:outputText>
+									</rich:column>
+	
+									<rich:column sortBy="#{_productOrder.totalCost}">
+										<f:facet name="header">
+											<h:outputText value="Total Cost"/>
+										</f:facet>
+										<h:outputText value="#{_productOrder.totalCost}">
+											<f:convertNumber   pattern="$####.00"  />
+										</h:outputText>
+									</rich:column>
+									
+									<rich:column styleClass="action">
+							            <f:facet name="header">Action</f:facet>
+							            <h:commandButton id="removeFromCart" value="Remove From Cart" action="#{checkout.removeFromCart}">
+							            	<f:setPropertyActionListener value="#{_productOrder.product.productId}"
+							                        target="#{cart.selectedItem}" />
+							            </h:commandButton>
+							        </rich:column>
+							        <f:facet name="footer">
+
+										<rich:columnGroup>
+											<rich:column colspan="3">
+												<rich:spacer />
+											</rich:column>
+											<rich:column>
+                                             Subtotal
+                                            </rich:column>
+											<rich:column>
+											   <h:outputText value="#{cart.total}">
+												<f:convertNumber pattern="$####.00" />
+											  </h:outputText>
+											</rich:column>
+										</rich:columnGroup>
+									</f:facet>
+								</rich:dataTable>
+								</div>
+							</rich:panel>
+</td></tr><tr><td align="right">
+	<ui:remove>
+					<h:commandButton id="updateCart" 
+							value="Update Cart"
+							action="/ProductList.xhtml"/>&nbsp;
+	</ui:remove>
+					<h:commandButton id="checkout" 
+							value="Checkout" 
+							action="#{checkout.checkout}"/>
+
+</td></tr></table>
+		</td><td valign="top" width="250">
+		<ui:include src="MenuPanel.xhtml"/>
+		</td></tr></table>
+	</h:form>
+<ui:remove>
+		<div class="tableControl"><s:link view="/ProductList.xhtml"
+			rendered="#{productList.previousExists}"
+			value="#{messages.left}#{messages.left} First Page" id="firstPage">
+			<f:param name="firstResult" value="0" />
+		</s:link> <s:link view="/ProductList.xhtml"
+			rendered="#{productList.previousExists}"
+			value="#{messages.left} Previous Page" id="previousPage">
+			<f:param name="firstResult"
+				value="#{productList.previousFirstResult}" />
+		</s:link> <s:link view="/ProductList.xhtml"
+			rendered="#{productList.nextExists}"
+			value="Next Page #{messages.right}" id="nextPage">
+			<f:param name="firstResult" value="#{productList.nextFirstResult}" />
+		</s:link> <s:link view="/ProductList.xhtml"
+			rendered="#{productList.nextExists}"
+			value="Last Page #{messages.right}#{messages.right}" id="lastPage">
+			<f:param name="firstResult" value="#{productList.lastFirstResult}" />
+		</s:link></div>
+</ui:remove>
+	</ui:define>
+
+</ui:composition>

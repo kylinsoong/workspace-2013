@@ -1,0 +1,114 @@
+<?xml version="1.0"?>  
+  
+<project name="jvm_file_lab" default="deploy" basedir="..">  
+  
+	<property name="app.dir" value="${basedir}/jvm_file_lab" />  
+	<property name="src.dir" value="${app.dir}/src" />
+	<property name="conf.dir" value="${app.dir}/conf" /> 
+	<property name="web.dir" value="${app.dir}/web" />
+	
+	<property file="${app.dir}/build.properties"/>
+	
+	<property name="build.dir" value="${build.home}/${build.dist}" />  
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+	
+	<property name="jboss.client" value="${jboss.home}/client" />
+    <property name="jboss.server" value="${jboss.home}/server/${jboss.profile}/deploy" />  
+    
+	
+    <path id="build.classpath"> 
+    	<fileset dir="${jboss.client}">  
+    		<include name="*.jar" />            
+    	</fileset>
+    	<fileset dir="${repo.dir}">  
+    		<include name="*.jar" />            
+    	</fileset>  
+        <pathelement location="${build.classes.dir}" />  
+    </path>
+	
+	<target name="validateproperties" >  
+		
+		<echo>Check the following parameter is been setting correctly</echo>
+		
+		<echo>repo.dir: ${repo.dir}</echo>
+		<echo>build.home: ${build.home}</echo>
+		<echo>jboss.home: ${jboss.home}</echo>
+		<echo>jboss.profile: ${jboss.profile}</echo>
+
+		<echo>app.dir: ${app.dir}</echo>	 
+		<echo>src.dir: ${src.dir}</echo>
+		
+		<echo>build.dir: ${build.dir}</echo>
+		<echo>build.classes.dir: ${build.classes.dir}</echo>
+			
+		<echo>jboss.client: ${jboss.client}</echo>
+		<echo>jboss.server: ${jboss.server}</echo>	
+	</target> 
+	
+	<target name="clean" depends="validateproperties">  
+        <delete dir="${build.dir}" />  
+	</target>
+	
+	<target name="prepare" depends="clean">  
+		<mkdir dir="${build.dir}" />  
+	    <mkdir dir="${build.classes.dir}" />  
+	</target> 
+	
+	<target name="compile" depends="prepare" description="compile">  
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="on" deprecation="on" optimize="off" includes="com/**">  
+	    	<classpath refid="build.classpath" />  
+	    </javac>  
+	</target> 
+	
+	<target name="jar" depends="compile" description="generate all jars">  
+		
+		<jar jarfile="${build.dir}/jvm_file_lab-${version}.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/**/*.class" /> 
+			</fileset> 
+		</jar>
+		
+	</target>
+	
+	<target name="war" depends="jar" description="generate all wars"> 
+		
+		<copy todir="${build.dir}/jvm_file_lab_1-${version}" >  
+			<fileset dir="${web.dir}/1" includes="**"/>  
+		</copy>
+		
+		<war destfile="${build.dir}/jvm_file_lab_1-${version}.war" webxml="${web.dir}/1/WEB-INF/web.xml">
+			<fileset dir="${build.dir}/jvm_file_lab_1-${version}"/>
+		</war>
+		
+	</target>
+	
+	<target name="ear" depends="war" description="generate all ears">
+		
+		<copy todir="${build.dir}/jvm_file_lab-${version}" >  
+			<fileset dir="${build.dir}" includes="jvm_file_lab_1-${version}.war"/>
+			<fileset dir="${build.dir}" includes="jvm_file_lab_2-${version}.war"/>
+			<fileset dir="${build.dir}" includes="jvm_file_lab_3-${version}.war"/>
+			<fileset dir="${build.dir}" includes="jvm_file_lab-${version}.jar"/>
+			
+			<fileset dir="${conf.dir}" includes="**"/>
+		</copy>
+		
+		
+		<delete file="${build.dir}/jvm_file_lab-${version}/META-INF/application.xml" />	
+		
+		<ear destfile="${build.dir}/jvm_file_lab-${version}.ear" appxml="${conf.dir}/META-INF/application.xml">
+			<fileset dir="${build.dir}/jvm_file_lab-${version}"/>
+		</ear>
+		
+	</target>	
+	
+	<target name="deploy" depends="ear">  
+		<copy file="${build.dir}/jvm_file_lab-${version}.ear" todir="${jboss.server}"/>
+		
+	</target> 
+	
+	<target name="unDeploy" >  
+		<delete file="${jboss.server}/jvm_file_lab-${version}.ear" />
+	</target>
+  
+</project>    

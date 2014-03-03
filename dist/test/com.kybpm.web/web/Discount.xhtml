@@ -1,0 +1,121 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Discount Details</f:facet>
+
+
+        <s:decorate id="amountOff" template="layout/display.xhtml">
+            <ui:define name="label">Amount off</ui:define>
+            <h:outputText value="#{discountHome.instance.amountOff}"/>
+        </s:decorate>
+
+        <s:decorate id="endTimestamp" template="layout/display.xhtml">
+            <ui:define name="label">End timestamp</ui:define>
+            <h:outputText value="#{discountHome.instance.endTimestamp}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="percentDiscount" template="layout/display.xhtml">
+            <ui:define name="label">Percent discount</ui:define>
+            <h:outputText value="#{discountHome.instance.percentDiscount}"/>
+        </s:decorate>
+
+        <s:decorate id="startTimestamp" template="layout/display.xhtml">
+            <ui:define name="label">Start timestamp</ui:define>
+            <h:outputText value="#{discountHome.instance.startTimestamp}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/DiscountEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty discountFrom ? 'DiscountList' : discountFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Product</h:panelGroup>
+        </f:facet>
+    <div class="association" id="productParent">
+
+        <h:outputText value="There is no product associated with this discount."
+                   rendered="#{discountHome.instance.product == null}"/>
+
+        <rich:dataTable var="_product"
+                   value="#{discountHome.instance.product}"
+                rendered="#{discountHome.instance.product != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="productTable">
+            <h:column>
+                <f:facet name="header">Product id</f:facet>
+                <h:outputText value="#{_product.productId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Cost</f:facet>
+                <h:outputText value="#{_product.cost}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Price</f:facet>
+                <h:outputText value="#{_product.price}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product description</f:facet>
+                <h:outputText value="#{_product.productDescription}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product image</f:facet>
+                <h:outputText value="#{_product.productImage}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product name</f:facet>
+                <h:outputText value="#{_product.productName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Product type product type id</f:facet>
+                <h:outputText value="#{_product.productType.productTypeId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Quantity</f:facet>
+                <h:outputText value="#{_product.quantity}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewproduct"
+                     value="View"
+                      view="/Product.xhtml">
+                    <f:param name="productProductId"
+                           value="#{_product.productId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

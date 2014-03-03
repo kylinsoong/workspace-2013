@@ -1,0 +1,223 @@
+<?xml version="1.0"?>  
+  
+<project name="org.jboss.test" default="deploy" basedir="..">  
+  
+	<property name="app.dir" value="${basedir}/org.jboss.test" />  
+	<property name="src.dir" value="${app.dir}/src" />
+	<property name="conf.dir" value="${app.dir}/conf" /> 
+	<property name="web.dir" value="${app.dir}/web" />
+		
+	<property file="${app.dir}/build.properties"/>
+		
+	<property name="build.dir" value="${build.home}/${build.profile}" />  
+	<property name="build.classes.dir" value="${build.dir}/classes" />
+		
+	<property name="jboss.client" value="${jboss.home}/client" />
+	   <property name="jboss.server" value="${jboss.home}/server/${jboss.profile}/deploy" />
+    
+	
+    <path id="build.classpath"> 
+    	<fileset dir="${jboss.client}">  
+    		<include name="*.jar" />            
+    	</fileset>
+    	<fileset dir="${repo.dir}">  
+    		<include name="*.jar" />            
+    	</fileset>  
+        <pathelement location="${build.classes.dir}" />  
+    </path>
+	
+	<target name="validateproperties" >  
+		
+		<echo>Check the following parameter is been setting correctly</echo>
+		
+		<echo>repo.dir: ${repo.dir}</echo>
+		<echo>build.home: ${build.home}</echo>
+		<echo>jboss.home: ${jboss.home}</echo>
+		<echo>jboss.profile: ${jboss.profile}</echo>
+
+		<echo>app.dir: ${app.dir}</echo>	 
+		<echo>src.dir: ${src.dir}</echo>
+		
+		<echo>build.dir: ${build.dir}</echo>
+		<echo>build.classes.dir: ${build.classes.dir}</echo>
+			
+		<echo>jboss.client: ${jboss.client}</echo>
+		<echo>jboss.server: ${jboss.server}</echo>	
+	</target> 
+	
+	<target name="clean" depends="validateproperties">  
+        <delete dir="${build.dir}" />  
+	</target>
+	
+	<target name="prepare" depends="clean">  
+		<mkdir dir="${build.dir}" />  
+	    <mkdir dir="${build.classes.dir}" />  
+	</target> 
+	
+	<target name="compile" depends="prepare" description="compile">  
+		<javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="on" deprecation="on" optimize="off" includes="com/**">  
+	    	<classpath refid="build.classpath" />  
+	    </javac>  
+	</target> 
+	
+	<target name="jar" depends="compile" description="generate all jars">  
+		
+		<jar jarfile="${build.dir}/jmsAppenderSession.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/test/jms/log4j/session/*.class" />  
+			</fileset>  
+		</jar> 
+		<jar jarfile="${build.dir}/jmsAppenderMBean.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/test/jms/log4j/mbean/*.class" />  
+			</fileset>  
+		</jar> 
+		
+		<jar jarfile="${build.dir}/echoService.jar">  
+	    	<fileset dir="${build.classes.dir}">  
+	        	<include name="com/test/ws/demo/echo/*.class" />  
+	    	</fileset>  
+		</jar> 
+
+		<jar jarfile="${build.dir}/endpointJSEService.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/test/ws/demo/endpointJSE/*.class" />  
+			</fileset>  
+		</jar> 
+		
+		<jar jarfile="${build.dir}/interceptorService.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/test/ejb/demo/interceptor/*.class" />  
+			</fileset>  
+		</jar>
+		
+		<jar jarfile="${build.dir}/helloWorldMBean.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/test/jmx/demo/helloworld/*.class" />  
+			</fileset>  
+		</jar>
+		
+		<jar jarfile="${build.dir}/systemPropertiesService.jar">  
+			<fileset dir="${build.classes.dir}">  
+				<include name="com/test/ejb/demo/systemprops/*.class" />  
+			</fileset>  
+		</jar>
+		
+	</target>
+	
+	<target name="war" depends="jar" description="generate all wars"> 
+		<war destfile="${build.dir}/myTest.war" webxml="${conf.dir}/myTest.war/WEB-INF/web.xml">
+			<fileset dir="${conf.dir}/myTest.war"/>
+		</war>
+	</target>
+	
+	<target name="ear" depends="jar" description="generate all ears"> 
+		<ear destfile="${build.dir}/helloWorldMBean.ear" appxml="${conf.dir}/helloworldMBean/META-INF/application.xml">
+			<metainf dir="${conf.dir}/helloworldMBean/META-INF">
+				<include name="jboss-app.xml"/>
+				<include name="jboss-service.xml"/>
+			</metainf>
+			<fileset dir="${build.dir}">
+		    	<include name="helloWorldMBean.jar"/>
+			</fileset>
+		</ear>
+	</target>
+	
+	<target name="sar" depends="jar" description="generate all sars">
+		<mkdir dir="${build.dir}/helloworldMBean.sar" /> 
+		<copy todir="${build.dir}/helloworldMBean.sar" >  
+			<fileset dir="${conf.dir}/helloworldMBean.sar" includes="**"/>  
+		</copy>
+		<copy file="${build.dir}/helloWorldMBean.jar" todir="${build.dir}/helloworldMBean.sar" />
+		
+		<mkdir dir="${build.dir}/jmsAppender.sar" /> 
+		<copy todir="${build.dir}/jmsAppender.sar" >  
+			<fileset dir="${conf.dir}/jmsAppender.sar" includes="**"/>  
+		</copy>
+	</target>
+	
+	<target name="deployJmsAppender" depends="jar">  
+		<copy file="${build.dir}/jmsAppender.jar" todir="${jboss.server}" />
+	</target>
+	<target name="undeployJmsAppender" >  
+		<delete file="${jboss.server}/jmsAppender.jar" />	
+	</target>
+	
+	<target name="deployMyTest.war" depends="war">  
+		<copy file="${build.dir}/myTest.war" todir="${jboss.server}" />
+	</target>
+	<target name="unDeployMyTest.war" >  
+		<delete file="${jboss.server}/myTest.war" />	
+	</target>
+	
+	<target name="deployEchoService" depends="jar">  
+		<copy file="${build.dir}/echoService.jar" todir="${jboss.server}" />
+	</target>
+	<target name="unDeployEchoService" >  
+		<delete file="${jboss.server}/echoService.jar" />	
+	</target>
+	
+	<target name="deploySystemPropertiesService" depends="jar">  
+		<copy file="${build.dir}/systemPropertiesService.jar" todir="${jboss.server}" />
+	</target>
+	<target name="unDeploySystemPropertiesService" >  
+		<delete file="${jboss.server}/systemPropertiesService.jar" />	
+	</target>
+	
+	<target name="deployEndpointJSEService" depends="jar">  
+		<copy file="${build.dir}/endpointJSEService.jar" todir="${jboss.server}" />
+	</target>
+	<target name="unDeployEndpointJSEService" >  
+		<delete file="${jboss.server}/endpointJSEService.jar" />		
+	</target>
+	
+	<target name="deployInterceptorService" depends="jar">  
+		<copy file="${build.dir}/interceptorService.jar" todir="${jboss.server}" />
+	</target>
+	<target name="unDeployInterceptorService" >  
+		<delete file="${jboss.server}/interceptorService.jar" />	
+	</target>
+	
+	<target name="deployHelloWorldMBean" depends="ear">
+		<copy file="${build.dir}/helloWorldMBean.ear" todir="${jboss.server}" />
+	</target>
+	<target name="unDeployHelloWorldMBean">
+		<delete file="${jboss.server}/helloWorldMBean.ear" />	
+	</target>
+	
+	<target name="deployHelloWorldMBean.sar" depends="sar">
+		<mkdir dir="${jboss.server}/helloworldMBean.sar" /> 
+		<copy todir="${jboss.server}/helloworldMBean.sar" >  
+			<fileset dir="${build.dir}/helloworldMBean.sar" includes="**"/>  
+		</copy>
+	</target>
+	<target name="unDeployHelloWorldMBean.sar">
+		<delete file="${jboss.server}/helloWorldMBean.sar" />	
+	</target>
+	
+	<target name="deployJmsAppender.sar" depends="sar">
+		<mkdir dir="${jboss.server}/jmsAppender.sar" /> 
+		<copy todir="${jboss.server}/jmsAppender.sar" >  
+			<fileset dir="${build.dir}/jmsAppender.sar" includes="**"/>  
+		</copy>
+		
+		<copy file="${conf.dir}/appender-service.xml" todir="${jboss.server}/messaging" />
+		
+		<copy file="${build.dir}/jmsAppenderSession.jar" todir="${jboss.server}" />
+		
+		<copy file="${build.dir}/jmsAppenderMBean.jar" todir="${jboss.server}" />
+	</target>
+	<target name="unDeployJmsAppender.sar">
+		<delete dir="${jboss.server}/jmsAppender.sar" />
+		<delete file="${jboss.server}/jmsAppenderSession.jar" />
+		<delete file="${jboss.server}/jmsAppenderMBean.jar" />	
+		<delete file="${jboss.server}/messaging/appender-service.xml" />
+	</target>
+	
+	<target name="deploy" depends="unDeploy,deployEchoService,deployEndpointJSEService,deployInterceptorService,deployHelloWorldMBean,deployHelloWorldMBean.sar,deploySystemPropertiesService, deployMyTest.war">  
+	</target> 
+	
+	<target name="unDeploy" depends="unDeployEchoService,unDeployEndpointJSEService,unDeployInterceptorService,unDeployHelloWorldMBean,unDeployHelloWorldMBean.sar,unDeploySystemPropertiesService, unDeployMyTest.war">  
+	</target>
+  
+</project>    

@@ -1,0 +1,223 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Customer Details</f:facet>
+
+
+        <s:decorate id="firstName" template="layout/display.xhtml">
+            <ui:define name="label">First name</ui:define>
+            <h:outputText value="#{customerHome.instance.firstName}"/>
+        </s:decorate>
+
+        <s:decorate id="lastName" template="layout/display.xhtml">
+            <ui:define name="label">Last name</ui:define>
+            <h:outputText value="#{customerHome.instance.lastName}"/>
+        </s:decorate>
+
+        <s:decorate id="password" template="layout/display.xhtml">
+            <ui:define name="label">Password</ui:define>
+            <h:outputText value="#{customerHome.instance.password}"/>
+        </s:decorate>
+
+        <s:decorate id="userId" template="layout/display.xhtml">
+            <ui:define name="label">User id</ui:define>
+            <h:outputText value="#{customerHome.instance.userId}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/CustomerEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty customerFrom ? 'CustomerList' : customerFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Address</h:panelGroup>
+        </f:facet>
+    <div class="association" id="addressParent">
+
+        <h:outputText value="There is no address associated with this customer."
+                   rendered="#{customerHome.instance.address == null}"/>
+
+        <rich:dataTable var="_address"
+                   value="#{customerHome.instance.address}"
+                rendered="#{customerHome.instance.address != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="addressTable">
+            <h:column>
+                <f:facet name="header">Address id</f:facet>
+                <h:outputText value="#{_address.addressId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">City</f:facet>
+                <h:outputText value="#{_address.city}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">State</f:facet>
+                <h:outputText value="#{_address.state}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street1</f:facet>
+                <h:outputText value="#{_address.street1}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street2</f:facet>
+                <h:outputText value="#{_address.street2}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zip</f:facet>
+                <h:outputText value="#{_address.zip}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewaddress"
+                     value="View"
+                      view="/Address.xhtml">
+                    <f:param name="addressAddressId"
+                           value="#{_address.addressId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Orders</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="ordersChildren">
+
+        <h:outputText value="There are no orders associated with this customer."
+                   rendered="#{empty customerHome.orders}"/>
+
+        <rich:dataTable value="#{customerHome.orders}"
+                       var="_order"
+                  rendered="#{not empty customerHome.orders}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="ordersTable">
+            <rich:column sortBy="#{_order.orderId}">
+                <f:facet name="header">Order id</f:facet>
+                <h:outputText value="#{_order.orderId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_order.orderTimestamp}">
+                <f:facet name="header">Order timestamp</f:facet>
+                <h:outputText value="#{_order.orderTimestamp}">
+                    <s:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <rich:column sortBy="#{_order.status}">
+                <f:facet name="header">Status</f:facet>
+                <h:outputText value="#{_order.status}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectorder"
+                     value="Select"
+                      view="/Order.xhtml">
+                    <f:param name="orderOrderId"
+                            value="#{_order.orderId}"/>
+                    <f:param name="orderFrom" value="Customer"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add order"
+                view="/OrderEdit.xhtml">
+            <f:param name="customerCustomerId"
+                    value="#{customerHome.instance.customerId}"/>
+            <f:param name="orderFrom" value="Customer"/>
+        </s:button>
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Payment sources</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="paymentSourcesChildren">
+
+        <h:outputText value="There are no paymentSources associated with this customer."
+                   rendered="#{empty customerHome.paymentSources}"/>
+
+        <rich:dataTable value="#{customerHome.paymentSources}"
+                       var="_paymentSource"
+                  rendered="#{not empty customerHome.paymentSources}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="paymentSourcesTable">
+            <rich:column sortBy="#{_paymentSource.paymentSourceId}">
+                <f:facet name="header">Payment source id</f:facet>
+                <h:outputText value="#{_paymentSource.paymentSourceId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_paymentSource.cardNumber}">
+                <f:facet name="header">Card number</f:facet>
+                <h:outputText value="#{_paymentSource.cardNumber}"/>
+            </rich:column>
+            <rich:column sortBy="#{_paymentSource.cardType}">
+                <f:facet name="header">Card type</f:facet>
+                <h:outputText value="#{_paymentSource.cardType}"/>
+            </rich:column>
+            <rich:column sortBy="#{_paymentSource.cid}">
+                <f:facet name="header">Cid</f:facet>
+                <h:outputText value="#{_paymentSource.cid}"/>
+            </rich:column>
+            <rich:column sortBy="#{_paymentSource.expirationDate}">
+                <f:facet name="header">Expiration date</f:facet>
+                <h:outputText value="#{_paymentSource.expirationDate}">
+                    <s:convertDateTime type="date" dateStyle="short"/>
+                </h:outputText>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectpaymentSource"
+                     value="Select"
+                      view="/PaymentSource.xhtml">
+                    <f:param name="paymentSourcePaymentSourceId"
+                            value="#{_paymentSource.paymentSourceId}"/>
+                    <f:param name="paymentSourceFrom" value="Customer"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add paymentSource"
+                view="/PaymentSourceEdit.xhtml">
+            <f:param name="customerCustomerId"
+                    value="#{customerHome.instance.customerId}"/>
+            <f:param name="paymentSourceFrom" value="Customer"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

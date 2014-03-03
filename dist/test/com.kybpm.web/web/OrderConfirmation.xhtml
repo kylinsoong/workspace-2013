@@ -1,0 +1,183 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich" template="layout/template.xhtml"
+	xmlns:a="http://richfaces.org/a4j">
+
+	<ui:define name="body">
+		<h:outputText styleClass="pageHeader" value="Your order has been processed!"/>
+		<h:form id="order" styleClass="edit">
+			<table><tr><td>
+				<h:panelGrid style="border:0px;">
+				<rich:panel style="width:600px;">
+					<f:facet name="header">Cart Contents</f:facet>
+					<div class="results" id="cartList"><h:outputText
+						value="Your cart is currently empty."
+						rendered="#{empty cart.order.productOrders}" /> <rich:dataTable
+						id="cartList" rendered="#{not empty cart.order.productOrders}"
+						var="_cart" value="#{cart}">
+						<rich:subTable var="_productOrder"
+							value="#{_cart.order.productOrders}">
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Item" />
+								</f:facet>
+								<h:outputText value="#{_productOrder.product.productName}" />
+							</rich:column>
+
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Quantity" />
+								</f:facet>
+								<h:outputText value="#{_productOrder.quantity}" />
+							</rich:column>
+
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Unit Cost" />
+								</f:facet>
+								<h:outputText value="#{_productOrder.product.price}">
+									<f:convertNumber pattern="$####.00" />
+								</h:outputText>
+							</rich:column>
+
+							<rich:column>
+								<f:facet name="header">
+									<h:outputText value="Total" />
+								</f:facet>
+								<h:outputText value="#{_productOrder.totalCost}">
+									<f:convertNumber pattern="$####.00" />
+								</h:outputText>
+							</rich:column>
+						</rich:subTable>
+
+						<f:facet name="footer">
+							<rich:columnGroup>
+								<rich:column rowspan="3" colspan="2">
+									<rich:spacer />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="TAX" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{cart.tax}">
+										<f:convertNumber pattern="$####.00" />
+									</h:outputText>
+								</rich:column>
+								<rich:column breakBefore="true">
+									<h:outputText value="SHIPPING" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{cart.shipping}">
+										<f:convertNumber pattern="$####.00" />
+									</h:outputText>
+								</rich:column>
+								<rich:column breakBefore="true">
+									<h:outputText value="TOTAL" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{cart.grandTotal}">
+										<f:convertNumber pattern="$####.00" />
+									</h:outputText>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+
+						<ui:remove>
+							<rich:subTable id="tax" value="#{cart}" var="_cart">
+								<rich:column>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="TAX" />
+									</f:facet>
+									<h:outputText value="#{_cart.tax}">
+										<f:convertNumber pattern="$####.00" />
+									</h:outputText>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="SHIPPING" />
+									</f:facet>
+									<h:outputText value="#{_cart.shipping}">
+										<f:convertNumber pattern="$####.00" />
+									</h:outputText>
+								</rich:column>
+								<rich:column>
+									<f:facet name="header">
+										<h:outputText value="TOTAL" />
+									</f:facet>
+									<h:outputText value="#{_cart.grandTotal}">
+										<f:convertNumber pattern="$####.00" />
+									</h:outputText>
+								</rich:column>
+							</rich:subTable>
+						</ui:remove>
+					</rich:dataTable></div>
+					<ui:remove>
+						<div width="100%">
+						<div style="margin-left: auto; margin-right: 0px; width: 100%">
+						<h:outputText value="TAX:" />&nbsp; <h:outputText
+							value="#{cart.tax}"
+							style="margin-left:auto; margin-right:0px; text-align:right">
+							<f:convertNumber pattern="$####.00" />
+						</h:outputText></div>
+						<div><h:outputText value="SHIPPING:" />&nbsp; <h:outputText
+							value="#{cart.shipping}"
+							style="margin-left:auto; margin-right:0px; text-align:right">
+							<f:convertNumber pattern="$####.00" />
+						</h:outputText></div>
+						<div><h:outputText value="TOTAL:" />&nbsp; <h:outputText
+							value="#{cart.total}"
+							style="margin-left:auto; margin-right:0px; text-align:right">
+							<f:convertNumber pattern="$####.00" />
+						</h:outputText></div>
+						</div>
+					</ui:remove>
+				</rich:panel>
+
+				<rich:panel style="width:600px;">
+					<f:facet name="header">Shipping Address</f:facet>
+
+						<s:decorate>
+						<ui:define name="label">Street1</ui:define>
+						<h:outputText id="street1" value="#{customer.address.street1}">
+						</h:outputText>
+						</s:decorate>
+						<s:decorate>
+						<ui:define name="label">Street2</ui:define>
+						<h:outputText id="street2" value="#{customer.address.street2}">
+						</h:outputText>
+						</s:decorate>
+						<s:decorate>
+						<ui:define name="label">City</ui:define>
+						<h:outputText id="city" value="#{customer.address.city}">
+						</h:outputText>
+						</s:decorate>
+						<s:decorate>
+						<ui:define name="label">State</ui:define>
+						<h:outputText id="state" value="#{customer.address.state}">
+						</h:outputText>
+						</s:decorate>
+						<s:decorate>
+						<ui:define name="label">Zip</ui:define>
+						<h:outputText id="zip" value="#{customer.address.zip}">
+						</h:outputText>
+						</s:decorate>
+				</rich:panel>
+				
+			</h:panelGrid>
+			</td><td valign="top" width="250">
+			<ui:include src="MenuPanel.xhtml"/>
+			</td>
+			</tr>
+			</table>
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>

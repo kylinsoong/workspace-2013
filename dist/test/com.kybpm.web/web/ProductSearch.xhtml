@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:a="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:s="http://jboss.com/products/seam/taglib">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>eBikes</title>
+	<link rel="shortcut icon" href="#{request.contextPath}/favicon.ico" />
+	<a:loadStyle src="resource:///stylesheet/theme.xcss" />
+	<a:loadStyle src="/stylesheet/theme.css" />
+	<ui:insert name="head" />
+	</head>
+
+	<body>
+	<style>
+.center {
+	text-align: center;
+}
+</style>
+	<rich:panel label="Product Search Filter" switchType="ajax" style="width:250px;" height="100" cellpadding="0" valign="top">
+
+		<f:facet name="header">Product Search Filter</f:facet>
+		<div>
+		<table>
+			<tr>
+				<td><ui:insert name="label">Search Type</ui:insert><img
+					border="0" height="1"
+					src="/eBikes/a4j/g/3_2_2.SR1images/spacer.gif" width="10" /></td>
+				<td><rich:comboBox defaultLabel="Product Name"
+					value="#{productList.searchType}">
+					<f:selectItem itemValue="Product Name" />
+					<f:selectItem itemValue="Product Description" />
+					<f:selectItem itemValue="Vendor" />
+				</rich:comboBox></td>
+			</tr>
+			<tr>
+				<td><ui:insert name="label">Product Search</ui:insert><img
+					border="0" height="1"
+					src="/eBikes/a4j/g/3_2_2.SR1images/spacer.gif" width="10" /></td>
+				<td><h:inputText id="keyword"
+					value="#{productList.searchField}" /><img border="0" height="1"
+					src="/eBikes/a4j/g/3_2_2.SR1images/spacer.gif" width="10" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><h:commandButton id="search"
+					value="Search" actionListener="#{inventory.search}" /></td>
+			</tr>
+		</table>
+		</div>
+	</rich:panel>
+	</body>
+	</html>
+</f:view>

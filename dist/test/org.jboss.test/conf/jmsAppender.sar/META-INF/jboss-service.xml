@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+  <mbean code="com.test.jms.log4j.mbean.JMSAppenderBean" name="jboss:service=JMSAppenderBean">
+    <attribute name="SubscriptionList">
+      <mbean name="jboss.system:type=Log4jService,service=Logging"/>
+      <notification type="jboss.logging.log4j.reconfigure"/>
+    </attribute>
+    <depends>jboss.messaging:name=JMSProvider,service=JMSProviderLoader</depends>
+    <depends>jboss.jca:service=ConnectionFactoryBinding,name=JmsXA</depends>
+  </mbean>
+</server>

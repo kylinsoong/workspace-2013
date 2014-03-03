@@ -1,0 +1,185 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <h:form id="paymentSourceSearch" styleClass="edit">
+
+        <rich:simpleTogglePanel label="PaymentSource Search Filter" switchType="ajax">
+
+            <s:decorate template="layout/display.xhtml">
+                <ui:define name="label">Card type</ui:define>
+                <h:inputText id="cardType" value="#{paymentSourceList.paymentSource.cardType}"/>
+            </s:decorate>
+
+
+        </rich:simpleTogglePanel>
+
+        <div class="actionButtons">
+            <h:commandButton id="search" value="Search" action="/PaymentSourceList.xhtml"/>
+            <s:button id="reset" value="Reset" includePageParams="false"/>
+        </div>
+
+    </h:form>
+
+    <rich:panel>
+        <f:facet name="header">PaymentSource Search Results</f:facet>
+    <div class="results" id="paymentSourceList">
+
+    <h:outputText value="The paymentSource search returned no results."
+               rendered="#{empty paymentSourceList.resultList}"/>
+
+    <rich:dataTable id="paymentSourceList"
+                var="_paymentSource"
+              value="#{paymentSourceList.resultList}"
+           rendered="#{not empty paymentSourceList.resultList}">
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Payment source id"/>
+                    <ui:param name="propertyPath" value="paymentSource.paymentSourceId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.paymentSourceId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Address address id"/>
+                    <ui:param name="propertyPath" value="paymentSource.address.addressId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.address.addressId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Card number"/>
+                    <ui:param name="propertyPath" value="paymentSource.cardNumber"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.cardNumber}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Card type"/>
+                    <ui:param name="propertyPath" value="paymentSource.cardType"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.cardType}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Cid"/>
+                    <ui:param name="propertyPath" value="paymentSource.cid"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.cid}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Customer customer id"/>
+                    <ui:param name="propertyPath" value="paymentSource.customer.customerId"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.customer.customerId}"/>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                <ui:include src="layout/sort.xhtml">
+                    <ui:param name="entityList" value="#{paymentSourceList}"/>
+                    <ui:param name="propertyLabel" value="Expiration date"/>
+                    <ui:param name="propertyPath" value="paymentSource.expirationDate"/>
+                </ui:include>
+            </f:facet>
+            <h:outputText value="#{_paymentSource.expirationDate}">
+                <s:convertDateTime type="date" dateStyle="short"/>
+            </h:outputText>
+        </h:column>
+        <rich:column styleClass="action">
+            <f:facet name="header">Action</f:facet>
+            <s:link view="/#{empty from ? 'PaymentSource' : from}.xhtml"
+                   value="#{empty from ? 'View' : 'Select'}"
+             propagation="#{empty from ? 'none' : 'default'}"
+                      id="paymentSource">
+                <f:param name="paymentSourcePaymentSourceId"
+                        value="#{_paymentSource.paymentSourceId}"/>
+            </s:link>
+            #{' '}
+            <s:link view="/PaymentSourceEdit.xhtml"
+                   value="Edit"
+             propagation="none"
+                      id="paymentSourceEdit"
+                rendered="#{empty from}">
+                <f:param name="paymentSourcePaymentSourceId"
+                        value="#{_paymentSource.paymentSourceId}"/>
+            </s:link>
+        </rich:column>
+    </rich:dataTable>
+
+    </div>
+    </rich:panel>
+
+    <div class="tableControl">
+
+        <s:link view="/PaymentSourceList.xhtml"
+            rendered="#{paymentSourceList.previousExists}"
+               value="#{messages.left}#{messages.left} First Page"
+                  id="firstPage">
+          <f:param name="firstResult" value="0"/>
+        </s:link>
+
+        <s:link view="/PaymentSourceList.xhtml"
+            rendered="#{paymentSourceList.previousExists}"
+               value="#{messages.left} Previous Page"
+                  id="previousPage">
+            <f:param name="firstResult"
+                    value="#{paymentSourceList.previousFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PaymentSourceList.xhtml"
+            rendered="#{paymentSourceList.nextExists}"
+               value="Next Page #{messages.right}"
+                  id="nextPage">
+            <f:param name="firstResult"
+                    value="#{paymentSourceList.nextFirstResult}"/>
+        </s:link>
+
+        <s:link view="/PaymentSourceList.xhtml"
+            rendered="#{paymentSourceList.nextExists}"
+               value="Last Page #{messages.right}#{messages.right}"
+                  id="lastPage">
+            <f:param name="firstResult"
+                    value="#{paymentSourceList.lastFirstResult}"/>
+        </s:link>
+
+    </div>
+
+    <s:div styleClass="actionButtons" rendered="#{empty from}">
+        <s:button view="/PaymentSourceEdit.xhtml"
+                    id="create"
+           propagation="none"
+                 value="Create paymentSource">
+            <f:param name="paymentSourcePaymentSourceId"/>
+        </s:button>
+    </s:div>
+
+</ui:define>
+
+</ui:composition>

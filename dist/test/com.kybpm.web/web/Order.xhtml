@@ -1,0 +1,252 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Order Details</f:facet>
+
+
+        <s:decorate id="orderTimestamp" template="layout/display.xhtml">
+            <ui:define name="label">Order timestamp</ui:define>
+            <h:outputText value="#{orderHome.instance.orderTimestamp}">
+                <s:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </s:decorate>
+
+        <s:decorate id="status" template="layout/display.xhtml">
+            <ui:define name="label">Status</ui:define>
+            <h:outputText value="#{orderHome.instance.status}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/OrderEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty orderFrom ? 'OrderList' : orderFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Address by bill address id</h:panelGroup>
+        </f:facet>
+    <div class="association" id="addressByBillAddressIdParent">
+
+        <h:outputText value="There is no addressByBillAddressId associated with this order."
+                   rendered="#{orderHome.instance.addressByBillAddressId == null}"/>
+
+        <rich:dataTable var="_address"
+                   value="#{orderHome.instance.addressByBillAddressId}"
+                rendered="#{orderHome.instance.addressByBillAddressId != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="addressByBillAddressIdTable">
+            <h:column>
+                <f:facet name="header">Address id</f:facet>
+                <h:outputText value="#{_address.addressId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">City</f:facet>
+                <h:outputText value="#{_address.city}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">State</f:facet>
+                <h:outputText value="#{_address.state}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street1</f:facet>
+                <h:outputText value="#{_address.street1}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street2</f:facet>
+                <h:outputText value="#{_address.street2}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zip</f:facet>
+                <h:outputText value="#{_address.zip}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewaddress"
+                     value="View"
+                      view="/Address.xhtml">
+                    <f:param name="addressAddressId"
+                           value="#{_address.addressId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Address by ship address id</h:panelGroup>
+        </f:facet>
+    <div class="association" id="addressByShipAddressIdParent">
+
+        <h:outputText value="There is no addressByShipAddressId associated with this order."
+                   rendered="#{orderHome.instance.addressByShipAddressId == null}"/>
+
+        <rich:dataTable var="_address"
+                   value="#{orderHome.instance.addressByShipAddressId}"
+                rendered="#{orderHome.instance.addressByShipAddressId != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="addressByShipAddressIdTable">
+            <h:column>
+                <f:facet name="header">Address id</f:facet>
+                <h:outputText value="#{_address.addressId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">City</f:facet>
+                <h:outputText value="#{_address.city}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">State</f:facet>
+                <h:outputText value="#{_address.state}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street1</f:facet>
+                <h:outputText value="#{_address.street1}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Street2</f:facet>
+                <h:outputText value="#{_address.street2}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Zip</f:facet>
+                <h:outputText value="#{_address.zip}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewaddress"
+                     value="View"
+                      view="/Address.xhtml">
+                    <f:param name="addressAddressId"
+                           value="#{_address.addressId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/manytoone.gif" style="vertical-align: middle; padding-right: 4px;"/>Customer</h:panelGroup>
+        </f:facet>
+    <div class="association" id="customerParent">
+
+        <h:outputText value="There is no customer associated with this order."
+                   rendered="#{orderHome.instance.customer == null}"/>
+
+        <rich:dataTable var="_customer"
+                   value="#{orderHome.instance.customer}"
+                rendered="#{orderHome.instance.customer != null}"
+              rowClasses="rvgRowOne,rvgRowTwo"
+                      id="customerTable">
+            <h:column>
+                <f:facet name="header">Customer id</f:facet>
+                <h:outputText value="#{_customer.customerId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Address address id</f:facet>
+                <h:outputText value="#{_customer.address.addressId}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">First name</f:facet>
+                <h:outputText value="#{_customer.firstName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Last name</f:facet>
+                <h:outputText value="#{_customer.lastName}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Password</f:facet>
+                <h:outputText value="#{_customer.password}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">User id</f:facet>
+                <h:outputText value="#{_customer.userId}"/>
+            </h:column>
+            <h:column styleClass="action">
+                <f:facet name="header">Action</f:facet>
+                <s:link id="viewcustomer"
+                     value="View"
+                      view="/Customer.xhtml">
+                    <f:param name="customerCustomerId"
+                           value="#{_customer.customerId}"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </div>
+    </rich:tab>
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Product orders</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="productOrdersChildren">
+
+        <h:outputText value="There are no productOrders associated with this order."
+                   rendered="#{empty orderHome.productOrders}"/>
+
+        <rich:dataTable value="#{orderHome.productOrders}"
+                       var="_productOrder"
+                  rendered="#{not empty orderHome.productOrders}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="productOrdersTable">
+            <rich:column sortBy="#{_productOrder.productOrderId}">
+                <f:facet name="header">Product order id</f:facet>
+                <h:outputText value="#{_productOrder.productOrderId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_productOrder.quantity}">
+                <f:facet name="header">Quantity</f:facet>
+                <h:outputText value="#{_productOrder.quantity}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectproductOrder"
+                     value="Select"
+                      view="/ProductOrder.xhtml">
+                    <f:param name="productOrderProductOrderId"
+                            value="#{_productOrder.productOrderId}"/>
+                    <f:param name="productOrderFrom" value="Order"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add productOrder"
+                view="/ProductOrderEdit.xhtml">
+            <f:param name="orderOrderId"
+                    value="#{orderHome.instance.orderId}"/>
+            <f:param name="productOrderFrom" value="Order"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

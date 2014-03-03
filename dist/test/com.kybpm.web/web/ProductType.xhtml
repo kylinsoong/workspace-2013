@@ -1,0 +1,109 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    template="layout/template.xhtml">
+
+<ui:define name="body">
+
+    <rich:panel>
+        <f:facet name="header">Product type Details</f:facet>
+
+
+        <s:decorate id="productType" template="layout/display.xhtml">
+            <ui:define name="label">Product type</ui:define>
+            <h:outputText value="#{productTypeHome.instance.productType}"/>
+        </s:decorate>
+
+        <div style="clear:both"/>
+
+    </rich:panel>
+
+    <div class="actionButtons">
+
+        <s:button view="/ProductTypeEdit.xhtml"
+                    id="edit"
+                 value="Edit"/>
+
+        <s:button view="/#{empty productTypeFrom ? 'ProductTypeList' : productTypeFrom}.xhtml"
+                    id="done"
+                 value="Done"/>
+
+    </div>
+
+    <rich:tabPanel switchType="ajax">
+
+    <rich:tab>
+        <f:facet name="label">
+            <h:panelGroup><h:graphicImage value="/img/onetomany.gif" style="vertical-align: middle; padding-right: 4px;"/>Products</h:panelGroup>
+        </f:facet>
+    <h:form styleClass="association" id="productsChildren">
+
+        <h:outputText value="There are no products associated with this productType."
+                   rendered="#{empty productTypeHome.products}"/>
+
+        <rich:dataTable value="#{productTypeHome.products}"
+                       var="_product"
+                  rendered="#{not empty productTypeHome.products}"
+                rowClasses="rvgRowOne,rvgRowTwo"
+                        id="productsTable">
+            <rich:column sortBy="#{_product.productId}">
+                <f:facet name="header">Product id</f:facet>
+                <h:outputText value="#{_product.productId}"/>
+            </rich:column>
+            <rich:column sortBy="#{_product.cost}">
+                <f:facet name="header">Cost</f:facet>
+                <h:outputText value="#{_product.cost}"/>
+            </rich:column>
+            <rich:column sortBy="#{_product.price}">
+                <f:facet name="header">Price</f:facet>
+                <h:outputText value="#{_product.price}"/>
+            </rich:column>
+            <rich:column sortBy="#{_product.productDescription}">
+                <f:facet name="header">Product description</f:facet>
+                <h:outputText value="#{_product.productDescription}"/>
+            </rich:column>
+            <rich:column sortBy="#{_product.productImage}">
+                <f:facet name="header">Product image</f:facet>
+                <h:outputText value="#{_product.productImage}"/>
+            </rich:column>
+            <rich:column sortBy="#{_product.productName}">
+                <f:facet name="header">Product name</f:facet>
+                <h:outputText value="#{_product.productName}"/>
+            </rich:column>
+            <rich:column sortBy="#{_product.quantity}">
+                <f:facet name="header">Quantity</f:facet>
+                <h:outputText value="#{_product.quantity}"/>
+            </rich:column>
+            <h:column>
+                <f:facet name="header">Action</f:facet>
+                <s:link id="selectproduct"
+                     value="Select"
+                      view="/Product.xhtml">
+                    <f:param name="productProductId"
+                            value="#{_product.productId}"/>
+                    <f:param name="productFrom" value="ProductType"/>
+                </s:link>
+            </h:column>
+        </rich:dataTable>
+
+    </h:form>
+
+    <div class="actionButtons">
+        <s:button
+               value="Add product"
+                view="/ProductEdit.xhtml">
+            <f:param name="productTypeProductTypeId"
+                    value="#{productTypeHome.instance.productTypeId}"/>
+            <f:param name="productFrom" value="ProductType"/>
+        </s:button>
+    </div>
+    </rich:tab>
+</rich:tabPanel>
+</ui:define>
+
+</ui:composition>

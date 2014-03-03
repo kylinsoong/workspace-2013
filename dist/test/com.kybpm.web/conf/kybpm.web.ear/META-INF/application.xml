@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://java.sun.com/xml/ns/javaee" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_5.xsd"
+             version="5">
+    
+   <display-name>kybpm.web-1.0</display-name>
+   
+   <module>
+      <web>
+         <web-uri>kybpm.web-1.0.war</web-uri>
+         <context-root>/kybpm</context-root>
+      </web>
+   </module>
+   
+   <module>
+      <ejb>kybpm.web-1.0.jar</ejb>
+   </module>
+   
+   <!--  
+   <module>
+      <ejb>kybpm.common-1.0.jar</ejb>
+   </module>
+   
+   <module>
+      <ejb>kybpm.calculate-1.0.jar</ejb>
+   </module>
+    
+   <module>
+      <ejb>kybpm.customer-1.0.jar</ejb>
+   </module>
+   
+   <module>
+      <ejb>kybpm.inventory-1.0.jar</ejb>
+   </module>
+   
+   <module>
+      <ejb>kybpm.order-1.0.jar</ejb>
+   </module>
+   -->
+   <!-- Seam and EL -->
+   <module>
+       <ejb>jboss-seam.jar</ejb>
+   </module>    
+    
+</application>

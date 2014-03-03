@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>      
+
+	<mbean code="com.test.jmx.demo.helloworld.HelloWorld" name="kylindomain:id=HelloWorld">
+	</mbean>
+  
+</server>
