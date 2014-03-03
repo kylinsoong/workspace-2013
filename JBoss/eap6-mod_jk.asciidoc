@@ -1,0 +1,21 @@
+* installing httpd
+** download, unzip, for configuring convenient we copy httpd folder to Sysytem /etc folder;
+** remove SSL, navigate to httpd/conf.d folder, rename ssl.conf file to ssl.conf.disabled;
+** modify httpd/conf/httpd.conf file, made DocumentRoot, etc, point to the right direction, for example, DocumentRoot should point to /etc/httpd/www/html;
+** execute httpd/sbin/apachectl start, make sure httpd install correct.
+** execute httpd/sbin/apachectl stop, stop httpd
+
+* install & configure mod_jk
+** download from link [1], unzip, jboss-eap-6.0/modules will be generated
+** copy jboss-eap-6.0/modules/native/lib/httpd/modules/mod_jk.so to httpd/modules folder
+** create workers.properties under httpd/conf(demo configuration: jboss-eap-6.0/modules/native/etc/httpd/conf/workers.properties.sample)
+** create mod_jk.conf under httpd/conf.d(demo configuration: jboss-eap-6.0/modules/native/etc/httpd/conf/mod_jk.conf.sample)
+** create uriworkermap.properties under httpd/conf, ehich this should point to balancer defined in workers.properties
+** execute httpd/sbin/apachectl start, make sure configuration is correct.
+
+* JBoss Side configuration
+** need use standalone-ha.xml or standalone-full-ha.xml start JBoss,
+** need add 2 System properties: jvmRoute=node1,UseJK=true
+
+* Test use EWS 80 port
+

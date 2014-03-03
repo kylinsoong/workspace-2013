@@ -1,0 +1,26 @@
+Lockness
+--------
+. Copy 'com.cr.lockness.Lockness_3.1.0.jar' to ECLIPSE_HOME/plugins
+. Restart Eclipse
+
+Samurai
+-------
+. Use the follwing command
+----
+java -jar samurai.jar
+----
+
+threadCount
+-----------
+. copy 'threadCount.sh' to JBOSS_HOME/bin
+. make sure JBoss is running
+. use the followng command to run 'threadCount.sh'
+----
+./threadCount.sh
+----
+Output the monitor result to console directly.
+
+----
+nohup ./threadCount.sh >./../server/default/log/threadCcount.log
+----
+Out put the moniitor result to a file(JBOSS_HOME/server/default/log/threadCcount.log) 

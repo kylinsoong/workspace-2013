@@ -1,0 +1,224 @@
+What's this?
+------------
+
+* Primary purpose of this documents is testing JBoss's reaction while Database side irreparable error occurred.
+
+* JCA JBoss implementation feature test 
+
+
+Environment:
+------------
+* Oracle 11g R2
+* JBoss-eap-5.0
+* Eclipse indigo 3.7
+
+
+
+
+
+Procedure:
+----------
+
+Part One:
+^^^^^^^^
+
+* create user (GSSTEST/redhat) against Oracle DB
+
+* create table hktdc use step 1 user.
+----
+create table hktdc(id int);
+----
+
+* deploy './conf/oracle-xa-ds.xml' to JBoss
+
+* Start JBoss
+----
+./run.sh -c production
+----
+
+* run java class 'DataSourceTest', the 'DataSourceTest' will output the following:
+----
+	Get a Connection From JBoss DB connection pool
+	input:
+----
+
+NOTE: this will generate a pending databse connection
+
+* connect to Oracle DB use sysdba user, shutdown the database instance immediate
+----
+// use dba account connect to oracle db
+	sqlplus / as sysdba;
+	shutdown immediate;
+----
+
+NOTE: we can check JBoss log file, although pending connection exist(Database connection exist in JBoss connection pool), but no any error/Warn/info log come out due to databse shutdown. We can get the conclusion, JBoss do not know any info of Database side.
+
+* back to java class 'DataSourceTest' side input char 'y' like bellow
+----
+	input:
+	y
+----
+
+NOTE: char 'y' will execute java code which use step 4 connection execute DB insert action, actually, the db already shutdown.
+
+* analysing JBoss log file we will find the follwoing warn log come out:
+----
+2012-07-02 17:03:31,114 WARN  [org.jboss.resource.connectionmanager.TxConnectionManager] (RMI TCP Connection(14)-127.0.0.1) Connection error occured: org.jboss.resource.connectionmanager.TxConnectionManager$TxConnectionEventListener@1d94155[state=NORMAL mc=org.jboss.resource.adapter.jdbc.xa.XAManagedConnection@c63847 handles=1 lastUse=1341218586628 permit=true trackByTx=false mcp=org.jboss.resource.connectionmanager.JBossManagedConnectionPool$OnePool@198f101 context=org.jboss.resource.connectionmanager.InternalManagedConnectionPool@1f681ad xaResource=org.jboss.resource.adapter.jdbc.xa.XAManagedConnection@c63847 txSync=null]
+java.sql.SQLRecoverableException: No more data to read from socket
+	at oracle.jdbc.driver.T4CMAREngine.unmarshalUB1(T4CMAREngine.java:1200)
+	at oracle.jdbc.driver.T4CMAREngine.unmarshalSB1(T4CMAREngine.java:1155)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:279)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:186)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:521)
+	at oracle.jdbc.driver.T4CPreparedStatement.doOall8(T4CPrep
+----
+
+''''
+
+Part Two:
+^^^^^^^^^
+
+* make sure Oracle DB is running, Part one created table still exists.
+* run java class 'DBConnectionReadWriteTest', the 'DBConnectionReadWriteTest' will output the following:
+----
+	Create a Db Connection use JDBC
+	input:
+----
+
+NOTE: step 4 will generate a pending databse connection
+
+* connect to Oracle DB use sysdba user, shutdown the database instance immediate
+
+NOTE: although DB instance shutdown, java code do not know, pending connection still existed, this is a half-closed connection.
+
+* back to java class 'DBConnectionReadWriteTest' side input char 'y' like bellow
+----
+	input:
+	y
+----
+
+NOTE: 'y' indicate we will use the above half-closed connection select from DB table & insert into DB table.
+
+* analysing DBConnectionReadWriteTest class side exception trace:
+----
+Exception in thread "main" java.sql.SQLRecoverableException: No more data to read from socket
+	at oracle.jdbc.driver.T4CMAREngine.unmarshalUB1(T4CMAREngine.java:1200)
+	at oracle.jdbc.driver.T4CMAREngine.unmarshalSB1(T4CMAREngine.java:1155)
+	at oracle.jdbc.driver.T4CTTIfun.receive(T4CTTIfun.java:279)
+	at oracle.jdbc.driver.T4CTTIfun.doRPC(T4CTTIfun.java:186)
+	at oracle.jdbc.driver.T4C8Oall.doOALL(T4C8Oall.java:521)
+	at oracle.jdbc.driver.T4CStatement.doOall8(T4CStatement.java:194)
+	at oracle.jdbc.driver.T4CStatement.executeForDescribe(T4CStatement.java:853)
+	at oracle.jdbc.driver.OracleStatement.executeMaybeDescribe(OracleStatement.java:1145)
+	at oracle.jdbc.driver.OracleStatement.doExecuteWithTimeout(OracleStatement.java:1267)
+	at oracle.jdbc.driver.OracleStatement.executeQuery(OracleStatement.java:1469)
+	at oracle.jdbc.driver.OracleStatementWrapper.executeQuery(OracleStatementWrapper.java:389)
+	at com.kylin.datasource.lab1.DBConnectionReadWriteTest.readTest(DBConnectionReadWriteTest.java:51)
+	at com.kylin.datasource.lab1.DBConnectionReadWriteTest.main(DBConnectionReadWriteTest.java:36)
+----
+
+Part Threee:
+^^^^^^^^^^^^
+
+* Check the number of sessions the Oracle database was configured to allow
+----
+SELECT name, value from v$parameter where name = 'sessions';
+----
+
+* Check the number of sessions currently active
+----
+select count (*) from v$session;
+----
+
+* re-configure './conf/oracle-xa-ds.xml', set the max-pool-size is 500, re-deploy to JBoss
+
+* run java class 'InitialConnection', this will cause DB connection size exceed the Oracle database maximum allowed connection size,the following WARN can be found from JBoss log file.
+----
+2012-07-03 12:22:48,043 WARN  [org.jboss.resource.connectionmanager.JBossManagedConnectionPool] (RMI TCP Connection(3)-127.0.0.1) Throwable while attempting to get a new connection: null
+org.jboss.resource.JBossResourceException: Could not create connection; - nested throwable: (java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12516, TNS:listener could not find available handler with matching protocol stack
+ )
+	at org.jboss.resource.adapter.jdbc.xa.XAManagedConnectionFactory.getXAManagedConnection(XAManagedConnectionFactory.java:465)
+	at org.jboss.resource.adapter.jdbc.xa.XAManagedConnectionFactory.createManagedConnection(XAManagedConnectionFactory.java:409)
+	at org.jboss.resource.connectionmanager.InternalManagedConnectionPool.createConnectionEventListener(InternalManagedConnectionPool.java:633)
+	at org.jboss.resource.connectionmanager.InternalManagedConnectionPool.getConnection(InternalManagedConnectionPool.java:267)
+	at org.jboss.resource.connectionmanager.JBossManagedConnectionPool$BasePool.getConnection(JBossManagedConnectionPool.java:659)
+	at org.jboss.resource.connectionmanager.BaseConnectionManager2.getManagedConnection(BaseConnectionManager2.java:404)
+	at org.jboss.resource.connectionmanager.TxConnectionManager.getManagedConnection(TxConnectionManager.java:381)
+	at org.jboss.resource.connectionmanager.BaseConnectionManager2.allocateConnection(BaseConnectionManager2.java:496)
+	at org.jboss.resource.connectionmanager.BaseConnectionManager2$ConnectionManagerProxy.allocateConnection(BaseConnectionManager2.java:941)
+	at org.jboss.resource.adapter.jdbc.WrapperDataSource.getConnection(WrapperDataSource.java:89)
+	at sun.reflect.GeneratedMethodAccessor457.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.jboss.resource.adapter.jdbc.remote.WrapperDataSourceService.doDataSourceMethod(WrapperDataSourceService.java:347)
+	at org.jboss.resource.adapter.jdbc.remote.WrapperDataSourceService.invoke(WrapperDataSourceService.java:201)
+	at sun.reflect.GeneratedMethodAccessor456.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at org.jboss.mx.interceptor.ReflectedDispatcher.invoke(ReflectedDispatcher.java:157)
+	at org.jboss.mx.server.Invocation.dispatch(Invocation.java:96)
+	at org.jboss.mx.server.Invocation.invoke(Invocation.java:88)
+	at org.jboss.mx.server.AbstractMBeanInvoker.invoke(AbstractMBeanInvoker.java:264)
+	at org.jboss.mx.server.MBeanServerImpl.invoke(MBeanServerImpl.java:668)
+	at org.jboss.invocation.jrmp.server.JRMPInvoker$MBeanServerAction.invoke(JRMPInvoker.java:855)
+	at org.jboss.invocation.jrmp.server.JRMPInvoker.invoke(JRMPInvoker.java:422)
+	at sun.reflect.GeneratedMethodAccessor455.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:25)
+	at java.lang.reflect.Method.invoke(Method.java:597)
+	at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:303)
+	at sun.rmi.transport.Transport$1.run(Transport.java:159)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at sun.rmi.transport.Transport.serviceCall(Transport.java:155)
+	at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:535)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:790)
+	at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:649)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+Caused by: java.sql.SQLException: Listener refused the connection with the following error:
+ORA-12516, TNS:listener could not find available handler with matching protocol stack
+ 
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:412)
+	at oracle.jdbc.driver.PhysicalConnection.<init>(PhysicalConnection.java:531)
+	at oracle.jdbc.driver.T4CConnection.<init>(T4CConnection.java:221)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:32)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:503)
+	at oracle.jdbc.pool.OracleDataSource.getPhysicalConnection(OracleDataSource.java:280)
+	at oracle.jdbc.xa.client.OracleXADataSource.getPooledConnection(OracleXADataSource.java:466)
+	at oracle.jdbc.xa.client.OracleXADataSource.getXAConnection(OracleXADataSource.java:154)
+	at oracle.jdbc.xa.client.OracleXADataSource.getXAConnection(OracleXADataSource.java:99)
+	at org.jboss.resource.adapter.jdbc.xa.XAManagedConnectionFactory.getXAManagedConnection(XAManagedConnectionFactory.java:449)
+	... 37 more
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12516, TNS:listener could not find available handler with matching protocol stack
+ 
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:385)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1042)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:301)
+	... 46 more
+----
+
+* run java class 'JDBCInitialConnection', this also cause DB connection size exceed the Oracle database maximum allowed connection size, but in this calss we use JDBC create DB connection. The exception we can find from Eclipse console:
+----
+java.sql.SQLException: Listener refused the connection with the following error:
+	ORA-12516, TNS:listener could not find available handler with matching protocol stack
+ 	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:412)
+	at oracle.jdbc.driver.PhysicalConnection.<init>(PhysicalConnection.java:531)
+	at oracle.jdbc.driver.T4CConnection.<init>(T4CConnection.java:221)
+	at oracle.jdbc.driver.T4CDriverExtension.getConnection(T4CDriverExtension.java:32)
+	at oracle.jdbc.driver.OracleDriver.connect(OracleDriver.java:503)
+	at java.sql.DriverManager.getConnection(DriverManager.java:620)
+	at java.sql.DriverManager.getConnection(DriverManager.java:200)
+	at com.kylin.datasource.lab1.JDBCInitialConnection.getConnection(JDBCInitialConnection.java:22)
+	at com.kylin.datasource.lab1.JDBCInitialConnection.main(JDBCInitialConnection.java:35)
+Caused by: oracle.net.ns.NetException: Listener refused the connection with the following error:
+ORA-12516, TNS:listener could not find available handler with matching protocol stack
+	at oracle.net.ns.NSProtocol.connect(NSProtocol.java:385)
+	at oracle.jdbc.driver.T4CConnection.connect(T4CConnection.java:1042)
+	at oracle.jdbc.driver.T4CConnection.logon(T4CConnection.java:301)
+	... 8 more
+----
+
+NOTE: We can get a conclusion, JBoss treat all DB server side error as normal, while DB connection size exceed the Oracle database maximum allowed connection size, only Warn info through.
+

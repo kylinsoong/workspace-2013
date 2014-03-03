@@ -1,0 +1,36 @@
+WildFly 8 最终版于 2014年2月11日发布，WildFly 8 是第三代 JBoss 架构下（模块化，轻量化，云支持）的第二次大的发布（JBoss 7 为第一次）。本文包括测试使用 WildFly 8 的一些记录。
+
+下载安装
+从 http://wildfly.org/downloads/ 下载 wildfly-8.0.0.Final.zip，解压安装生成 wildfly-8.0.0.Final，该目录为 WildFly 8 的安装目录。
+
+创建管理用户
+进入到 wildfly-8.0.0.Final/bin/ 目录下，使用 add-user.sh 脚本创建管理用户如下：
+---
+[kylin@localhost wildfly]$ cd wildfly-8.0.0.Final/bin/
+[kylin@localhost bin]$ ./add-user.sh admin password1!
+Added user 'admin' to file '/home/kylin/work/wildfly/wildfly-8.0.0.Final/standalone/configuration/mgmt-users.properties'
+Added user 'admin' to file '/home/kylin/work/wildfly/wildfly-8.0.0.Final/domain/configuration/mgmt-users.properties'
+---
+
+启动测试
+同样在 wildfly-8.0.0.Final/bin/ 目录下执行
+---
+./standalone.sh
+---
+完成启动。Linux 查看 WildFly 8 启动绑定的端口
+---
+[root@localhost ~]# netstat -antulop | grep 11622
+tcp        0      0 127.0.0.1:9990              0.0.0.0:*                   LISTEN      11622/java          off (0.00/0/0)
+tcp        0      0 127.0.0.1:8080              0.0.0.0:*                   LISTEN      11622/java          off (0.00/0/0)
+---
+可以看出，到 WildFly 8 绑定的端口仅为2个（之前的 JBoss 4 等启动会绑定很多端口），这是由于第三代 JBoss 架构下对云的支持，多个监听端口不利于在云端虚拟的环境中运行JBoss。两个端口分别作用：
+ 9990 - HTTP/JSON Management, HTTP Upgraded Remoting - (Native Management & JMX), Web Administration Console
+ 8080 - HTTP (Servlet, JAX-RS, JAX-WS), Web Sockets, HTTP Upgraded Remoting (EJB Invocation, Remote JNDI)
+使用 admin/password1! 登录 http://localhost:9990/console，可以测试 WildFly 8 管理界面。
+
+
+
+
+
+
+

@@ -1,0 +1,668 @@
+2012-06-26 11:13:38
+Full thread dump Java HotSpot(TM) Server VM (20.6-b01 mixed mode):
+
+"Attach Listener" daemon prio=10 tid=0x50d08000 nid=0x1f49 waiting on condition [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+"http-127.0.0.1-8080-2" daemon prio=10 tid=0x5151c400 nid=0x1ccf waiting on condition [0x5147d000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at com.kylin.troubleshooting.hang.Counter.getCount(Counter.java:8)
+	- locked <0x555037f0> (a java.lang.Class for com.kylin.troubleshooting.hang.Counter)
+	at com.kylin.troubleshooting.hang.CountServlet.doPost(CountServlet.java:20)
+	at com.kylin.troubleshooting.hang.CountServlet.doGet(CountServlet.java:15)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.jboss.web.tomcat.filters.ReplyHeaderFilter.doFilter(ReplyHeaderFilter.java:96)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:235)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.jboss.web.tomcat.security.SecurityAssociationValve.invoke(SecurityAssociationValve.java:183)
+	at org.jboss.web.tomcat.security.JaccContextValve.invoke(JaccContextValve.java:95)
+	at org.jboss.web.tomcat.security.SecurityContextEstablishmentValve.process(SecurityContextEstablishmentValve.java:126)
+	at org.jboss.web.tomcat.security.SecurityContextEstablishmentValve.invoke(SecurityContextEstablishmentValve.java:70)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.jboss.web.tomcat.service.jca.CachedConnectionValve.invoke(CachedConnectionValve.java:158)
+	at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:566)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.jboss.web.tomcat.service.request.ActiveRequestResponseCacheValve.internalProcess(ActiveRequestResponseCacheValve.java:74)
+	at org.jboss.web.tomcat.service.request.ActiveRequestResponseCacheValve.invoke(ActiveRequestResponseCacheValve.java:47)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:330)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:829)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:599)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:451)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"http-127.0.0.1-8080-1" daemon prio=10 tid=0x5151f800 nid=0x1cce in Object.wait() [0x50a7d000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9d93fc0> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+	at java.lang.Object.wait(Object.java:485)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.await(JIoEndpoint.java:420)
+	- locked <0xa9d93fc0> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:446)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"ZipFile Lock Reaper" daemon prio=10 tid=0x446f9800 nid=0x1c9e in Object.wait() [0x4c4fe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa1705e0> (a java.util.TaskQueue)
+	at java.util.TimerThread.mainLoop(Timer.java:509)
+	- locked <0xaa1705e0> (a java.util.TaskQueue)
+	at java.util.TimerThread.run(Timer.java:462)
+
+   Locked ownable synchronizers:
+	- None
+
+"ajp-127.0.0.1-8009-Acceptor-0" daemon prio=10 tid=0x448fa800 nid=0x1c42 runnable [0x4c45c000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaa11f9e8> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.apache.tomcat.util.net.DefaultServerSocketFactory.acceptSocket(DefaultServerSocketFactory.java:61)
+	at org.apache.tomcat.util.net.JIoEndpoint$Acceptor.run(JIoEndpoint.java:314)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"http-127.0.0.1-8080-Acceptor-0" daemon prio=10 tid=0x45fcc800 nid=0x1c41 runnable [0x4c2fe000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xa9da0618> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.apache.tomcat.util.net.DefaultServerSocketFactory.acceptSocket(DefaultServerSocketFactory.java:61)
+	at org.apache.tomcat.util.net.JIoEndpoint$Acceptor.run(JIoEndpoint.java:314)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"JBossLifeThread" prio=10 tid=0x4603f400 nid=0x1c40 in Object.wait() [0x4c25c000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa170cc8> (a java.lang.Object)
+	at java.lang.Object.wait(Object.java:485)
+	at org.jboss.bootstrap.AbstractServerImpl$LifeThread.run(AbstractServerImpl.java:866)
+	- locked <0xaa170cc8> (a java.lang.Object)
+
+   Locked ownable synchronizers:
+	- None
+
+"Thread-15" daemon prio=10 tid=0x4e31ec00 nid=0x1c39 waiting on condition [0x4c65c000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at org.jboss.messaging.core.impl.memory.SimpleMemoryManager$MemoryRunnable.run(SimpleMemoryManager.java:126)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"JCA PoolFiller" prio=10 tid=0x4c51a000 nid=0x1c38 in Object.wait() [0x4c6ad000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa17fe58> (a java.util.LinkedList)
+	at java.lang.Object.wait(Object.java:485)
+	at org.jboss.resource.connectionmanager.PoolFiller.run(PoolFiller.java:87)
+	- locked <0xaa17fe58> (a java.util.LinkedList)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"HSQLDB Timer @1cb55c5" daemon prio=10 tid=0x4b8cc800 nid=0x1c37 in Object.wait() [0x4c6fe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9cfb278> (a org.hsqldb.lib.HsqlTimer$TaskQueue)
+	at org.hsqldb.lib.HsqlTimer$TaskQueue.park(Unknown Source)
+	- locked <0xa9cfb278> (a org.hsqldb.lib.HsqlTimer$TaskQueue)
+	at org.hsqldb.lib.HsqlTimer.nextTask(Unknown Source)
+	- locked <0xa9cfb278> (a org.hsqldb.lib.HsqlTimer$TaskQueue)
+	at org.hsqldb.lib.HsqlTimer$TaskRunner.run(Unknown Source)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_QuartzSchedulerThread" prio=10 tid=0x501a6800 nid=0x1c36 sleeping[0x4ca5c000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at org.quartz.core.QuartzSchedulerThread.run(QuartzSchedulerThread.java:394)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-9" prio=10 tid=0x50314000 nid=0x1c35 in Object.wait() [0x4caad000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-8" prio=10 tid=0x48b8fc00 nid=0x1c34 in Object.wait() [0x4cafe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-7" prio=10 tid=0x4b8e9400 nid=0x1c33 in Object.wait() [0x4cc5c000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-6" prio=10 tid=0x487e1800 nid=0x1c32 in Object.wait() [0x4ccad000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-5" prio=10 tid=0x4c323000 nid=0x1c31 in Object.wait() [0x4ccfe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-4" prio=10 tid=0x48a50800 nid=0x1c30 in Object.wait() [0x4d050000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-3" prio=10 tid=0x4db83000 nid=0x1c2f in Object.wait() [0x4d0a1000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-2" prio=10 tid=0x4e33fc00 nid=0x1c2e in Object.wait() [0x4d0f2000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-1" prio=10 tid=0x501da400 nid=0x1c2d in Object.wait() [0x4d169000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"DefaultQuartzScheduler_Worker-0" prio=10 tid=0x50159000 nid=0x1c2c in Object.wait() [0x4d1ba000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.getNextRunnable(SimpleThreadPool.java:428)
+	- locked <0xa9c24358> (a java.lang.Object)
+	at org.quartz.simpl.SimpleThreadPool.access$000(SimpleThreadPool.java:47)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:518)
+
+   Locked ownable synchronizers:
+	- None
+
+"WorkManager(2)-1" daemon prio=10 tid=0x50148800 nid=0x1c2b waiting on condition [0x4d20b000]
+   java.lang.Thread.State: WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0xa9990d58> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.park(LockSupport.java:156)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1987)
+	at java.util.concurrent.PriorityBlockingQueue.take(PriorityBlockingQueue.java:220)
+	at org.jboss.resource.adapter.mail.inflow.NewMsgsWorker.run(NewMsgsWorker.java:76)
+	at org.jboss.resource.work.WorkWrapper.execute(WorkWrapper.java:205)
+	at org.jboss.util.threadpool.BasicTaskWrapper.run(BasicTaskWrapper.java:260)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- <0xa997b400> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)
+
+"AOPListner" daemon prio=10 tid=0x4bd05400 nid=0x1c2a waiting on condition [0x4d25c000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at org.jboss.console.plugins.AOPLister$RefreshPoller.run(AOPLister.java:898)
+
+   Locked ownable synchronizers:
+	- None
+
+"ContainerBackgroundProcessor[StandardEngine[jboss.web]]" daemon prio=10 tid=0x495c5c00 nid=0x1c29 waiting on condition [0x4fb57000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1590)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"PooledInvokerAcceptor#0-4445" prio=10 tid=0x497f9400 nid=0x1c28 runnable [0x4d2ad000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaa183850> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jboss.invocation.pooled.server.PooledInvoker.run(PooledInvoker.java:262)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"RMI TCP Accept-4444" daemon prio=10 tid=0x4a699c00 nid=0x1c27 runnable [0x4d2fe000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaab267e8> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:369)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:341)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"Thread-12" prio=10 tid=0x4ab96800 nid=0x1c26 in Object.wait() [0x4da5c000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x64c9a9a8> (a java.lang.Object)
+	at com.arjuna.ats.internal.arjuna.recovery.PeriodicRecovery.doPeriodicWait(PeriodicRecovery.java:675)
+	at com.arjuna.ats.internal.arjuna.recovery.PeriodicRecovery.run(PeriodicRecovery.java:434)
+	- locked <0x64c9a9a8> (a java.lang.Object)
+
+   Locked ownable synchronizers:
+	- None
+
+"Listener:4712" daemon prio=10 tid=0x4cff5c00 nid=0x1c25 runnable [0x4daad000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaa1a8ee0> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at com.arjuna.ats.internal.arjuna.recovery.Listener.run(Listener.java:118)
+
+   Locked ownable synchronizers:
+	- None
+
+"Thread-11" daemon prio=10 tid=0x4e478000 nid=0x1c23 waiting on condition [0x4daff000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at com.arjuna.ats.internal.arjuna.recovery.ExpiredEntryMonitor.run(ExpiredEntryMonitor.java:237)
+
+   Locked ownable synchronizers:
+	- None
+
+"Thread-10" daemon prio=10 tid=0x4e0fb400 nid=0x1c22 in Object.wait() [0x4dd5c000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa1ab0d0> (a java.util.LinkedList)
+	at java.lang.Object.wait(Object.java:485)
+	at com.arjuna.ats.arjuna.coordinator.TransactionReaper.waitForCancellations(TransactionReaper.java:397)
+	- locked <0xaa1ab0d0> (a java.util.LinkedList)
+	at com.arjuna.ats.internal.arjuna.coordinator.ReaperWorkerThread.run(ReaperWorkerThread.java:74)
+
+   Locked ownable synchronizers:
+	- None
+
+"Thread-9" daemon prio=10 tid=0x4e340400 nid=0x1c21 in Object.wait() [0x4ddad000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa1aa638> (a com.arjuna.ats.arjuna.coordinator.TransactionReaper)
+	at com.arjuna.ats.internal.arjuna.coordinator.ReaperThread.run(ReaperThread.java:104)
+	- locked <0xaa1aa638> (a com.arjuna.ats.arjuna.coordinator.TransactionReaper)
+
+   Locked ownable synchronizers:
+	- None
+
+"Listener:4713" daemon prio=10 tid=0x4d8fb000 nid=0x1c20 runnable [0x4ddfe000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaa1b8778> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at com.arjuna.ats.internal.arjuna.recovery.Listener.run(Listener.java:118)
+
+   Locked ownable synchronizers:
+	- None
+
+"AcceptorThread[ServerSocket[addr=/127.0.0.1,port=0,localport=4446]]" prio=10 tid=0x4ae53c00 nid=0x1c1f runnable [0x4df5c000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaa1ba7b8> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker.accept(SocketServerInvoker.java:1169)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker.access$200(SocketServerInvoker.java:69)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker$AcceptThread.run(SocketServerInvoker.java:1080)
+
+   Locked ownable synchronizers:
+	- None
+
+"ServerSocketRefresh" daemon prio=10 tid=0x4cdf6c00 nid=0x1c1e in Object.wait() [0x4dfad000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa211ae0> (a java.lang.Object)
+	at java.lang.Object.wait(Object.java:485)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker$ServerSocketRefresh.run(SocketServerInvoker.java:904)
+	- locked <0xaa211ae0> (a java.lang.Object)
+
+   Locked ownable synchronizers:
+	- None
+
+"HDScanner" prio=10 tid=0x4b8f9400 nid=0x1c1d waiting on condition [0x4dffe000]
+   java.lang.Thread.State: TIMED_WAITING (parking)
+	at sun.misc.Unsafe.park(Native Method)
+	- parking to wait for  <0xa900cb08> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+	at java.util.concurrent.locks.LockSupport.parkNanos(LockSupport.java:196)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2025)
+	at java.util.concurrent.DelayQueue.take(DelayQueue.java:164)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:609)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$DelayedWorkQueue.take(ScheduledThreadPoolExecutor.java:602)
+	at java.util.concurrent.ThreadPoolExecutor.getTask(ThreadPoolExecutor.java:947)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:907)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"AcceptorThread[ServerSocket[addr=/127.0.0.1,port=0,localport=3873]]" prio=10 tid=0x4cdb3400 nid=0x1c1c runnable [0x4e55c000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xaa213a70> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker.accept(SocketServerInvoker.java:1169)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker.access$200(SocketServerInvoker.java:69)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker$AcceptThread.run(SocketServerInvoker.java:1080)
+
+   Locked ownable synchronizers:
+	- None
+
+"ServerSocketRefresh" daemon prio=10 tid=0x4ab28800 nid=0x1c1b in Object.wait() [0x4e5ad000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xaa221380> (a java.lang.Object)
+	at java.lang.Object.wait(Object.java:485)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker$ServerSocketRefresh.run(SocketServerInvoker.java:904)
+	- locked <0xaa221380> (a java.lang.Object)
+
+   Locked ownable synchronizers:
+	- None
+
+"secondaryServerSocketThread[0]" daemon prio=10 tid=0x4ce90000 nid=0x1c1a runnable [0x4e5fe000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xa9c558d8> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jboss.remoting.transport.bisocket.BisocketServerInvoker$SecondaryServerSocketThread$1.run(BisocketServerInvoker.java:1187)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at org.jboss.remoting.transport.bisocket.BisocketServerInvoker$SecondaryServerSocketThread.run(BisocketServerInvoker.java:1183)
+
+   Locked ownable synchronizers:
+	- None
+
+"AcceptorThread[ServerSocket[addr=/127.0.0.1,port=0,localport=4457]]" prio=10 tid=0x5197bc00 nid=0x1c19 runnable [0x4ec68000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0xa9d87f80> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker.accept(SocketServerInvoker.java:1169)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker.access$200(SocketServerInvoker.java:69)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker$AcceptThread.run(SocketServerInvoker.java:1080)
+
+   Locked ownable synchronizers:
+	- None
+
+"ServerSocketRefresh" daemon prio=10 tid=0x50360000 nid=0x1c18 in Object.wait() [0x4ecb9000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9d91738> (a java.lang.Object)
+	at java.lang.Object.wait(Object.java:485)
+	at org.jboss.remoting.transport.socket.SocketServerInvoker$ServerSocketRefresh.run(SocketServerInvoker.java:904)
+	- locked <0xa9d91738> (a java.lang.Object)
+
+   Locked ownable synchronizers:
+	- None
+
+"JBoss System Threads(1)-2" daemon prio=10 tid=0x5011d400 nid=0x1c10 runnable [0x4fbb8000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0x64f69d90> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jnp.server.Main$AcceptHandler.run(Main.java:597)
+	at org.jboss.util.threadpool.RunnableTaskWrapper.run(RunnableTaskWrapper.java:147)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- <0xa9c22b38> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)
+
+"GC Daemon" daemon prio=10 tid=0x4c9fbc00 nid=0x1c0f in Object.wait() [0x4fc09000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x62040110> (a sun.misc.GC$LatencyLock)
+	at sun.misc.GC$Daemon.run(GC.java:100)
+	- locked <0x62040110> (a sun.misc.GC$LatencyLock)
+
+   Locked ownable synchronizers:
+	- None
+
+"RMI Reaper" prio=10 tid=0x4d422c00 nid=0x1c0e in Object.wait() [0x4fc5a000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x62040188> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	- locked <0x62040188> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at sun.rmi.transport.ObjectTable$Reaper.run(ObjectTable.java:333)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"RMI TCP Accept-1098" daemon prio=10 tid=0x4d843000 nid=0x1c0d runnable [0x4fcab000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0x62040230> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.executeAcceptLoop(TCPTransport.java:369)
+	at sun.rmi.transport.tcp.TCPTransport$AcceptLoop.run(TCPTransport.java:341)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+
+"JBoss System Threads(1)-1" daemon prio=10 tid=0x4baf9000 nid=0x1c0c runnable [0x4fcfc000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0x62048038> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.jboss.web.WebServer.run(WebServer.java:320)
+	at org.jboss.util.threadpool.RunnableTaskWrapper.run(RunnableTaskWrapper.java:147)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- <0x62706e28> (a java.util.concurrent.locks.ReentrantLock$NonfairSync)
+
+"Timer-Log4jService" daemon prio=10 tid=0x4e37f800 nid=0x1c0b in Object.wait() [0x5028d000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x620403e8> (a java.util.TaskQueue)
+	at java.util.TimerThread.mainLoop(Timer.java:509)
+	- locked <0x620403e8> (a java.util.TaskQueue)
+	at java.util.TimerThread.run(Timer.java:462)
+
+   Locked ownable synchronizers:
+	- None
+
+"AuthenticationCacheFlushThread" prio=10 tid=0x4c822000 nid=0x1c0a waiting on condition [0x506d7000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at org.jboss.security.auth.AuthenticationCacheFlushThread.run(AuthenticationCacheFlushThread.java:83)
+
+   Locked ownable synchronizers:
+	- None
+
+"Timer-0" daemon prio=10 tid=0x5055f000 nid=0x1c01 in Object.wait() [0x504fe000]
+   java.lang.Thread.State: TIMED_WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x6204bff0> (a java.util.TaskQueue)
+	at java.util.TimerThread.mainLoop(Timer.java:509)
+	- locked <0x6204bff0> (a java.util.TaskQueue)
+	at java.util.TimerThread.run(Timer.java:462)
+
+   Locked ownable synchronizers:
+	- None
+
+"DestroyJavaVM" prio=10 tid=0xb6905400 nid=0x1be2 waiting on condition [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+"Low Memory Detector" daemon prio=10 tid=0xb69c5800 nid=0x1bed runnable [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+"C2 CompilerThread1" daemon prio=10 tid=0xb69c3c00 nid=0x1bec waiting on condition [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+"C2 CompilerThread0" daemon prio=10 tid=0xb69c1c00 nid=0x1beb waiting on condition [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+"Signal Dispatcher" daemon prio=10 tid=0xb69c0400 nid=0x1bea runnable [0x00000000]
+   java.lang.Thread.State: RUNNABLE
+
+   Locked ownable synchronizers:
+	- None
+
+"Finalizer" daemon prio=10 tid=0xb69b2000 nid=0x1be9 in Object.wait() [0x51a7d000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x62048408> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:118)
+	- locked <0x62048408> (a java.lang.ref.ReferenceQueue$Lock)
+	at java.lang.ref.ReferenceQueue.remove(ReferenceQueue.java:134)
+	at java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:159)
+
+   Locked ownable synchronizers:
+	- None
+
+"Reference Handler" daemon prio=10 tid=0xb69b0800 nid=0x1be8 in Object.wait() [0x510e1000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x62040100> (a java.lang.ref.Reference$Lock)
+	at java.lang.Object.wait(Object.java:485)
+	at java.lang.ref.Reference$ReferenceHandler.run(Reference.java:116)
+	- locked <0x62040100> (a java.lang.ref.Reference$Lock)
+
+   Locked ownable synchronizers:
+	- None
+
+"VM Thread" prio=10 tid=0xb69acc00 nid=0x1be7 runnable 
+
+"GC task thread#0 (ParallelGC)" prio=10 tid=0xb690cc00 nid=0x1be3 runnable 
+
+"GC task thread#1 (ParallelGC)" prio=10 tid=0xb690e400 nid=0x1be4 runnable 
+
+"GC task thread#2 (ParallelGC)" prio=10 tid=0xb690f800 nid=0x1be5 runnable 
+
+"GC task thread#3 (ParallelGC)" prio=10 tid=0xb6911000 nid=0x1be6 runnable 
+
+"VM Periodic Task Thread" prio=10 tid=0xb69c7800 nid=0x1bee waiting on condition 
+
+JNI global references: 1259
+

@@ -1,0 +1,1443 @@
+:Author: Kylin Soong
+
+00. OVERVIEW
+------------
+
+Primary purpose of this documents is to private basic troubleshooting skills for JBoss EAP 5.x, the following aspects will be cover:
+
+* EAP Tags
+* Basic Troubleshooting
+* Logging
+* JVM Hang
+* Out of Memory
+* JVM Crash
+* High CPU Usage
+* File Descriptor
+
+01. EAP 5.1 Code Tags
+---------------------
+- jbossas/thirdparty
+	http://anonsvn.jboss.org/repos/jbossas/tags/JBPAPP_5_1_0_Final/component-matrix/pom.xml
+- jboss.jaxr 2.0.1	
+	http://anonsvn.jboss.org/repos/jbossas/projects/jaxr/tags/2.0.1/
+- jboss.jbossts 4.6.1.GA_CP07
+	http://anonsvn.jboss.org/repos/labs/labs/jbosstm/tags/JBOSSTS_4_6_1_GA_CP07/
+- jboss.jbossws-common	1.1.0.SP6
+	http://anonsvn.jboss.org/repos/jbossws/common/tags/jbossws-common-1.1.0.SP6/
+- jboss.jbossws-framework 3.1.2.SP8
+	http://anonsvn.jboss.org/repos/jbossws/framework/tags/jbossws-framework-3.1.2.SP8/
+- jboss.jbossws-spi 1.1.2.SP4
+	http://anonsvn.jboss.org/repos/jbossws/spi/tags/jbossws-spi-1.1.2.SP4/
+- jboss.jbossws	3.1.2.SP7
+	http://anonsvn.jboss.org/repos/jbossws/stack/native/tags/jbossws-native-3.1.2.SP7/
+- jboss.messaging 1.4.7.GA
+	http://anonsvn.jboss.org/repos/messaging/tags/JBossMessaging_1_4_7_GA/
+- jboss.web 2.1.10.GA
+	http://anonsvn.jboss.org/repos/jbossweb/tags/JBOSSWEB_2_1_10_GA/
+- jgroups 2.6.16.GA
+	cvs: -d:pserver:anonymous@javagroups.cvs.sourceforge.net:/cvsroot/javagroups login
+	cvs -z3: -d:pserver:anonymous@javagroups.cvs.sourceforge.net:/cvsroot/javagroups co -P JGroups -r JGroups_2_6_16
+- org.hibernate.annotations 3.4.0.GA_CP03
+	http://anonsvn.jboss.org/repos/hibernate/annotations/tags/3.4.0.GA_CP03/
+- org.hibernate.commons.annotations 3.1.0.GA
+	http://anonsvn.jboss.org/repos/hibernate/commons-annotations/tags/3.1.0.GA/
+- org.hibernate.ejb3.persistence 1.0.2.GA
+	http://anonsvn.jboss.org/repos/hibernate/jpa-api/tags/v1_0_2_GA
+- org.hibernate.entity.manager 3.4.0.GA_CP03
+	http://anonsvn.jboss.org/repos/hibernate/entitymanager/tags/3.4.0.GA_CP03/
+- org.hibernate.validator 3.1.0.GA
+	http://anonsvn.jboss.org/repos/hibernate/validator/tags/3.1.0.GA/
+- org.hibernate	3.3.2.GA_CP03
+	http://anonsvn.jboss.org/repos/hibernate/core/tags/hibernate-3.3.2.GA_CP03/
+- org.jboss.aop	2.1.6.GA_CP01
+	http://anonsvn.jboss.org/repos/jbossas/projects/aop/tags/JBoss_AOP_2_1_6_GA_CP01/
+- org.jboss.aspects.currentinvocation 1.0.1
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-aspects/tags/jboss-current-invocation-aspects-1.0.1/
+- org.jboss.aspects.remoting 1.0.3
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-aspects/tags/jboss-remoting-aspects-1.0.3/
+- org.jboss.aspects.security 1.0.0.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-aspects/tags/jboss-security-aspects-1.0.0.GA/
+- org.jboss.bootstrap 1.0.1
+	http://anonsvn.jboss.org/repos/jbossas/projects/bootstrap/tags/jboss-bootstrap-1.0.1/
+- org.jboss.aspects.transaction	1.0.0.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-aspects/tags/jboss-transaction-aspects-1.0.0.GA/
+- org.jboss.cache.core	3.2.5.GA
+	http://anonsvn.jboss.org/repos/jbosscache/core/tags/3.2.5.GA/
+- org.jboss.cache.pojo	3.0.0.GA
+	http://anonsvn.jboss.org/repos/jbosscache/pojo/tags/3.0.0.GA/
+- org.jboss.cl	2.0.9.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-cl/tags/2.0.9.GA/
+- org.jboss.cluster.cache.jbc 2.0.3.Final
+	http://anonsvn.jboss.org/repos/jbossas/projects/cluster/ha-server-cache-jbc/tags/2.0.3.Final/
+- org.jboss.cluster.cache.spi 2.0.0.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/cluster/ha-server-cache-spi/tags/2.0.0.GA/
+- org.jboss.cluster.client 1.1.1.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/cluster/ha-client/tags/1.1.1.GA/
+- org.jboss.cluster.server.api	1.1.3.Final
+	http://anonsvn.jboss.org/repos/jbossas/projects/cluster/ha-server-api/tags/1.1.3.Final/
+- org.jboss.common.core	2.2.16.GA
+	http://anonsvn.jboss.org/repos/common/common-core/tags/2.2.16.GA/
+- org.jboss.deployers 2.0.10.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-deployers/tags/2.0.10.GA/
+- org.jboss.ejb3.bom 1.0.1
+	https://github.com/jbossejb3/jboss-ejb3-bom-eap5/zipball/bom-eap5-1.0.1
+- org.jboss.integration	5.1.0.SP1
+	http://anonsvn.jboss.org/repos/jbossas/projects/integration/tags/5.1.0.SP1/
+- org.jboss.jbossxb 2.0.1.GA
+	http://anonsvn.jboss.org/repos/common/jbossxb/tags/2.0.1.GA/
+- org.jboss.jopr 1.3.4.SP1
+	http://anonsvn.jboss.org/repos/embjopr/tags/EmbJopr_1_3_4_SP1/
+- org.jboss.jpa	1.0.0
+	http://anonsvn.jboss.org/repos/jbossas/projects/jpa/tags/jboss-jpa-build-1.0.0
+- org.jboss.logbridge 1.0.0.GA
+	http://anonsvn.jboss.org/repos/common/jboss-logbridge/tags/1.0.0.GA/
+- org.jboss.logmanager	1.1.0.GA
+	http://anonsvn.jboss.org/repos/common/jboss-logmanager/tags/1.1.0.GA/
+- org.jboss.man	2.1.1.SP2
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-man/tags/2.1.1.SP2/
+- org.jboss.mdr	2.0.2.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-mdr/tags/2.0.2.GA/
+- org.jboss.metadata 1.0.6.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/metadata/tags/1.0.6.GA/
+- org.jboss.microcontainer 2.0.10.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/microcontainer/tags/2.0.10.GA/
+- org.jboss.naming 5.0.3.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/naming/tags/5.0.3.GA/
+- org.jboss.reflect 2.0.3.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-reflect/tags/2.0.3.GA/
+- org.jboss.remoting 2.5.3.SP1
+	http://anonsvn.jboss.org/repos/jbossremoting/remoting2/tags/2.5.3.SP1/
+- org.jboss.security 2.0.4.SP4
+	http://anonsvn.jboss.org/repos/jbossas/projects/security/security-jboss-sx/tags/2.0.4.SP4/
+- org.jboss.security.negotiation 2.0.3.SP3
+	http://anonsvn.jboss.org/repos/jbossas/projects/security/security-negotiation/tags/security-negotiation-2.0.3.SP03/
+- org.jboss.threads 1.0.0.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/jboss-threads/tags/1.0.0.GA/
+- org.jboss.vfs	2.2.0.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/vfs/tags/2.2.0.GA/
+- org.jboss.xnio.metadata 1.0.1.GA
+	http://anonsvn.jboss.org/repos/xnio/xnio-metadata/tags/1.0.1.GA/
+- org.jboss.xnio 1.2.1.GA
+	http://anonsvn.jboss.org/repos/xnio/xnio-base/tags/1.2.1.GA/
+- org.jboss.javaee 5.0.1.GA
+	http://anonsvn.jboss.org/repos/jbossas/projects/specs/tags/5.0.1.GA/
+
+
+02. Basic Troubleshooting
+-------------------------
+
+* Understand the environment
+* Understand the problem
+* Collect information
+* Problem layer
+* Search solutions
+
+1. Understand the environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a. Understand the common information
+- JBoss EAP Version
+- OS Vendor / Version
+- JVM Vendor / Version
+- Database Vendor/ Version  etc...
+b. Understand the configuration files
+- JBoss configuration files (under the “/server/$PROFILE/conf/”, *-ds.xml etc..)
+- JBoss start scripts  etc...
+
+2. What is problem?
+~~~~~~~~~~~~~~~~~~~
+- Problem process
+- Problem frequency
+- Problem conditions
+- System can continue to use or not
+- Reproducible or not
+- Reproduce or not
+- Workaround or not 
+
+3. Collect information
+~~~~~~~~~~~~~~~~~~~~~~
+- Collect the common information (Refer to “Understand the environment”)
+- Collect the configuration files (Refer to “Understand the environment”)
+- Collect the log files (boot.log, server.log, access.log)
+
+4. In which layer did the problem occur?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Application
+- JBoss Container
+- Database
+- Web Server
+- JVM
+- OS
+- H/W
+[[eap5-basic-1_image]]
+.Problem Occur Layer
+image::img/eap5-basic-1.png[]
+
+5. Search solution
+~~~~~~~~~~~~~~~~~~
+a. What is solution?
+- Change the configuration
+- Correct the application
+- Version up
+- One-off patch etc...
+b. Continuous investigation
+- How to reproduce
+- Collect the debug information etc...
+[[eap5-basic-2_image]]
+.Search Solution Procedure
+image::img/eap5-basic-2.png[]
+
+03. Logging
+-----------
+
+* Boot log
+* Server log
+* Access log
+* stdtout/stderr log
+* Log4j
+* Lab
+
+1. Boot log
+~~~~~~~~~~~
+** $PROFILE/log
+** System Properties
+** Product Version
+** Set the log4j.properties (-Dlog4j.configuration=file:./log4j.properties) if you need customize boot.log 
+
+.Demo log4j.properties:
+----
+    Default configuration - jboss-as/bin/run.jar/log4j.properties
+
+    log4j.rootCategory=DEBUG, FILE, CONSOLE
+
+    log4j.appender.FILE=org.jboss.logging.appender.FileAppender
+    log4j.appender.FILE.File=${jboss.server.log.dir}/boot.log
+    log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+    log4j.appender.FILE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n
+    log4j.appender.FILE.Append=false
+
+    log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+    log4j.appender.CONSOLE.Threshold=INFO
+    log4j.appender.CONSOLE.Target=System.out
+    log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+    log4j.appender.CONSOLE.layout.ConversionPattern=%d{ABSOLUTE} %-5p [%c{1}] %m%n
+----
+
+
+2. Server log
+~~~~~~~~~~~~~
+** $PROFILE/log
+** Log4j based logging
+** $PROFILE/conf/jboss-log4j.xml
+*** Logging level
+*** File name, format
+*** Rotation etc... 
+** Set the jboss.server.log.threshold to change the logging level.
+** The logging level can be changed even in jboss-log4j.xml.
+
+.Demo For Change Logging Level Using System Property
+----
+    $ run.sh -Djboss.server.log.threshold=DEBUG”
+----
+
+
+.Demo For Change Logging Level Using jboss-log4j.xml:
+----
+    <root>
+       <!-- Let's comment this out to set our own value 
+       <priority value="${jboss.server.log.threshold}"/>-->
+       <priority value="DEBUG"/>
+       <appender-ref ref="CONSOLE"/>
+      <appender-ref ref="FILE"/>
+    </root>
+----
+
+
+3. Access log
+~~~~~~~~~~~~~
+** HTTP/AJP access information
+** Edit the $PROFILE/deploy/jbossweb.sar/server.xml.
+----
+<!-- Access logger -->
+<!--
+  <Valve className="org.apache.catalina.valves.AccessLogValve"
+   prefix="localhost_access_log." suffix=".log"
+   pattern="common" directory="${jboss.server.home.dir}/log" 
+   resolveHosts="false" />
+ -->
+----
+
+** Log Format: Edit the pattern option can be find bellow.
+
+The AccessLogValve in JBossWeb/Tomcat[1][2] ships with two standard pattern names:
+
+    common: %h %l %u %t "%r" %s %b
+
+    combined: %h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i"
+
+key:
+
+    %a - Remote IP address
+
+    %A - Local IP address
+
+    %b - Bytes sent, excluding HTTP headers, or '-' if no bytes were sent
+
+    %B - Bytes sent, excluding HTTP headers
+
+    %h - Remote host name
+
+    %H - Request protocol
+
+    %l - Remote logical username from identd (always returns '-')
+
+    %m - Request method
+
+    %p - Local port
+
+    %q - Query string (prepended with a '?' if it exists, otherwise an empty string
+
+    %r - First line of the request
+
+    %s - HTTP status code of the response
+
+    %S - User session ID
+
+    %t - Date and time, in Common Log Format format
+
+    %u - Remote user that was authenticated
+
+    %U - Requested URL path
+
+    %v - Local server name
+
+    %D - Time taken to process the request, in millis
+
+    %T - Time taken to process the request, in seconds
+
+    %I - current Request thread name (can compare later with stacktraces)
+
+If you are using the common or combined pattern, and wish to add more options, then you need to specify all the options in full
+
+For instance if you've have pattern="common" and you wish to add %D , then the pattern becomes pattern="%h %l %u %t '%r' %s %b %D"
+
+''''
+
+4. stdtout/stderr log
+~~~~~~~~~~~~~~~~~~~~~
+** JVM message log.
+** JVM messages are not outputted to the serve log. Recommend getting stdout/stderr log.
+----
+$ ./run.sh > std.log 2>&1
+----
+
+** Edit the ConsoleAppender in $PROFILE/conf/jboss-log4j.xml to change logging level and format etc.
+----
+<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+      <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
+      <param name="Target" value="System.out"/>
+      <param name="Threshold" value="INFO"/>
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
+      </layout>
+   </appender>
+----
+
+5. Log4j
+~~~~~~~~
+** Appender
+*** stdout/stderr log 
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+*** Server log 
+	<appender name="FILE" class="org.jboss.logging.appender.DailyRollingFileAppender">  
+*** Not recommend using the AsyncAppender. It is known to cause performance issues and deadlocks in some situations.
+	https://access.redhat.com/knowledge/solutions/35907
+
+IMPORTANT: The AsyncAppender is known to cause performance issues and deadlocks in some situations. In production environment we should use FileAppender (e.g. DailyRollingFileAppender) instead of AsyncAppender.
+
+** Debug
+----
+<category name="org.jboss.naming">
+  <priority value="DEBUG" />
+</category>
+----
+** Log Format http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html
+----
+<layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern" value="%d %-5p [%c] (%t) %m%n"/>
+</layout>
+----
+
+6. Lab
+~~~~~~
+** Lab A - Change the boot.log name.
+****  copy Demo log4j.properties from above 1 Boot.log
+****  configure log4j.properties for boot.log name, logging format, etc
+****  start JBoss with -D parameter as bellow
+----
+-Dlog4j.configuration=file:./log4j.properties
+----
+** Lab B - Enable the HTTP access log.
+**** edit JBOSS_HOME//server/$PROFILE/deploy/jbossweb.sar/server.xml
+**** enable Access logger  
+**** start JBosss test
+** Lab C - Change the output location of boot.log, HTTP access log and  server.log.
+**** start JBoss use bellow command
+----
+./run.sh >std.log 2>&1
+----
+** Lab D - Output the request taken time, Requested URL path, User session ID, Request protocol, server host name in HTTP access log.
+**** edit JBOSS_HOME//server/$PROFILE/deploy/jbossweb.sar/server.xml
+**** set the access log format as following
+----
+pattern="%h %l %u %t %r %s %b %D %U %S %H %v"
+----
+**** start JBoss Test, the log result like the bellow
+----
+127.0.0.1 - - [27/Jun/2012:17:33:40 +0800] GET /jvm_hang_lab_1/CountServlet HTTP/1.1 200 159 44963 /jvm_hang_lab_1/CountServlet 56D167394DBDFE3F3CAE9F992DEDB75C HTTP/1.1 127.0.0.1
+----
+
+The abvoe log indicate: the request taken 44963 milliseconds to response, the request path is '/jvm_hang_lab_1/CountServlet', session ID: 56D167394DBDFE3F3CAE9F992DEDB75C, request protocal: HTTP/1.1  server host name: 127.0.0.1
+
+
+** Lab E - Enable the debug in server.log.
+
+
+04. JVM Hang 
+------------
+
+- What? Why?
+- How?
+- Thread dump
+- Micro container
+- Thread pool
+- Lap
+- Tips
+
+1. What? Why?
+~~~~~~~~~~~~~
+* What?
+
+*** JBoss instance accepts no more new requests.
+*** Processing in-flight request becomes very slow or timed out. etc...
+
+* Why?
+
+** Wrong design or implementation of customer's application / third party library or framework
+*** Infinite loop
+*** Too long SQL / WS out-band calls
+*** Thread deadlock
+
+** Wrong estimation of thread tuning
+*** All available threads are busy and JBoss runs out of resources to execute new request 
+**** Too long request processing
+**** Waiting for response from peer(e.g. RDBMS)
+**** Contention of resources
+**** Underestimation of peak load
+*** Too long JVM Full GC
+
+** Java VM or JBoss  bug
+
+[[eap5-hang-1_image]]
+.Stop the world
+image::img/eap5-hang-1.png[]
+
+2. How?
+~~~~~~~
+* Get the Thread dump
+** A thread dump is a snapshot of all threads on a java process
+*** kill -3 <JBoss_PID>    (RHEL)
+*** Ctrl-Break    (Windows)
+*** jstack <JBoss_PID>    (JVM)
+** Typically take several dumps with 10-sec interval
+*** Why several?
+*** Interval may differ
+** Output is text
+*** Jstack : Std out 
+*** kill -3/ Ctrl-Break : Std out of JBoss process
+
+* Get the GC log
+** Add -Xloggc:<file> to see how long Full GCs take
+** Add -XX:+PrintGCTimeStamps -XX:+PrintGCDetails to print time stamps and details
+
+3. Thread dump
+~~~~~~~~~~~~~~
+Thread header - Output on the head line of the stack trace of a thread, as below:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----
+"http-127.0.0.1-8080-Acceptor-0" daemon prio=10 tid=0x44dfbc00 nid=0x4a81 runnable [0x48f0b000]
+   java.lang.Thread.State: RUNNABLE
+        at java.net.PlainSocketImpl.socketAccept(Native Method)
+        at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+----
+
+* "http-127.0.0.1-8080-Acceptor-0" – Thread name
+* daemon – Output the "daemon" when it is daemon thread
+* prio – Thread priority(Thread#setPriority)
+* tid – Thread object address on memory
+* nid – Thread ID on OS
+* runnable – Thread state
+
+Thread state
+^^^^^^^^^^^^
+
+WARNING: This information is the Open JVM. It may differ for another JVM vendors. 
+
+** runnable
+*** Java code is running or processing in native code.
+----
+"ajp-127.0.0.1-8009-Acceptor-0" daemon prio=10 tid=0x4f4bbc00 nid=0x4a82 runnable [0x48f5c000]
+   java.lang.Thread.State: RUNNABLE
+----
+
+** in Object.wait()
+*** Waiting for the notification from other thread.
+*** Waiting for the state from other thread.
+----
+"http-127.0.0.1-8080-1" daemon prio=10 tid=0x442fbc00 nid=0x4b3e in Object.wait() [0x4e272000]
+   java.lang.Thread.State: WAITING (on object monitor)
+        at java.lang.Object.wait(Native Method)
+        - waiting on <0x6b24f428> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+        at java.lang.Object.wait(Object.java:485)
+        at org.apache.tomcat.util.net.JIoEndpoint$Worker.await(JIoEndpoint.java:420)
+        - locked <0x6b24f428> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+        at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:446)
+        at java.lang.Thread.run(Thread.java:662)
+----
+
+** waiting for monitor entry
+*** Waiting for releasing of a lock object.
+*** It is going to call the synchronized method (or block). 
+
+[[eap5-hang-2_image]]
+.Waiting for releasing of a lock object
+image::img/eap5-hang-2.png[]
+
+----
+"Thread-1" prio=10 tid=0x00007f69fc0b8800 nid=0x7358 waiting for monitor entry [0x00007f6a0050a000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+	at sample.SampleMain.getStr(SampleMain.java:23)
+	- waiting to lock <0x000000077acacf60> (a java.lang.Class for sample.SampleMain)
+	at sample.SampleMain.run(SampleMain.java:17)
+	at java.lang.Thread.run(Thread.java:679)
+----
+
+** waiting on condition
+*** Waiting until it reaches condition.
+*** Thread.sleep() is called.
+----
+"SFSB Passivation Thread - jboss.j2ee:ear=jboss-seam-bay.ear,jar=jboss-seam.jar,name=EjbSynchronizations,service=EJB3" prio=10 tid=0x00007ff9357d3000 nid=0x63a3 waiting on condition [0x00007ff95f4f0000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at
+----
+
+Deadlock
+^^^^^^^^
+** Processing stops because two or more threads wait for release of Locke simultaneously. 
+
+[[eap5-hang-3_image]]
+.Deadlock
+image::img/eap5-hang-3.png[]
+
+----
+Found one Java-level deadlock:
+=============================
+"Thread-1":
+  waiting to lock monitor 0x00007fe07c0036c8 (object 0x000000077acb5480, a java.lang.Class),
+  which is held by "Thread-0"
+"Thread-0":
+  waiting to lock monitor 0x00007fe07c005e28 (object 0x000000077acb62c8, a java.lang.Class),
+  which is held by "Thread-1"
+
+Java stack information for the threads listed above:
+===================================================
+"Thread-1":
+	at sample.SampleClass.getStr(SampleClass.java:9)
+	- waiting to lock <0x000000077acb5480> (a java.lang.Class for sample.SampleClass)
+	at sample.SampleClass2.getStr2(SampleClass2.java:11)
+	- locked <0x000000077acb62c8> (a java.lang.Class for sample.SampleClass2)
+	at sample.SampleMain2.run(SampleMain2.java:25)
+	at java.lang.Thread.run(Thread.java:679)
+"Thread-0":
+	at sample.SampleClass2.getStr2(SampleClass2.java:9)
+	- waiting to lock <0x000000077acb62c8> (a java.lang.Class for sample.SampleClass2)
+	at sample.SampleClass.getStr(SampleClass.java:13)
+	- locked <0x000000077acb5480> (a java.lang.Class for sample.SampleClass)
+	at sample.SampleMain2.run(SampleMain2.java:21)
+	at java.lang.Thread.run(Thread.java:679)
+
+Found 1 deadlock.
+----
+
+
+4. Micro container
+~~~~~~~~~~~~~~~~~~
+JMX based micro-kernel architecture
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* JMX structure is used for the core architecture. 
+* Provide an environment to configure and manage POJOs (plain old java objects).
+
+[[eap5-hang-4_image]]
+.JMX structure
+image::img/eap5-hang-4.png[]
+
+Each service has the external connector independent
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* HTTP/RMI/IIOP ...
+
+[[eap5-hang-5_image]]
+.Connector Port
+image::img/eap5-hang-5.png[]
+
+5. Thread pool
+~~~~~~~~~~~~~~
+
+[[eap5-hang-6_image]]
+.Request Process Flow
+image::img/eap5-hang-6.png[]
+
+Acceptor Thread
++++++++++++++++
+----
+"http-127.0.0.1-8080-Acceptor-0" daemon prio=10 tid=0x00007f9095cdb800 nid=0x2dc5 runnable [0x00007f91144d2000]
+   java.lang.Thread.State: RUNNABLE
+	at java.net.PlainSocketImpl.socketAccept(Native Method)
+	at java.net.PlainSocketImpl.accept(PlainSocketImpl.java:408)
+	- locked <0x00000000f2c78b00> (a java.net.SocksSocketImpl)
+	at java.net.ServerSocket.implAccept(ServerSocket.java:462)
+	at java.net.ServerSocket.accept(ServerSocket.java:430)
+	at org.apache.tomcat.util.net.DefaultServerSocketFactory.acceptSocket(DefaultServerSocketFactory.java:61)
+	at org.apache.tomcat.util.net.JIoEndpoint$Acceptor.run(JIoEndpoint.java:314)
+	at java.lang.Thread.run(Thread.java:662)
+----
+
+Worker Thread
++++++++++++++
+----
+"http-127.0.0.1-8080-1" daemon prio=10 tid=0x00007fe23401f000 nid=0x44e1 in Object.wait() [0x00007fe273ffe000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0x00000000f3c7d2a8> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+	at java.lang.Object.wait(Object.java:485)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.await(JIoEndpoint.java:420)
+	- locked <0x00000000f3c7d2a8> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:446)
+	at java.lang.Thread.run(Thread.java:662)
+----
+
+''''
+
+IMPORTANT: Thread dump tool - Samurai (http://yusuke.homeip.net/samurai/en/index.html) Open sourced, GUI tool, Thread Dump View, Heap analysis View, CSV View, Search Logs
+
+IMPORTANT: Thread dump tool - Lockness(http://lockness.plugin.free.fr/home.php) Lockness is an Eclipse Plugin for analysing Java Thread Dumps.
+With Lockness it is quite easy to find out what are the Threads involved in bottlenecks or deadlocks. 
+
+''''
+
+6. Labs
+~~~~~~~
+
+Lab I
++++++
+* Navigate to folder '../dist/troubleshooting/jvm_hang_lab', execute ant after you complete build.properties file.
+* Start a EAP server
+* Check the lab application use http://localhost:8080/jvm_hang_lab_1
+* Use the following command to collect two copy of thread dumps, one normal, the other count button is trigered
+----
+jstack -l JBOSS_PID > jstack.out
+----
+* compare two dump difference:
+.thread dump difference
+[options="header,footer"]
+|=========================================================
+|Thread Dump - normal |Thread dump - count button trigered | Other
+|"http-127.0.0.1-8080-2" daemon prio=10 tid=0x5151c400 nid=0x1ccf in Object.wait() [0x5147d000]
+   java.lang.Thread.State: WAITING (on object monitor)
+	at java.lang.Object.wait(Native Method)
+	- waiting on <0xa9d91e08> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+	at java.lang.Object.wait(Object.java:485)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.await(JIoEndpoint.java:420)
+	- locked <0xa9d91e08> (a org.apache.tomcat.util.net.JIoEndpoint$Worker)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:446)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None
+      |"http-127.0.0.1-8080-2" daemon prio=10 tid=0x5151c400 nid=0x1ccf waiting on condition [0x5147d000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+	at java.lang.Thread.sleep(Native Method)
+	at com.kylin.troubleshooting.hang.Counter.getCount(Counter.java:8)
+	- locked <0x555037f0> (a java.lang.Class for com.kylin.troubleshooting.hang.Counter)
+	at com.kylin.troubleshooting.hang.CountServlet.doPost(CountServlet.java:20)
+	at com.kylin.troubleshooting.hang.CountServlet.doGet(CountServlet.java:15)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:717)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:290)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.jboss.web.tomcat.filters.ReplyHeaderFilter.doFilter(ReplyHeaderFilter.java:96)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:235)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:206)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:235)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:191)
+	at org.jboss.web.tomcat.security.SecurityAssociationValve.invoke(SecurityAssociationValve.java:183)
+	at org.jboss.web.tomcat.security.JaccContextValve.invoke(JaccContextValve.java:95)
+	at org.jboss.web.tomcat.security.SecurityContextEstablishmentValve.process(SecurityContextEstablishmentValve.java:126)
+	at org.jboss.web.tomcat.security.SecurityContextEstablishmentValve.invoke(SecurityContextEstablishmentValve.java:70)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:127)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:102)
+	at org.jboss.web.tomcat.service.jca.CachedConnectionValve.invoke(CachedConnectionValve.java:158)
+	at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:566)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:109)
+	at org.jboss.web.tomcat.service.request.ActiveRequestResponseCacheValve.internalProcess(ActiveRequestResponseCacheValve.java:74)
+	at org.jboss.web.tomcat.service.request.ActiveRequestResponseCacheValve.invoke(ActiveRequestResponseCacheValve.java:47)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:330)
+	at org.apache.coyote.http11.Http11Processor.process(Http11Processor.java:829)
+	at org.apache.coyote.http11.Http11Protocol$Http11ConnectionHandler.process(Http11Protocol.java:599)
+	at org.apache.tomcat.util.net.JIoEndpoint$Worker.run(JIoEndpoint.java:451)
+	at java.lang.Thread.run(Thread.java:662)
+
+   Locked ownable synchronizers:
+	- None | -    
+|=========================================================
+analysing above dump, one of the thread in 'waiting on condition' status:
+----
+"http-127.0.0.1-8080-2" daemon prio=10 tid=0x5151c400 nid=0x1ccf waiting on condition [0x5147d000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+----
+
+*NOTE THAT:*
+The above show Thread.sleep() cause thread state in 'waiting on condition', Waiting until it reaches condition.
+
+''''
+
+* Set a maxThreads value in jboss-as/server/default/deploy/jbossweb.sar/server.xml as following
+----
+<Connector protocol="HTTP/1.1" port="8080" address="${jboss.bind.address}" maxThreads="3" connectionTimeout="20000" redirectPort="8443" acceptCount="1"  />
+----
+* Use Jmeter(http://jmeter.apache.org/usermanual/build-web-test-plan.html) send 50 concurrency hhttp request to http://localhost:8080/jvm_hang_lab_1/CountServlet
+* Generate thread dump, analysing dump file we will find that always 2 thread is BLOCKED in 'waiting for monitor entry' status
+.http-127.0.0.1-8080-3
+----
+"http-127.0.0.1-8080-3" daemon prio=10 tid=0x44c71000 nid=0x1396 waiting on condition [0x493fe000]
+   java.lang.Thread.State: TIMED_WAITING (sleeping)
+----
+
+http-127.0.0.1-8080-2
+----
+"http-127.0.0.1-8080-2" daemon prio=10 tid=0x44d4f400 nid=0x1389 waiting for monitor entry [0x49aad000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+----
+
+http-127.0.0.1-8080-1
+----
+"http-127.0.0.1-8080-1" daemon prio=10 tid=0x471fc800 nid=0x1364 waiting for monitor entry [0x50f7d000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+----
+
+*NOTE THAT:*
+This Section show both thread in 'waiting on condition' and 'waiting for monitor entry' state, 'waiting on condition' caused by Thread.sleep() is called. 'waiting for monitor entry' due to it is going to call the synchronized method.
+
+'''' 
+
+Lab II
+++++++
+* Navigate to folder '../dist/troubleshooting/jvm_hang_lab', execute ant after you complete build.properties file.
+* Start a EAP server
+* Check the lab application use http://localhost:8080/jvm_hang_lab_2
+* Use the following command to collect two copy of thread dumps, one normal, the other count button is trigered
+----
+jstack -l JBOSS_PID > jstack.out
+----
+* compare two dump difference.
+* both thread dump can be found ./../lab
+
+Lab III
++++++++
+* Navigate to folder '../dist/troubleshooting/jvm_hang_lab', execute ant jar after you complete build.properties file.
+----
+ant jar
+----
+* 'jvm_hang_lab_3-1.0.jar' jar will generate under build dist folder
+* We simulate the scenario which depicted in 
+
+[[eap5-hang-3_image]]
+.DeadLock
+image::img/eap5-hang-3.png[]
+
+ use the following command test:
+----
+java -cp jvm_hang_lab_3-1.0.jar com.kylin.troubleshooting.hang.deadlock.ResourceRunner 1
+----
+Run Thread 1 solely, no deadlock occur
+
+----
+java -cp jvm_hang_lab_3-1.0.jar com.kylin.troubleshooting.hang.deadlock.ResourceRunner 2
+----
+Run Thread 2 solely, no deadlock occur
+
+----
+java -cp jvm_hang_lab_3-1.0.jar com.kylin.troubleshooting.hang.deadlock.ResourceRunner a
+----
+Run both Thread 1 and Thread 2 concurrently, deadlock occur
+
+* generate thread while deadlock occur.
+----
+jstack -l JAVA_PID > hang_lab_3_thread_dump.out
+----
+
+* analysing the dump file we can find the following info:
+----
+"jvm-hang-lab-3-1" prio=10 tid=0xb69e4800 nid=0x208f waiting for monitor entry [0x6a47d000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at com.kylin.troubleshooting.hang.deadlock.Resource.lockInternal(Resource.java:26)
+----
+Two thread is BLOCKED, state is  'waiting for monitor entry'
+
+----
+Found one Java-level deadlock:
+----
+Dead lock info found from dump file.
+
+7. Tips 
+~~~~~~~
+* What happens if requests exceeds specified maxThreads on JBoss Web HTTP Connector? 
+
+link:JBossWeb.asciidoc[JBoss Web HTTP Connector]
+
+* Which ThreadPool does JBossWeb use? 
+
+link:JBossWeb.asciidoc[JBoss Web ThreadPool]
+
+
+05. Out of Memory 
+-----------------
+
+* What? Why?
+* Troubleshooting step
+* Process memory
+* Garbage Collection
+* Heap dump
+* Profiler
+* Lab
+* TIPS
+
+1. What? Why?
+~~~~~~~~~~~~
+
+* What?
+** Output the java.lang.OutOfMemory from server log or stdout/err log
+
+* Why?
+** Run out of Memory at ...
+*** Java heap area
+*** Permanent area
+*** Native memory area
+** Memory leakage
+** JVM's bug (e.g. GC's compaction is a mess)
+*** Increasing usage of memory and running out of memory finally.
+*** If leakage is seen in Java heap, suspect: Non closure of JDBC object, Cached object or Long life object
+
+2. Troubleshooting step
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* GC log
+** Analyze the GC log
+*** -verbose:gc
+*** -Xloggc:<file_name>
+*** -XX:+PrintGCTimeStamps
+*** -XX:+PrintGCDetails
+*** -XX:+PrintHeapAtGC
+
+* Heap Dump
+** Analyze the Java process memory
+*** -XX:+PrintClassHistogram
+*** -XX:+HeapDumpOnOutOfMemoryError
+*** -XX:HeapDumpOnCtrlBreak
+*** jmap
+*** jhat
+
+* Profiler
+** Analyze details of the Java process memory
+*** Yourkit
+*** Eclipse Memory Analyzer
+
+3. Process memory
+~~~~~~~~~~~~~~~~~
+
+* Memory size which can use a process
+** Address Spaces
+*** 32-bit machine : 4GB(2^32)
+*** 64-bit machine : 16EiB(2^64)
+** The process operates in the virtual memory environment which abstracted the physical memory. 
+*** Use disk space if physical memory is insufficient
+**** Linux : swap partition
+**** Windows : C:\pagefile.sys(But, should not make it operate in the environment where a swap takes place. )
+** 32-bit environment can use about 3 GB memory except for the kernel uses space
+
+* Watching usage process size
+** Linux
+*** Using OS command
+**** ps -p <PID> -o vsz
+**** top -b # see VIRT value
+** Windows
+*** Using the Performance Monitor
+**** Click Start, click in the Start Search box, type perfmon, and press ENTER.
+**** In the navigation tree, expand Monitoring Tools, and then click Performance Monitor.
+
+* Using the process space in Java program
+** Java Heap
+*** The area where the Java object is assigned by JVM.
+*** Extend as the -Xmx option. 
+** Permanent
+*** The area which the loaded classes are saved.
+*** Extend as the -XX:MaxPermSize option. 
+** Stack
+*** The area which the local variables are saved for each thread 
+*** A stack overflow occurs when there is not enough.
+*** Extend as the -Xss option (Affect to each thread)
+** Native
+*** The area is used by the JNI code and the third party native modules
+*** Cannot extend.
+
+[[eap5-oom-1_image]]
+.JVM Memory
+image::img/eap5-oom-1.png[]
+
+4. Garbage Collection
+~~~~~~~~~~~~~~~~~~~~~
+* Garbage collection is a form of automatic memory management.
+
+.Generational Garbage Collection
+image::img/eap5-oom-2.png[]
+
+* Garbage Collection Algorithm
+** Incremental GC
+*** Default configuration until version 1.4.2
+*** The garbage collection of only one region
+*** -XX:+UseSerialGC
+** Parallel GC
+*** Default configuration after version 1.5.0
+*** The garbage collection of plural region
+*** -XX:+UseParallelGC
+*** *-XX:+UseParNewGC (Can configure together with the concurrent GC)*
+** Concurrent GC
+*** The garbage collection processing and the program processing execute same time.
+*** -XX:+UseConcMarkSweepGC
+
+.GC Algorithm
+image::img/eap5-oom-3.png[]
+
+* GC Log
+** -Xloggc:<file_name>
+*** Prints GC info to a log file
+** -XX:+PrintGCTimeStamps
+*** Adds timestamp info to GC details
+** -verbose:gc
+*** Prints some GC info
+** -XX:+PrintGCDetails
+*** Print GC details
+** -XX:+PrintHeapAtGC
+*** Prints detailed GC info including heap occupancy before and after GC
+
+5. Heap dump (Analyze the Java process memory)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* -XX:+PrintClassHistogram
+** Print a histogram of class instances on Ctrl-Break. Manageable. (Introduced in 1.4.2.) The jmap -histo command provides equivalent functionality.
+
+* -XX:+HeapDumpOnOutOfMemoryError
+** Dump heap to file when java.lang.OutOfMemoryError is thrown. Manageable. (Introduced in 1.4.2 update 12, 5.0 update 7.)
+
+* -XX:HeapDumpOnCtrlBreak
+** Dump heap on Ctrl-Break (kill -3)
+** Cannot use Java 6 or later
+
+* jmap
+** Memory dump tool
+** jmap -heap:format=b <Jboss_PID>
+** jmap -dump:format=b,file=heap.hprof <JBoss_PID>
+
+* jhat
+** Java Heap Analysis Tool 
+** Jhat < heap dump - ex):java_pid12889.hprof>
+** Analyze with GUI (http://localhost:7000/)
+
+6. Profiler
+~~~~~~~~~~~
+* Analyze details of the Java process memory
+** JVM Profiler is using JVM Profiler Interface (JVMPI) , JVM Tool Interface (JVMTI).
+*** *YourKit* http://www.yourkit.com/
+*** *Memory Analyzer (MAT)* http://www.eclipse.org/mat/
+*** *jvmstat* http://java.sun.com/performance/jvmstat/
+
+
+7. Lab
+~~~~~~
+
+Environment
+^^^^^^^^^^^
+* JBoss-EAP-5.1.2
+* Jave home is configured
+----
+$ echo $JAVA_HOME
+	/usr/java/jdk1.6.0_31
+----
+* eclipse indigo 3.7
+* apache-jemeter-2.7
+* apache-ant-1.7
+
+Prerequisite
+^^^^^^^^^^^^
+* Modify 'jvm_oom_lab/build.properties' file
+** repo.dir - third part jar file
+** build.home - build temporary files, build result jar files will use this folder
+** jboss.home - should point to JBoss home, for automatic deploy
+* make sure JBoss is running
+* execute ant in jvm_oom_lab root folder
+----
+ant
+---- 
+
+NOTE: this will deploy all three lab needed ear file to running JBoss.
+
+* Jmeter(http://jmeter.apache.org/usermanual/build-web-test-plan.html) enable.
+
+Lab One:
+^^^^^^^^
+
+* use jconsole monitor JBoss, add the bellow JVM start up Options(In linux midify run.conf)
+----
+-Djboss.platform.mbeanserver
+----
+
+* use Jmeter send request to http://localhost:8080/jvm_oom_lab_1/OutofMemoryLab1 continuely till OOM take place.
+
+.OOM Heap
+image::img/eap5-oom-4.png[]
+
+* From above png, JBoss Heap increase very fast. server.log contain the following Error Log
+----
+2012-07-04 13:07:54,249 ERROR [org.apache.catalina.core.ContainerBase.[jboss.web].[localhost].[/jvm_oom_lab_1].[OutofMemoryLab1]] (http-127.0.0.1-8080-8) Servlet.service() for servlet OutofMemoryLab1 threw exception
+java.lang.OutOfMemoryError: Java heap space
+	at com.kylin.troubleshooting.oom.OutofMemoryLab1.doPost(OutofMemoryLab1.java:43)
+	at com.kylin.troubleshooting.oom.OutofMemoryLab1.doGet(OutofMemoryLab1.java:33)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+----
+
+''''
+
+* collect the GC log
+----
+-Xloggc:gc-oom-lab-1.log -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintHeapAtGC 
+----
+
+* collect heap dump
+----
+-XX:+HeapDumpOnOutOfMemoryError
+----
+
+* use jmap collect 2 type of heap dump filw one JBoss run normal, the other OOM take place
+----
+$JAVA_HOME/bin/jmap -dump:format=b,file=heap-oom-lab1-1.hprof 16060
+$JAVA_HOME/bin/jmap -dump:format=b,file=heap-oom-lab1-2.hprof 16060
+----
+
+NOTE: heap-oom-lab1-1.hprof - normal heap dump, heap-oom-lab1-2.hprof - OOM take place heap dump, 16060 - JBoss PID
+
+Use jhat analysing 2 heap dump file:
+----
+$JAVA_HOME/bin/jhat heap-oom-lab1-1.hprof
+$JAVA_HOME/bin/jhat heap-oom-lab1-2.hprof
+---- 
+
+heap-oom-lab1-2.hprof have exception trace poped up as bellow:
+----
+Reading from heap-oom-lab1-2.hprof...
+java.io.IOException: Map failed
+	at sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:748)
+	at com.sun.tools.hat.internal.parser.MappedReadBuffer.create(MappedReadBuffer.java:47)
+	at com.sun.tools.hat.internal.parser.HprofReader.<init>(HprofReader.java:145)
+	at com.sun.tools.hat.internal.parser.Reader.readFile(Reader.java:76)
+	at com.sun.tools.hat.Main.main(Main.java:143)
+Caused by: java.lang.OutOfMemoryError: Map failed
+	at sun.nio.ch.FileChannelImpl.map0(Native Method)
+	at sun.nio.ch.FileChannelImpl.map(FileChannelImpl.java:745)
+... 4 more
+File mapping failed, will use direct read
+----
+
+* from system side chech JBoss use 1.5 GB memory
+----
+top
+----
+
+Lab Two:
+^^^^^^^^
+* use Jmeter send request to http://localhost:8080/jvm_oom_lab_2/OutofMemoryLab2 with a high concurrency
+** start 100 threads in 10 seconds, each thread send request 10 times
+* OOM will be find from JBoss server.log
+----
+2012-07-04 16:24:46,142 ERROR [org.apache.catalina.core.ContainerBase.[jboss.web].[localhost].[/jvm_oom_lab_2].[OutofMemoryLab2]] (http-127.0.0.1-8080-35) Servlet.service() for servlet OutofMemoryLab2 threw exception
+java.lang.OutOfMemoryError: Java heap space
+	at com.kylin.troubleshooting.oom.OutofMemoryLab2.doPost(OutofMemoryLab2.java:39)
+	at com.kylin.troubleshooting.oom.OutofMemoryLab2.doGet(OutofMemoryLab2.java:29)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:617)
+----
+
+* collect the thread dump file
+----
+$JAVA_HOME/bin/jmap -dump:format=b,file=heap-oom-lab2.hprof 18364
+----
+
+* from system side chech JBoss use 1.5 GB memory
+----
+top
+----
+
+Lab Three:
+^^^^^^^^^^
+* use Jmeter send request to http://localhost:8080/jvm_oom_lab_3/OutofMemoryLab3 with a high concurrency
+** start 100 threads in 10 seconds, each thread send request 10 times
+* OOM will be find from JBoss server.log
+----
+2012-07-04 16:50:07,135 FATAL [org.apache.jasper.runtime.JspFactoryImpl] (http-127.0.0.1-8080-43) Exception initializing page context
+java.lang.OutOfMemoryError: Java heap space
+	at org.apache.jasper.runtime.JspWriterImpl.<init>(JspWriterImpl.java:83)
+	at org.apache.jasper.runtime.PageContextImpl._initialize(PageContextImpl.java:154)
+	at org.apache.jasper.runtime.PageContextImpl.initialize(PageContextImpl.java:124)
+	at org.apache.jasper.runtime.JspFactoryImpl.internalGetPageContext(JspFactoryImpl.java:107)
+	at org.apache.jasper.runtime.JspFactoryImpl.getPageContext(JspFactoryImpl.java:63)
+----
+
+* collect the thread dump file
+----
+$JAVA_HOME/bin/jmap -dump:format=b,file=heap-oom-lab2.hprof 21355
+----
+
+* from system side chech JBoss use 1.5 GB memory
+----
+top
+----
+
+
+
+8. Tips
+~~~~~~~
+* Why a lot of the following info can be found from server.log ?
+----
+	[Unloading class sun.reflect.GeneratedSerializationConstructorAccessor417]
+	[Unloading class sun.reflect.GeneratedMethodAccessor382]
+	[Unloading class org.jboss.services.binding.impl.XSLTServiceBindingValueSourceImpl$1]
+----
+
+* How analyse GC log?
+
+* How to analyse Heap dump?
+
+
+
+06. JVM Crash 
+-------------
+* What? Why?
+* How?
+* What is problem?
+* JVM Error Log
+* Core File
+* Lab
+* Tips
+
+1. What? Why?
+~~~~~~~~~~~~~
+* What?
+** JBoss's JVM process crashes suddenly
+
+* Why?
+** Native libraries called via JNI(Java Native Interface)
+*** Type 2 JDBC driver
+*** User Application
+** JVM Issue
+*** *Pure Java code never causes process failure*
+
+2. How?
+~~~~~~~
+* Analyze the JVM Log
+** JVM Error log may be created if JVM clashed
+*** Sun JVM: hs_err_pid<JBoss_PID>.log in current directory
+*** Find a library name after a line starts with “Problematic frame:” 
+
+* Analyze the Core File
+** Using debugger
+*** Linux : gdb
+*** ulimit –c unlimited
+
+3. What is problem?
+~~~~~~~~~~~~~~~~~~~
+* Determine root cause
+** JNI
+*** Disable loading the native library?
+** Java Vm
+*** Upgrade to latest JVM?
+*** Change JVM option? -server / -client
+** JDBC
+*** Type 2 jdbc driver to type 4 one
+
+
+4. JVM Error Log
+~~~~~~~~~~~~~~~~
+* “Problematic frame:”
+----
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGFPE (0x8) at pc=0x00007f170c7f95cd, pid=6449, tid=139737130542848
+#
+# JRE version: 6.0_22-b22
+# Java VM: OpenJDK 64-Bit Server VM (20.0-b11 mixed mode linux-amd64 compressed oops)
+# Derivative: IcedTea6 1.10.6
+# Distribution: Fedora release 15 (Lovelock), package fedora-63.1.10.6.fc15-x86_64
+# Problematic frame:
+# C  [libHelloJniWorldImpl.so+0x5cd]  Java_jp_gr_java_1conf_torutk_exp_jni_hello_HelloJniWorld_printHello+0x21
+#
+# If you would like to submit a bug report, please include
+# instructions how to reproduce the bug and visit:
+#   http://icedtea.classpath.org/bugzilla
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+----
+
+
+5. Core File
+~~~~~~~~~~~~
+* GNU gdb step
+
+** Confirm JDK version
+*** $ java -version
+*** $ file <Path>/core
+
+** Set up gdb environment
+*** $ ls /usr/local/bin/gdb (Confirm gdb location)
+*** $ export DEBUG_PROG=/usr/local/bin/gdb (Set up gdb)
+
+** Start gdb
+*** $ gdb java corefile
+
+** gdb command
+*** where / stack - Show the backtrace.
+*** thr - Change the thread or show the current thread.
+*** Info thr - Ask the current thread.
+*** thread apply 1 bt - Backtrace to the thread #1
+*** quit - Quit gdb
+
+6. Lab
+~~~~~~
+
+
+7. Tips
+~~~~~~~
+
+
+07. High CPU Usage 
+------------------
+* What? Why?
+* How
+* Process and Thread
+* Step
+* Lab
+* Tips
+
+1. What? Why?
+~~~~~~~~~~~~~
+* What?
+** High CPU usage(=100%) by JBoss process is observed
+** Processing in-flight request becomes slow or timed out
+** High CPU Usage != JVM Hang
+
+* Why?
+** JBoss process may occupy CPU resource
+** Infinite loop
+** Contention on threads
+** GC
+** etc
+
+
+2. How
+~~~~~~~
+* Analyze CPU usage rate
+** Tool
+*** Windows : Task Manager, Performance Monitor
+*** Unix : top command, etc
+*** If CPU usage rate in Java process is high, investigate what the Java thread is doing from thread dump
+
+
+3. Process and Thread
+~~~~~~~~~~~~~~~~~~~~~
+* Process
+** It is specified by process ID (PID) in operating system (OS). 
+** They are one or more threads for each process.
+
+* Thread
+** Subtask in Process
+** Resources (CPU etc) are used independently with other threads. 
+** *A specific thread may monopolize a CPU resource.*
+
+.Light Weight Process
+image::img/eap5-cpu-1.png[]
+
+4. Step
+~~~~~~~
+
+General step of analyzing CPU Usage in JBoss
++++++++++++++++++++++++++++++++++++++++++++++
+
+. Find a high CPU usage JBoss process (PID)
+. Find a high CPU usage Lighta Weight Process (LWPID) using OS tool
+. Get a Java thread dump which is high CPU usage Java process
+. Match the high CPU usage LWPID and the Java thread ID in thread dump
+. Investigate what the Java thread is doing from thread dump
+
+Linux
++++++
+
+. Find a high CPU usage JBoss process
+.. Confirm a high CPU usage JBoss process using the command *top* or *jps* etc 
+. Find a high CPU usage Lighta Weight Process (LWPID) using OS tool
+.. top -H -b -n1
+. Get a Java thread dump which is high CPU usage Java process
+.. *jstack* or *kill -3*
+. Match the high CPU usage LWPID and the Java thread ID in thread dump
+.. Match the LWPID (PID for Linux) which change the hexadecimal number and the *nid* in thread dump
+. Investigate what the Java thread is doing from thread dump
+.. Confirm the cause of high CPU usage from thread dump
+
+5. Lab
+~~~~~~
+
+
+
+6. Tips
+~~~~~~~
+
+
+
+08. File Descriptor 
+-------------------
+* What? Why?
+* How?
+* About File Descriptor
+* Configuration
+* Tool
+* Lab
+* Tips
+
+1. What? Why?
+~~~~~~~~~~~~~
+* What?
+** Output the Too many open files from server log or stdout/err log
+
+* Why?
+** The File Descriptor parameter is not suitable. 
+** The file is not closed .
+** It remains, while socket connection has been in the state before TIME_WAIT. 
+
+2. How?
+~~~~~~~
+
+* Find the files which are opened by the process
+** Using OS tools
+
+* Confirm resource limit on OS
+** The maximum number of the file descriptor which can be used in one process 
+** The maximum number of the file descriptor which can be used in all process
+
+* Confirm the socket state
+** netstat
+
+
+3. About File Descriptor
+~~~~~~~~~~~~~~~~~~~~~~~~
+* What is the File Descriptor
+** When a file is created or opened on process, it get a file descriptor (UNIX) or  a file handler (Windows).
+** The file descriptors max value which can be used by OS was decided. 
+
+* Timing of opening a file descriptor
+** File control from application
+** Class load from JVM
+** Open new socket
+
+* Timing of closing a file descriptor
+** File close
+** Process shutdown
+** Socket TIME_WAIT end
+
+4. Configuration
+~~~~~~~~~~~~~~~~
+* File Descriptor configuration
+** Using *ulimit (limit)* command
+
+* Confirm the value
+----
+ulimit -n
+----
+
+* Set the value
+----
+ulimit -n 4096
+----
+
+
+5. Tool
+~~~~~~~
+
+Linux
++++++++
+
+* The file descriptor information used in socket or opened on process can confirm to use tool of the *List of Files (lsof)*. 
+* Open file number
+----
+lsof -p <PID> | wc -l
+----
+
+* Open file list
+----
+lsof -p <PID>
+----
+
+* The file descriptors which opened on process are under the */proc/<pid>/fd*.
+
+Windows
+++++++++
+
+* The file handle information can confirm to use handle tool. (http://technet.microsoft.com/ja-jp/sysinternals/bb896655)
+----
+handle -p java
+----
+
+* In Process Explorer, process information is also displayed.
+
+*netstat information is also useful to socket*
+
+6. Lab
+~~~~~~
+
+
+7. Tips
+~~~~~~~
+
+
+Appendix I: Logging Level
+-------------------------
+.Lo4j & JVM log level
+[options="header,footer"]
+|=========================================================
+|Log4j Level |JDK Level | Descriptions
+|FATAL       |-         | The application service is likely to crash
+|ERROR       |SEVERE    | A definite problem exists
+|INFO        |INFO      | Likely to be a problem, but maybe recoverable
+|DEBUG       |FINE      |Low-volume detailed logging, something of interest, but not a problem
+|-           |FINER     | Medium-volume detailed logging
+|TRACE       |FINEST    |High-volume detailed logging
+|=========================================================
+
+
